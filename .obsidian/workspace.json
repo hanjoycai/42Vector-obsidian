@@ -150,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "素材库/你好.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "你好 的大纲"
+              "title": "大纲"
             }
           },
           {
@@ -196,16 +195,16 @@
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
       "obsidian-git:Open Git source control": false,
-      "claudian:Open Claudian": false
+      "claudian:Open Claudian": false,
+      "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "935a80d984f68721",
+  "active": "7e644022a59011aa",
   "lastOpenFiles": [
+    "素材库/你好.md",
     "素材库/assets/你好/file-20260319105653766.png",
     "素材库/assets/你好",
     "素材库/assets",
-    "素材库/你好.md",
-    "素材库/你好.md",
     "素材库",
     "素材库/assets/你好/file-20260319105504133.png",
     "assets/你好/file-20260319105256801.png",
