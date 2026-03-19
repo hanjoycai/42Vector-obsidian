@@ -150,12 +150,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "素材库/你好.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "你好 的大纲"
             }
           },
           {
@@ -179,7 +180,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -198,8 +199,18 @@
       "claudian:Open Claudian": false
     }
   },
-  "active": "e624eea51a7b3885",
+  "active": "935a80d984f68721",
   "lastOpenFiles": [
+    "素材库/assets/你好/file-20260319105653766.png",
+    "素材库/assets/你好",
+    "素材库/assets",
+    "素材库/你好.md",
+    "素材库/你好.md",
+    "素材库",
+    "素材库/assets/你好/file-20260319105504133.png",
+    "assets/你好/file-20260319105256801.png",
+    "assets/你好",
+    "assets",
     "未命名.base",
     "素材库"
   ]
