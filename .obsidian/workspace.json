@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "502f348762fb3aa6",
+        "id": "2c24525811a9d2b2",
         "type": "tabs",
         "children": [
           {
-            "id": "583432bf6c5c8278",
+            "id": "a4929611bd37eb00",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "e99cb2e16806af9b",
@@ -183,7 +183,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 314.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -196,11 +196,18 @@
       "bases:新建数据库": false,
       "obsidian-git:Open Git source control": false,
       "claudian:Open Claudian": false,
-      "obsidian-excalidraw-plugin:New drawing": false
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "note-to-mp:复制到公众号": false
     }
   },
   "active": "7e644022a59011aa",
   "lastOpenFiles": [
+    "Excalidraw/Drawing 2026-03-20 16.41.03.excalidraw.md",
+    "OpenClaw-Architecture.excalidraw",
+    "Clippings/Clawdbot：架构深度解析.md",
+    "Clippings",
+    "Excalidraw/Drawing 2026-03-20 16.49.21.excalidraw.md",
+    "Excalidraw",
     "素材库/你好.md",
     "素材库/assets/你好/file-20260319105653766.png",
     "素材库/assets/你好",
