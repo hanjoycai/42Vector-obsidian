@@ -44,7 +44,7 @@
   "thinkingBudget": "medium",
   "effortLevel": "high",
   "enableAutoTitleGeneration": true,
-  "titleGenerationModel": "",
+  "titleGenerationModel": "sonnet",
   "enableChrome": false,
   "enableBangBash": false,
   "enableOpus1M": false,
