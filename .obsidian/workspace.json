@@ -174,7 +174,7 @@
             }
           },
           {
-            "id": "e079f81270217b2b",
+            "id": "2b9b3a25f799e6a1",
             "type": "leaf",
             "state": {
               "type": "claudian-view",
@@ -200,12 +200,12 @@
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
       "obsidian-git:Open Git source control": false,
-      "claudian:Open Claudian": false,
       "obsidian-excalidraw-plugin:New drawing": false,
-      "note-to-mp:复制到公众号": false
+      "note-to-mp:复制到公众号": false,
+      "claudian:Open Claudian": false
     }
   },
-  "active": "e079f81270217b2b",
+  "active": "2b9b3a25f799e6a1",
   "lastOpenFiles": [
     "内容生产系统/03-内容素材库/案例库/README.md",
     "内容生产系统/03-内容素材库/爆款文稿库/README.md",

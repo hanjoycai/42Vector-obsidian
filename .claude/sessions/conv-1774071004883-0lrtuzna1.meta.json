@@ -1,0 +1,20 @@
+{
+  "id": "conv-1774071004883-0lrtuzna1",
+  "title": "总结",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1774071004883,
+  "updatedAt": 1774071008248,
+  "lastResponseAt": 1774071005799,
+  "sessionId": "f15e329b-19e3-4b32-8acc-1e4871b8160f",
+  "sdkSessionId": "f15e329b-19e3-4b32-8acc-1e4871b8160f",
+  "currentNote": "01-内容生产/CLAUDE.md",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 0,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextTokens": 0,
+    "percentage": 0
+  }
+}
