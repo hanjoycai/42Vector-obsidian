@@ -1,0 +1,19 @@
+# New database
+
+filters:
+  and:
+    - note["base"] == link("New database.base")
+properties:
+  file.name:
+    displayName: Name
+  标签:
+    displayName: 标签
+  介绍:
+    displayName: 介绍
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 标签
+      - 介绍

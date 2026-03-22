@@ -1,0 +1,25 @@
+# 商业-管理-战略
+
+filters:
+  and:
+    - note["base"] == link("商业-管理-战略.base")
+properties:
+  file.name:
+    displayName: 书籍名称
+  简介:
+    displayName: 简介
+  " 作者":
+    displayName: " 作者"
+  分类:
+    displayName: 分类
+  封面:
+    displayName: 封面
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 简介
+      - " 作者"
+      - 分类
+      - 封面

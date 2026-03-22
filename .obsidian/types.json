@@ -1,0 +1,27 @@
+{
+  "types": {
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "创建时间": "datetime",
+    "标签": "multitext",
+    "介绍": "text",
+    "链接": "text",
+    "适用平台": "multitext",
+    "职业角色": "multitext",
+    "所属场景": "multitext",
+    "职业简介": "text",
+    "类型": "text",
+    "X链接": "text",
+    "一键关注": "text",
+    "简介": "text",
+    "网址链接": "text",
+    "作者简介": "text",
+    "X简介": "text",
+    "封面": "multitext",
+    "分类": "multitext",
+    "作者": "text",
+    " 作者": "text",
+    "公司": "multitext"
+  }
+}

@@ -1,0 +1,22 @@
+# New database
+
+filters:
+  and:
+    - note["base"] == link("New database.base")
+properties:
+  file.name:
+    displayName: Prompts名称
+  适用平台:
+    displayName: 适用平台
+  职业角色:
+    displayName: 职业角色
+  所属场景:
+    displayName: 所属场景
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 适用平台
+      - 职业角色
+      - 所属场景

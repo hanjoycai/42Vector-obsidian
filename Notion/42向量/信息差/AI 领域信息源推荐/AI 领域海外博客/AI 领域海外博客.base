@@ -1,0 +1,22 @@
+# AI 领域海外博客
+
+filters:
+  and:
+    - note["base"] == link("AI 领域海外博客.base")
+properties:
+  file.name:
+    displayName: 博客名称
+  网址链接:
+    displayName: 网址链接
+  标签:
+    displayName: 标签
+  作者简介:
+    displayName: 作者简介
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 网址链接
+      - 标签
+      - 作者简介
