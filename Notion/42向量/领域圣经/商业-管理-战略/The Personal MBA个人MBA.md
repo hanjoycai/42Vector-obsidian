@@ -1,5 +1,4 @@
 ---
-notion-id: 1b8d6148-f202-80e6-ac9e-ee5c47299af5
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Josh Kaufman

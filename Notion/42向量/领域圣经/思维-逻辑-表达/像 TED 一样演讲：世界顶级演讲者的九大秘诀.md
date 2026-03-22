@@ -1,5 +1,4 @@
 ---
-notion-id: 182d6148-f202-801f-a1e1-c1a5672ce419
 base: "[[思维-逻辑-表达.base]]"
 作者: ［美］卡迈恩•加洛（Carmine Gallo）
 简介: ""

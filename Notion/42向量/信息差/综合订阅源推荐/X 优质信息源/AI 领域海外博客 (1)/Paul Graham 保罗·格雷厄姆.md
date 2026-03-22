@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8102-9907-d7295124281f
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/paulg
 标签:

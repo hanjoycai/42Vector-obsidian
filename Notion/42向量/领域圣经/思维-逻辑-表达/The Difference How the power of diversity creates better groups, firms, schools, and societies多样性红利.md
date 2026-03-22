@@ -1,5 +1,4 @@
 ---
-notion-id: 1dfd6148-f202-8033-9f78-f7445598f0f2
 base: "[[思维-逻辑-表达.base]]"
 作者: Scott E•Page
 简介: ""

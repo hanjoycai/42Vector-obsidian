@@ -1,5 +1,4 @@
 ---
-notion-id: 2b5d6148-f202-80b6-8041-df432758368c
 base: "[[New database.base]]"
 标签: OpenAI
 介绍: ""

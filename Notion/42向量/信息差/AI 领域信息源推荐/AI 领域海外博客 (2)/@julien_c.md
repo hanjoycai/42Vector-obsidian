@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-81da-87ec-fb957b0ad4b8
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Hugging Face 联合创始人&CTO
 类型: Builder、工具&基础设施

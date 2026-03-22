@@ -1,5 +1,4 @@
 ---
-notion-id: 1dfd6148-f202-808e-a692-daf2a9e6abc4
 base: "[[思维-逻辑-表达.base]]"
 作者: Peter J. Denning / Matti Tedre
 简介: ""

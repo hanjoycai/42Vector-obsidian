@@ -1,5 +1,4 @@
 ---
-notion-id: 1b8d6148-f202-804b-b240-cb0f38ebafd4
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Alan G.Lafley

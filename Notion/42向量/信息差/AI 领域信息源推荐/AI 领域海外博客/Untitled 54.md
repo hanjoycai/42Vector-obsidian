@@ -1,5 +1,4 @@
 ---
-notion-id: 56428b01-ba2a-4325-81fe-25a13b923660
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://tomtunguz.com/
 标签:

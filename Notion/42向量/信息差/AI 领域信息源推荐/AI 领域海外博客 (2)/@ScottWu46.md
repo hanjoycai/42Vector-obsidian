@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-8050-8b1f-fdba43ae1505
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Cognition 创始人
 类型: 投资人、策展＆ 高质量信号

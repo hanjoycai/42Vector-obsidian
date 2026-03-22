@@ -1,5 +1,4 @@
 ---
-notion-id: 1b9d6148-f202-8042-af00-db31701b91c1
 base: "[[成长-关系-职场.base]]"
 作者: "Atul Gawande "
 简介: ""

@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-80f1-aa6f-e2e02a95861c
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Reid Hoffman, Ben Casnocha

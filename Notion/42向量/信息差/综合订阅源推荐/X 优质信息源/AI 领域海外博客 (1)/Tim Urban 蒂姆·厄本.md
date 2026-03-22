@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-814d-9a34-cafd9fc4565b
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/waitbutwhy
 标签:

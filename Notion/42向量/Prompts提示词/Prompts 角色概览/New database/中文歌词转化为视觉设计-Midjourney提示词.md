@@ -1,5 +1,4 @@
 ---
-notion-id: fffd6148-f202-81a3-968e-ff12f4663cf0
 base: "[[New database.base]]"
 适用平台:
   - ChatGPT

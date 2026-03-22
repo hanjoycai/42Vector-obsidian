@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-8186-bfd4-ea6e4ce92eb4
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Cursor 首席设计师
 类型: 产品、设计&运营者

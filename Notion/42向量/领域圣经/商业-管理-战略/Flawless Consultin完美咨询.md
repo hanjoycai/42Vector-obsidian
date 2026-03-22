@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-80e7-9225-d1db8f9d7642
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Peter Block

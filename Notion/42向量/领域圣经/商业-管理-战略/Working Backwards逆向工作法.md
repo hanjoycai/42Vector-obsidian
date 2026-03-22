@@ -1,5 +1,4 @@
 ---
-notion-id: 1b9d6148-f202-8036-a76e-cbfdd2e4b4d8
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Bill Carr and Colin Bryar.

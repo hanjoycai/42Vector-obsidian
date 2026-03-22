@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8112-8c65-f2710272a0ac
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/hubermanlab
 标签:

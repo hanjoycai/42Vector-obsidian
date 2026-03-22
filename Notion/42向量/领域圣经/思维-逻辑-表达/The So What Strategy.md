@@ -1,5 +1,4 @@
 ---
-notion-id: 1b9d6148-f202-80e3-93f9-e0b69cb39fbf
 base: "[[思维-逻辑-表达.base]]"
 作者: Davina Stanley
 简介: ""

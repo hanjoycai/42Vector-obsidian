@@ -1,5 +1,4 @@
 ---
-notion-id: a66f6522-8ffa-4f6f-9cab-5bb8c0fc4745
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://www.generalist.com/
 标签:

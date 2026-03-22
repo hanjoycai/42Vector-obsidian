@@ -1,5 +1,4 @@
 ---
-notion-id: 1e0d6148-f202-8014-b519-d0c97ee81256
 base: "[[思维-逻辑-表达.base]]"
 作者: Dan Heath
 简介: ""

@@ -1,5 +1,4 @@
 ---
-notion-id: 25cd6148-f202-8101-bddc-f1ce24552705
 base: "[[AI 领域海外博客 (1).base]]"
 网址链接: https://businessanalytics.substack.com/
 标签:

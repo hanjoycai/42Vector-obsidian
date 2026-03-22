@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-8063-adaf-d81d59163669
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Steven Johnson

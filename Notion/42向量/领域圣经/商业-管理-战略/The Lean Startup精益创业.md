@@ -1,5 +1,4 @@
 ---
-notion-id: 1b9d6148-f202-801f-b351-c399c1cd5a4f
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Eric Ries

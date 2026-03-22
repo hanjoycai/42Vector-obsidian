@@ -1,5 +1,4 @@
 ---
-notion-id: fffd6148-f202-8106-aef6-de9436577a85
 base: "[[New database.base]]"
 适用平台:
   - Claude

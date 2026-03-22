@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-817b-b4bf-c6d91cb10c16
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/awilkinson
 标签:

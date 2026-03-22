@@ -1,5 +1,4 @@
 ---
-notion-id: 20be1737-6b7e-428a-9f20-b0f4e57d583c
 cover: "[[内容生产系统/01-内容生产/选题管理/assets/00-选题记录/Prompts提示词.jpeg]]"
 ---
 [https://yaojingang.feishu.cn/docx/ER4rdSlvcofCtQxttSac2Xc4nGd](https://yaojingang.feishu.cn/docx/ER4rdSlvcofCtQxttSac2Xc4nGd)

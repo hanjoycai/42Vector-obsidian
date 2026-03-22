@@ -1,5 +1,4 @@
 ---
-notion-id: 1b6d6148-f202-8009-a48d-c28482725aa2
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Nicole Forsgren, Jez Humble and Gene Kim

@@ -1,5 +1,4 @@
 ---
-notion-id: 1b8d6148-f202-802f-b01f-c09c42e4f73f
 base: "[[思维-逻辑-表达.base]]"
 作者: Hal Box
 简介: ""

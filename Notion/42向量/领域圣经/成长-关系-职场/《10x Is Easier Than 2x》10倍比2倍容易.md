@@ -1,5 +1,4 @@
 ---
-notion-id: 16dd6148-f202-80a9-a7c9-e5431a29925a
 base: "[[成长-关系-职场.base]]"
 作者: Dan Sullivan & Benjamin Hardy
 简介: |-

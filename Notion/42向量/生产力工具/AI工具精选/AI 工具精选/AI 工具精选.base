@@ -1,0 +1,22 @@
+# AI 工具精选
+
+filters:
+  and:
+    - note["base"] == link("AI 工具精选.base")
+properties:
+  file.name:
+    displayName: 名称
+  类型:
+    displayName: 类型
+  快捷入口:
+    displayName: 快捷入口
+  简介:
+    displayName: 简介
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 类型
+      - 快捷入口
+      - 简介

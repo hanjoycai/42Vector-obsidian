@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-80da-8292-eef4364e18da
 base: "[[成长-关系-职场.base]]"
 作者: Brendon Burchard
 简介: ""

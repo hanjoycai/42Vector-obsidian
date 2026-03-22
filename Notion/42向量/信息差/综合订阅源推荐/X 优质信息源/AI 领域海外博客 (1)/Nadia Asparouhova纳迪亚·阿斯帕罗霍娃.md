@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8192-b02c-e6bcd934b2c4
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/nayafia
 标签:

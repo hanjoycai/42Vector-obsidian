@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-8034-a1c6-de15706e8d52
 base: "[[成长-关系-职场.base]]"
 作者: Michael Easter
 简介: ""

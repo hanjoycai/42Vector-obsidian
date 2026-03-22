@@ -1,5 +1,4 @@
 ---
-notion-id: 432c7cd7-f45c-40e0-afb5-ee13b24e6e65
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://www.lennysnewsletter.com/
 标签: []

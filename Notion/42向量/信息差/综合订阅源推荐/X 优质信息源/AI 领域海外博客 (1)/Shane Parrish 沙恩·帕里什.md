@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81c9-9ce6-fe6db6a44bd8
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/shaneaparrish
 标签:

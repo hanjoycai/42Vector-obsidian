@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8115-959d-dfb90173dee5
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/joelgascoigne
 标签:

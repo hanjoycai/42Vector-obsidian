@@ -1,5 +1,4 @@
 ---
-notion-id: 20568d14-5034-42fb-b993-2773479c20fd
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://platforms.substack.com/
 标签: []

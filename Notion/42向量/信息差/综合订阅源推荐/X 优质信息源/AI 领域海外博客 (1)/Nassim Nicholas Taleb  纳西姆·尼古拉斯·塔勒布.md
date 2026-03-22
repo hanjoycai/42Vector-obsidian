@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81ba-8258-df99264a841b
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/nntaleb
 标签:

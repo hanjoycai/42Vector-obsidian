@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-81a9-b3c3-d1ac34798ad5
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: xAI / 特斯拉 / SpaceX 创始人
 类型: 前沿领袖＆创始人

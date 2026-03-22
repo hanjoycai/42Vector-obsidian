@@ -1,5 +1,4 @@
 ---
-notion-id: 16ad6148-f202-80ce-bc92-e1f2a130eeb2
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Clayton M Christensen

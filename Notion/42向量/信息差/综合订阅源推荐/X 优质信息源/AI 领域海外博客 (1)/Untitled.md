@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81c5-99f4-cb68003f352c
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://taylorpearson.me/archive/
 标签: []

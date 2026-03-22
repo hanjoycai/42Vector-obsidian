@@ -1,5 +1,4 @@
 ---
-notion-id: d992d7e5-262b-468c-9760-a6f12360caec
 base: "[[New database.base]]"
 标签: OpenAI
 链接: https://platform.openai.com/docs/guides/prompt-engineering

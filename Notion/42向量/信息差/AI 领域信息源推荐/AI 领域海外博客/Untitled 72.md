@@ -1,5 +1,4 @@
 ---
-notion-id: ba4489cb-1ca8-4e75-a2ad-aa2843530e27
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://writings.stephenwolfram.com/
 标签: []

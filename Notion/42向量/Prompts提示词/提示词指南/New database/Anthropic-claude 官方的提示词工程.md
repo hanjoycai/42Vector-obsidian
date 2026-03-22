@@ -1,5 +1,4 @@
 ---
-notion-id: 244d6148-f202-800a-8933-f0c76c0ddefe
 base: "[[New database.base]]"
 标签: Anthropic
 介绍: anthropic

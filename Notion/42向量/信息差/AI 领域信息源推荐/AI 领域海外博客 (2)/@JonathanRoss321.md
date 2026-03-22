@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-805b-b8b2-ea8cf22f8a8c
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Groq 创始人&CEO
 类型: 投资人、策展＆ 高质量信号

@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-8142-a5b3-ce58ac870abb
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Google DeepMind 研究副总裁
 类型: 研究与科学带头人

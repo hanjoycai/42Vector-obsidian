@@ -1,5 +1,4 @@
 ---
-notion-id: 0097a07f-2a92-4189-9646-baa70d402d48
 base: "[[New database.base]]"
 标签: Anthropic
 链接: https://docs.anthropic.com/zh-CN/docs/welcome

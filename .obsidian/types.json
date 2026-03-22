@@ -22,6 +22,10 @@
     "分类": "multitext",
     "作者": "text",
     " 作者": "text",
-    "公司": "multitext"
+    "公司": "multitext",
+    "快捷入口": "text",
+    "属于名称": "text",
+    "描述": "text",
+    "AIGC领域": "multitext"
   }
 }

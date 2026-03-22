@@ -1,5 +1,4 @@
 ---
-notion-id: 17ad6148-f202-80f8-9fe9-cf2994d8221e
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Richard Rumlet

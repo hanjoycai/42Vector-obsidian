@@ -1,5 +1,4 @@
 ---
-notion-id: 1b7d6148-f202-80fc-a401-dbcab44bf2b3
 base: "[[思维-逻辑-表达.base]]"
 作者: Russell Davies
 简介: ""

@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81a2-90d9-efaf1a958700
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/IAmMarkManson
 标签:

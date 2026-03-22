@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8186-b9bb-cf76497c3fe3
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/anniemurphypaul
 标签:

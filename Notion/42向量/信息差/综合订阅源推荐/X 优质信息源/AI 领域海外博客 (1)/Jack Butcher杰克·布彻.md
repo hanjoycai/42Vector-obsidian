@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-812d-bf0e-d8459d12b8d5
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/jackbutcher
 标签:

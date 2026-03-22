@@ -1,5 +1,4 @@
 ---
-notion-id: 27ed6148-f202-80b7-97bd-f2b88918e3a2
 base: "[[New database.base]]"
 标签: Google
 链接: https://developers.googleblog.com/en/how-to-prompt-gemini-2-5-flash-image-generation-for-the-best-results/

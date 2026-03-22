@@ -1,5 +1,4 @@
 ---
-notion-id: fffd6148-f202-8109-8a40-cf6f457cb2fd
 base: "[[New database.base]]"
 适用平台:
   - Cursor

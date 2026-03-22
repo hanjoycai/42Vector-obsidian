@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8130-8f7a-f7e2a94f4430
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/patrickc
 标签:

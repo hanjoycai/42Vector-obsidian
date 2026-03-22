@@ -1,5 +1,4 @@
 ---
-notion-id: 1b6d6148-f202-8023-8bc6-e2448716353c
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Steve Blank

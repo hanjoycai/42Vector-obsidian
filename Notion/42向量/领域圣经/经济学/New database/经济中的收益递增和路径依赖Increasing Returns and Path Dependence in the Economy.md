@@ -1,5 +1,4 @@
 ---
-notion-id: 173d6148-f202-8057-8f4c-c426ee15c710
 base: "[[New database.base]]"
 封面:
   - "[[内容生产系统/01-内容生产/选题管理/assets/00-选题记录/https--42notion.oss-cn-shenzhen.aliyuncs.com-book-%E7%BB%8F%E6%B5%8E%E4%B8%AD%E7%9A%84%E6%94%B6%E7%9B%8A%E9%80%92%E5%A2%9E%E5%92%8C%E8%B7%AF%E5%BE%84%E4%BE%9D%E8%B5%96.jpg]]"

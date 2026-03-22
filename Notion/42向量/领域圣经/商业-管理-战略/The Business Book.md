@@ -1,5 +1,4 @@
 ---
-notion-id: 19fd6148-f202-8002-9d9c-c7d5e1f5116f
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": DK Publishing

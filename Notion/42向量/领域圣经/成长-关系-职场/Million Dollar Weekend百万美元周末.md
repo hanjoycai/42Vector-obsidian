@@ -1,5 +1,4 @@
 ---
-notion-id: 182d6148-f202-80ad-8710-ddc554bde1c3
 base: "[[成长-关系-职场.base]]"
 作者: Noah Kagan / Tahl Raz / Portfolio
 简介: ""

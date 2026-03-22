@@ -1,5 +1,4 @@
 ---
-notion-id: 287d6148-f202-803d-9552-cb1f33f2b3b1
 base: "[[New database.base]]"
 标签: 方法论
 介绍: DEPTH 框架，适配 GPT 系列表现尤为出色

@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81cd-a531-e3161422efa8
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/JohnONolan
 标签:

@@ -1,5 +1,4 @@
 ---
-notion-id: 266d6148-f202-8141-bd8d-e0d171187986
 base: "[[AI 领域海外博客 (2).base]]"
 职业简介: Landing AI / DeepLearning·AI 创始人
 类型: 研究与科学带头人

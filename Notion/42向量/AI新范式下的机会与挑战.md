@@ -1,5 +1,5 @@
 ---
-notion-id: 7d7eb5d7-6ade-47fb-8fe4-7c67af5ec6ed
+
 ---
 > [!note] 📌
 > **AI 可能是一种新的印刷术。**

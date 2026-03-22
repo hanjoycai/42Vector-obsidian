@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8173-b068-ff111f883f44
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/JamesClear
 标签:

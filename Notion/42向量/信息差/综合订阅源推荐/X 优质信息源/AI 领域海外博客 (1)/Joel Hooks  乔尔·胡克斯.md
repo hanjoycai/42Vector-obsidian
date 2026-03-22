@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8128-9150-ff8ddfb41440
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://joelhooks.com/
 标签:

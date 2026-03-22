@@ -1,0 +1,22 @@
+# 大模型-强化学习
+
+filters:
+  and:
+    - note["base"] == link("大模型-强化学习.base")
+properties:
+  file.name:
+    displayName: 点击详细说明
+  属于名称:
+    displayName: 属于名称
+  描述:
+    displayName: 描述
+  AIGC领域:
+    displayName: AIGC领域
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 属于名称
+      - 描述
+      - AIGC领域

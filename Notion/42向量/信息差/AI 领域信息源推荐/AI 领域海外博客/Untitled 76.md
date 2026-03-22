@@ -1,5 +1,4 @@
 ---
-notion-id: e0c4ac70-f3ce-401b-9c44-0f9d45dc790f
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://matt-rickard.com/
 标签: []

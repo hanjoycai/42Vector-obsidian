@@ -1,5 +1,4 @@
 ---
-notion-id: 25cd6148-f202-8130-896f-fba6cff131c0
 base: "[[AI 领域海外博客 (1).base]]"
 标签:
   - AI+商业

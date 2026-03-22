@@ -1,5 +1,4 @@
 ---
-notion-id: ef987545-c6f0-4a9a-ae40-53280755c13f
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://stratechery.com/category/articles/
 标签:

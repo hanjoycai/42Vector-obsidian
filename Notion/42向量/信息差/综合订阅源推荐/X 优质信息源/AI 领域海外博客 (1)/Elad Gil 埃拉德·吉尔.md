@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-8192-9270-fd76fa1e8649
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/eladgil
 标签:

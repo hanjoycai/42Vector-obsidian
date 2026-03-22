@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81b5-a55e-ea93e9c75f30
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/david_perell
 标签:

@@ -1,5 +1,4 @@
 ---
-notion-id: 25cd6148-f202-8116-98c0-fa78cf634cfa
 base: "[[AI 领域海外博客 (1).base]]"
 标签:
   - AI通识

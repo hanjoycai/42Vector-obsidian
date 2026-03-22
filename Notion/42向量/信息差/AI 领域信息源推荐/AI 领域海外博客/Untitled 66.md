@@ -1,5 +1,4 @@
 ---
-notion-id: 9838ddfc-65e7-460b-886d-fe6bcb713fc6
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://kk.org/thetechnium/
 标签: []

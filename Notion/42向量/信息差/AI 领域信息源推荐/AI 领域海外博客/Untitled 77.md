@@ -1,5 +1,4 @@
 ---
-notion-id: e103e966-9e68-4470-89a3-2a2273e5bf4f
 base: "[[AI 领域海外博客.base]]"
 网址链接: https://heartcore.substack.com/
 标签:

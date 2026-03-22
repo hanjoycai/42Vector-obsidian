@@ -1,5 +1,4 @@
 ---
-notion-id: 166d6148-f202-8059-9ca7-d87b6f605568
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Stanley McChrystal

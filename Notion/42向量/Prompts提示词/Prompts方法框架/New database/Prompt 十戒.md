@@ -1,5 +1,4 @@
 ---
-notion-id: 287d6148-f202-8029-8002-deb9270295de
 base: "[[New database.base]]"
 标签: 方法论
 介绍: ""

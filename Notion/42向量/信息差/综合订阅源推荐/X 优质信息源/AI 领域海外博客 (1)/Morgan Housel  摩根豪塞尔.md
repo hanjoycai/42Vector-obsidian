@@ -1,5 +1,4 @@
 ---
-notion-id: 15ad6148-f202-81f9-9304-e3c2f5af4b29
 base: "[[AI 领域海外博客 (1).base]]"
 X链接: https://x.com/morganhousel
 标签:

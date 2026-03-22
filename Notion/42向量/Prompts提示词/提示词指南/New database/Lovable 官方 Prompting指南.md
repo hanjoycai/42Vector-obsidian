@@ -1,5 +1,4 @@
 ---
-notion-id: 287d6148-f202-80b1-a26c-cb8b69b5094e
 base: "[[New database.base]]"
 标签: Lovable
 链接: https://docs.lovable.dev/prompting/prompting-one

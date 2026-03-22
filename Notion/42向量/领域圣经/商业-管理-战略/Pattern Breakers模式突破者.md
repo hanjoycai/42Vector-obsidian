@@ -1,5 +1,4 @@
 ---
-notion-id: 16fd6148-f202-8065-9265-fa0bce094850
 base: "[[商业-管理-战略.base]]"
 简介: ""
 " 作者": Mike Maples Jr / Peter Ziebelman / PublicAffairs
