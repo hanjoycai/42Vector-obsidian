@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 scripts/ocr_caller.py --file-path \"/Users/jacobcai/Documents/42Vector-obsidian/内容生产系统/01-内容生产/选题管理/assets/00-选题记录/image.png\" --pretty)"
+    ]
+  }
+}

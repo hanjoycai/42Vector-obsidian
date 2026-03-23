@@ -1,0 +1,19 @@
+{
+  "id": "conv-1774246767700-3ecwxlia1",
+  "title": "Transform image content for marketing ops",
+  "titleGenerationStatus": "success",
+  "createdAt": 1774246767700,
+  "updatedAt": 1774247314123,
+  "lastResponseAt": 1774247256272,
+  "sessionId": "10e8de79-0b95-481c-8fbd-b68816ffa58f",
+  "sdkSessionId": "10e8de79-0b95-481c-8fbd-b68816ffa58f",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 8,
+    "cacheCreationInputTokens": 3697,
+    "cacheReadInputTokens": 59700,
+    "contextWindow": 200000,
+    "contextTokens": 63405,
+    "percentage": 32
+  }
+}
