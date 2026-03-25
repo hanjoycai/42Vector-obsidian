@@ -1,7 +1,27 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 scripts/ocr_caller.py --file-path \"/Users/jacobcai/Documents/42Vector-obsidian/内容生产系统/01-内容生产/选题管理/assets/00-选题记录/image.png\" --pretty)"
+      "Bash(python3 scripts/ocr_caller.py --file-path \"/Users/jacobcai/Documents/42Vector-obsidian/内容生产系统/01-内容生产/选题管理/assets/00-选题记录/image.png\" --pretty)",
+      "Bash(defuddle parse:*)",
+      "WebFetch(domain:waytoagi.feishu.cn)",
+      "Bash(bash ~/.claude/skills/web-access/scripts/check-deps.sh)",
+      "Bash(curl -s \"http://localhost:3456/new?url=https://waytoagi.feishu.cn/wiki/MHefwyVrgi1ATMkQ6nUcHWpxn8g\")",
+      "Bash(curl -s \"http://localhost:3456/info?target=563998A03D4E0DFDCE300AA075F0FD74\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.querySelector\\(''.wiki-doc-content, .docx-scene, [class*=\"\"content\"\"], [class*=\"\"doc\"\"], article, main''\\)?.innerText?.slice\\(0, 8000\\) || document.body?.innerText?.slice\\(0, 8000\\)\")",
+      "Bash(curl -s \"http://localhost:3456/scroll?target=563998A03D4E0DFDCE300AA075F0FD74&direction=bottom\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body?.innerText?.slice\\(4000, 14000\\)\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(0, 15000\\)\")",
+      "Bash(curl -s \"http://localhost:3456/screenshot?target=563998A03D4E0DFDCE300AA075F0FD74&file=/tmp/feishu_page.png\")",
+      "Bash(curl -s \"http://localhost:3456/screenshot?target=563998A03D4E0DFDCE300AA075F0FD74&file=/Users/jacobcai/Documents/42Vector-obsidian/feishu_page.png\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.querySelector\\(''[class*=\"\"close\"\"], [class*=\"\"modal\"\"] button, .lark-modal button, button[aria-label*=\"\"close\"\"]''\\)?.click\\(\\); ''done''\")",
+      "Bash(curl -s \"http://localhost:3456/scroll?target=563998A03D4E0DFDCE300AA075F0FD74&y=2000\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/clickAt?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"i.lark-base-block-notification__close-icon, [data-testid=''close''], button\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"let closeBtn = document.querySelector\\(''.lark-base-block-notification__close-icon, [class*=\"\"notification\"\"] [class*=\"\"close\"\"], [class*=\"\"dialog\"\"] [class*=\"\"close\"\"]''\\); closeBtn ? \\(closeBtn.click\\(\\), ''clicked''\\) : ''not found''\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.querySelectorAll\\(''button, [class*=\"\"close\"\"], [class*=\"\"dismiss\"\"]''\\).length + '' elements: '' + Array.from\\(document.querySelectorAll\\(''button, [class*=\"\"close\"\"]''\\)\\).map\\(e => e.className + ''|'' + e.innerText?.slice\\(0,20\\)\\).slice\\(0,10\\).join\\('', ''\\)\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.querySelector\\(''.sc-ZOsLE''\\)?.click\\(\\); ''done''\")",
+      "Bash(curl -s \"http://localhost:3456/scroll?target=563998A03D4E0DFDCE300AA075F0FD74&y=3000\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(2000, 10000\\)\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(0, 5000\\)\")"
     ]
   }
 }

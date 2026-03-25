@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "42向量/42 月刊/AI新范式下的机会与挑战.md",
+                "file": "内容生产系统/02-平台运营/公众号/公众号运营手册.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AI新范式下的机会与挑战"
+              "title": "公众号运营手册"
             }
           }
         ]
@@ -207,10 +207,14 @@
       "claudian:Open Claudian": false
     }
   },
-  "active": "935a80d984f68721",
+  "active": "2b9b3a25f799e6a1",
   "lastOpenFiles": [
-    "42向量/金句卡片.md",
+    "feishu_page.png",
+    "内容生产系统/CLAUDE.md",
+    "内容生产系统/README.md",
+    "内容生产系统/05-业务数据/README.md",
     "42向量/42 月刊/AI新范式下的机会与挑战.md",
+    "42向量/金句卡片.md",
     "42向量/探索指南.md",
     "42向量/42向量.md",
     "42向量/领域圣经/投资-决策-博弈/巴菲特致股东的信.md",
@@ -232,10 +236,6 @@
     "42向量/领域圣经/成长-关系-职场/《10x Is Easier Than 2x》10倍比2倍容易.md",
     "42向量/领域圣经/成长-关系-职场/assets/《10x Is Easier Than 2x》10倍比2倍容易/1_3P30UPbPCan35jj03Zy4Sg.gif",
     "42向量/信息差/综合订阅源推荐/综合订阅源推荐.md",
-    "42向量/信息差/综合订阅源推荐/知名科技公司技术博客.md",
-    "42向量/信息差/综合订阅源推荐/播客推荐.md",
-    "42向量/信息差/综合订阅源推荐/X 优质信息源/AI 领域海外博客 (1)/Addy Osmani 阿迪·奥斯马尼.md",
-    "42向量/信息差/综合订阅源推荐/X 优质信息源/X 优质信息源.md",
     "内容生产系统/01-内容生产/选题管理/assets/00-选题记录/https--42notion.oss-cn-shenzhen.aliyuncs.com-book-%E8%A1%A8%E8%B1%A1%E4%B8%8E%E6%9C%AC%E8%B4%A8%EF%BC%9A%E7%B1%BB%E6%AF%94%E3%80%81%E6%80%9D%E8%80%83%E4%B9%8B%E6%BA%90%E4%B8%8E%E6%80%9D%E7%BB%B4%E4%B9%8B%E7%81%AB.jpg",
     "42向量/领域圣经/技术-产品-增长/技术-产品-增长.base",
     "42向量/专业知识体系/AI专业知识&概念/大模型-强化学习/大模型-强化学习.base",
