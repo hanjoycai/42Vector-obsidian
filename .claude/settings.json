@@ -21,7 +21,18 @@
       "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.querySelector\\(''.sc-ZOsLE''\\)?.click\\(\\); ''done''\")",
       "Bash(curl -s \"http://localhost:3456/scroll?target=563998A03D4E0DFDCE300AA075F0FD74&y=3000\")",
       "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(2000, 10000\\)\")",
-      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(0, 5000\\)\")"
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=563998A03D4E0DFDCE300AA075F0FD74\" -d \"document.body.innerText.slice\\(0, 5000\\)\")",
+      "Bash(curl -s \"http://localhost:3456/info?target=C59299422F48A8B4229D08B0C24728CD\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=C59299422F48A8B4229D08B0C24728CD\" -d 'document.body.innerText' -H \"Content-Type: text/plain\")",
+      "Bash(curl -s \"http://localhost:3456/scroll?target=C59299422F48A8B4229D08B0C24728CD&y=3000\")",
+      "Bash(curl -s \"http://localhost:3456/screenshot?target=C59299422F48A8B4229D08B0C24728CD&file=/Users/jacobcai/Documents/42Vector-obsidian/feishu_current.png\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=C59299422F48A8B4229D08B0C24728CD\" -d 'let btns = document.querySelectorAll\\(\"\"button, [class*=\\\\\"\"close\\\\\"\"], [class*=\\\\\"\"dismiss\\\\\"\"]\"\"\\); btns.forEach\\(b => { if \\(b.innerText.includes\\(\"\"×\"\"\\) || b.innerText.includes\\(\"\"✕\"\"\\) || b.getAttribute\\(\"\"aria-label\"\"\\)?.includes\\(\"\"close\"\"\\)\\) b.click\\(\\); }\\); \"\"clicked\"\"' -H \"Content-Type: text/plain\")",
+      "Bash(curl -s -X POST \"http://localhost:3456/eval?target=C59299422F48A8B4229D08B0C24728CD\" -d 'let links = Array.from\\(document.querySelectorAll\\(\"\"a, [class*=\\\\\"\"nav\\\\\"\"] span, [class*=\\\\\"\"toc\\\\\"\"] span, [class*=\\\\\"\"outline\\\\\"\"] span\"\"\\)\\); let target = links.find\\(l => l.innerText.includes\\(\"\"配置Agent执行准则\"\"\\) || l.innerText.includes\\(\"\"Agent执行准则\"\"\\)\\); if \\(target\\) { target.click\\(\\); \"\"clicked: \"\" + target.innerText; } else { \"\"not found, available: \"\" + links.map\\(l => l.innerText\\).filter\\(t => t.length > 2 && t.length < 50\\).join\\(\"\" | \"\"\\); }' -H \"Content-Type: text/plain\")",
+      "Bash(curl -s \"http://localhost:3456/screenshot?target=C59299422F48A8B4229D08B0C24728CD&file=/Users/jacobcai/Documents/42Vector-obsidian/feishu_section6.png\")",
+      "Bash(python3 -c \"import sys,json; text=json.load\\(sys.stdin\\)[\"\"value\"\"]; idx=text.find\\(\"\"06 配置Agent执行准则\"\"\\); print\\(text[idx:idx+5000] if idx>-1 else \"\"NOT FOUND\"\"\\)\")",
+      "Bash(curl -s \"http://localhost:3456/scroll?target=C59299422F48A8B4229D08B0C24728CD&y=5000\")",
+      "Bash(python3 -c \"import sys,json; text=json.load\\(sys.stdin\\)[\"\"value\"\"]; idx=text.find\\(\"\"第三份文件\"\"\\); print\\(text[idx:idx+6000] if idx>-1 else text[-4000:]\\)\")",
+      "Bash(curl -s \"http://localhost:3456/screenshot?target=C59299422F48A8B4229D08B0C24728CD&file=/Users/jacobcai/Documents/42Vector-obsidian/feishu_bottom.png\")"
     ]
   }
 }
