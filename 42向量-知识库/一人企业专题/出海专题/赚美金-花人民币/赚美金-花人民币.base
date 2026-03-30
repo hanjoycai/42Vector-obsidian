@@ -1,0 +1,19 @@
+# 赚美金-花人民币
+
+filters:
+  and:
+    - note["base"] == link("赚美金-花人民币.base")
+properties:
+  file.name:
+    displayName: 名称
+  出海类型:
+    displayName: 出海类型
+  出海专题:
+    displayName: 出海专题
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 出海类型
+      - 出海专题

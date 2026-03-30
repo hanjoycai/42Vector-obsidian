@@ -26,6 +26,12 @@
     "快捷入口": "text",
     "属于名称": "text",
     "描述": "text",
-    "AIGC领域": "multitext"
+    "AIGC领域": "multitext",
+    "内容简介": "text",
+    "方法类型": "multitext",
+    "思维简述": "text",
+    "思维类别": "text",
+    "出海类型": "multitext",
+    "出海专题": "text"
   }
 }

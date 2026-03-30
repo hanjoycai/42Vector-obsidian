@@ -1,0 +1,19 @@
+# 全部人物
+
+filters:
+  and:
+    - note["base"] == link("全部人物.base")
+properties:
+  file.name:
+    displayName: 通用思维名称
+  简介:
+    displayName: 简介
+  标签:
+    displayName: 标签
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 简介
+      - 标签

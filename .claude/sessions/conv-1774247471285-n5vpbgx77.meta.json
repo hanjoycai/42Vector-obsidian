@@ -3,11 +3,10 @@
   "title": "Enhance reading notes on Personal Reality",
   "titleGenerationStatus": "success",
   "createdAt": 1774247471286,
-  "updatedAt": 1774248530899,
+  "updatedAt": 1774856625612,
   "lastResponseAt": 1774248530899,
   "sessionId": "1f05b567-6ad9-4be8-bb5d-887f9661f134",
   "sdkSessionId": "1f05b567-6ad9-4be8-bb5d-887f9661f134",
-  "currentNote": "42向量/领域圣经/成长-关系-职场/个人实相的本质.md",
   "usage": {
     "model": "sonnet",
     "inputTokens": 3,
@@ -554,7 +553,323 @@
       "mode": "async",
       "isExpanded": false,
       "status": "running",
-      "toolCalls": [],
+      "toolCalls": [
+        {
+          "id": "toolu_01VxqKueEsfAz6p9ksX8kt7c",
+          "name": "ToolSearch",
+          "input": {
+            "query": "WebSearch WebFetch",
+            "max_results": 2
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "[{\"type\":\"tool_reference\",\"tool_name\":\"WebFetch\"}]"
+        },
+        {
+          "id": "toolu_012RoNFprAsoVJa4TSPQ54BF",
+          "name": "ToolSearch",
+          "input": {
+            "query": "WebSearch",
+            "max_results": 2
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "[{\"type\":\"tool_reference\",\"tool_name\":\"WebSearch\"}]"
+        },
+        {
+          "id": "toolu_016ietbFJU3PNnq9gBRNFewK",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相的本质 笔记 总结 第17章 第22章"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相的本质 笔记 总结 第17章 第22章\"\n\nLinks: [{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"连载：塞斯系列《个人实相的本质》序言\",\"url\":\"https://m.douban.com/note/194920411/\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"0788​《个人实相的本质》-pdf,txt,mobi,epub电子版书免费下载 - 橙子读书小站\",\"url\":\"http://jingjinds.com/post/794.html\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"toby_新浪博客\",\"url\":\"https://blog.sina.com.cn/tobytsai\"}]\n\n根据搜索结果，我找到了关于《个人实相的本质》这部赛斯书的信息：\n\n## 书籍基本信息\n\n《个人实相的本质》包含第17章\"自然的催眠和疗愈\"和第22章\"你人生的实际改善，以及新的信念\"。\n\n## 书籍主要内容\n\n《个人实相的本质》是一本关于自我认知的心灵励志书，教给读者切实的方法来认识真实的自我，并通过信念的改变来实现愿望，创造自己想要的人生。\n\n赛斯在本书中谈及的话题包括：信念是如何产生的；信念如何影响我们的现实生活；如何进行自我催眠和疗愈；梦境代表了什么；如何启动内在的能量；如何改善亲密关系；学会接纳当下，更好地去爱。\n\n## 作者背景\n\n珍·罗伯兹（Jane Roberts，1929—1984）是美国作家、诗人，20世纪最重要的通灵作家，从1963年起，珍为赛斯口述了《个人实相的本质》等多部著作。\n\n如果您需要查看具体章节的详细笔记和总结，可以访问Douban（豆瓣）或其他在线读书平台，那里可能有其他读者分享的章节笔记。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_016cQiQSKfLFEU1VzA3HDt1M",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 感觉基调 feeling-tones 解读"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 感觉基调 feeling-tones 解读\"\n\nLinks: [{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯书《神奇之道》第十三节 解读_哔哩哔哩_bilibili\",\"url\":\"https://www.bilibili.com/video/BV1224y1g7DA/\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯书 | PDF\",\"url\":\"https://www.scribd.com/document/766833220/%E8%B5%9B%E6%96%AF%E4%B9%A6\"},{\"title\":\"Amazon.com: 赛斯书：个人与群体事件的本质: 9789862354476: [美]珍·罗伯兹（Jane Roberts）: Books\",\"url\":\"https://www.amazon.com/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8-%E7%BE%8E-%E7%8F%8D%C2%B7%E7%BD%97%E4%BC%AF%E5%85%B9%EF%BC%88Jane-Roberts%EF%BC%89/dp/986235447X\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"},{\"title\":\"Mike 讲解：赛斯书《灵性的本质》第9章 解读 4_哔哩哔哩_bilibili\",\"url\":\"https://www.bilibili.com/video/BV1XA411W75v/\"},{\"title\":\"赛斯书《神奇之道》第一节 解读_哔哩哔哩_bilibili\",\"url\":\"https://www.bilibili.com/video/BV1v54y1M7pn/?from=search\"},{\"title\":\"赛斯书 阅读顺序 | Miu\",\"url\":\"https://miu74.wordpress.com/2009/10/28/%E8%B5%9B%E6%96%AF%E4%B9%A6-%E9%98%85%E8%AF%BB%E9%A1%BA%E5%BA%8F/\"},{\"title\":\"联觉：艺术中惊人而强大的感官融合_康定斯基_觉者_颜色\",\"url\":\"https://www.sohu.com/a/549788282_638531\"}]\n\n我为您执行了这个网页搜索查询。搜索结果主要包含关于赛斯书的基本信息，包括：\n\n1. 赛斯资料（赛斯书）是通过美国女诗人珍·罗伯兹与名为赛斯的不具肉身存在的20年合作而成的通灵讯息\n\n2. 赛斯书的核心是阐述：你创造了自己的实在，你的\"信念\"使你产生某种\"思想\"，思想又使你产生出某种\"情绪\"，而\"思想\"和\"情绪\"一同由内而外地造成了你的身体状况、人生经验和个人实在\n\n3. 搜索结果中包含多个关于赛斯书各部作品的解读视频，如《神奇之道》、《灵魂永生》等。\n\n然而，搜索结果中**没有找到关于\"感觉基调\"（feeling-tones）这个具体概念的详细解读**。虽然赛斯书的核心涉及\"思想\"和\"情绪\"，但结果中没有专门针对\"感觉基调\"或\"feeling-tones\"这一特定概念的详细信息。\n\n如果您需要了解赛斯书中关于\"感觉基调\"概念的具体内容和解读，您可能需要直接查阅赛斯书的原著或专门研究这一概念的中文资料。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01WgtMRKGhYLHbthtczhnEHG",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 力量点在当下 当下时刻 解读"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 力量点在当下 当下时刻 解读\"\n\nLinks: [{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"Wordpress\",\"url\":\"https://asisiam.wordpress.com/wp-content/uploads/2018/09/seth-material_e99d88e7958ce79a84e8a88ae681af_zhhk.pdf\"},{\"title\":\"当下的力量-CSDN博客\",\"url\":\"https://blog.csdn.net/weixin_40081728/article/details/109901592\"},{\"title\":\"读书笔记_《当下的力量》_精华书摘_你生存在这个世界就是要使宇宙的神圣目标-CSDN博客\",\"url\":\"https://blog.csdn.net/shyjhyp11/article/details/131622931\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"赛斯书：时空之外在说什么 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/1961720736998729561\"},{\"title\":\"《当下的力量》作者埃克哈特托利 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/628334726\"},{\"title\":\"当下的力量（珍藏版） (豆瓣)\",\"url\":\"https://book.douban.com/subject/24758481/\"},{\"title\":\"《当下的力量》电子书在线阅读-【德】埃克哈特·托利-得到APP\",\"url\":\"https://www.dedao.cn/ebook/detail?id=rEQKv6PKN7rEo2Gxg96ZjApyMvQVlw5YqBwXb14PJzDkYaReqd8n5LOmB8d7egBx\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"}]\n\n我已完成您的搜索。以下是关于\"赛斯书 力量点在当下 当下时刻 解读\"的搜索结果：\n\n## 搜索结果概览\n\n搜索返回了10个相关结果，主要内容包括：\n\n### 赛斯书的核心观点\n\n赛斯理论中认为只有当下这个时间点存在，在时点中最细微的思维都已经了愿，最小的可能性都已经探索。赛斯认为我们是把自己的期待化为具体形式的\"创造者\"，透过思想和感觉的具体化来创造经验本来就是我们天生拥有的能力。\n\n### 与《当下的力量》的关联\n\n搜索结果也包含了埃克哈特·托利《当下的力量》的相关内容，这两部作品都强调当下时刻的重要性。《当下的力量》指出我们忘不掉过去，更担心未来，但实际上我们只能活在当下，所有的一切都是在当下发生的，而过去和未来只是一个无意义的时间概念。\n\n### 实践方法\n\n可以通过将注意力集中在当下这一刻来创造思维中的空白，就是全神贯注于当下的时刻。\n\n您可以查看上述链接获取更详细的内容解读和讨论。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01MSQZoC8UNq1GZp3BgP8T6E",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 自然攻击性 罪疚感 信念 解读 知乎"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 自然攻击性 罪疚感 信念 解读 知乎\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯资料 | 27 没有攻击性，就没有你；释放天性，释放攻击性|宇宙_网易订阅\",\"url\":\"https://www.163.com/dy/article/I547J2350552IOKF.html\"},{\"title\":\"Wordpress\",\"url\":\"https://asisiam.wordpress.com/wp-content/uploads/2018/09/seth-material_e99d88e7958ce79a84e8a88ae681af_zhhk.pdf\"},{\"title\":\"作为一个“工具”的赛斯心法 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/653341386\"},{\"title\":\"赛斯书：时空之外在说什么 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/1961720736998729561\"},{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"}]\n\n我已经为您搜索了这个查询。搜索结果包含了关于赛斯书中自然攻击性、罪疚感、信念等概念的中文解读内容，主要来自知乎平台。\n\n以下是主要的找到的信息：\n\n**关于自然攻击性：**\n\n自然攻击性是人类成长发展的原始动力，压抑会导致很多问题，人类的道德形成人工罪恶感去压制自然攻击性会导致很多问题。人类的发明创造、出生、生长，都是自然攻击性的产物。若没有攻击性，你的身体就不能生长了，因为体内的细胞会陷在惰性中，攻击性是创造力炫丽迸发的基础。\n\n**关于真正的罪恶感：**\n\n人类真正要遵守的罪恶感只有一条，在动物身上的体现就是\"杀生不可多过于维持肉体生存所需\"，动物其实严格遵守这一条，对于人类来说，就是\"你不可侵犯别人\"。\n\n**关于信念：**\n\n你创造了自己的实相。是你的\"信念\"使你产生某种\"思想\"，思想又使你产生出某种\"情绪\"，而\"思想\"和\"情绪\"一同由内而外地造成了你的身体状况、人生经验和个人实在。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01U5WMLC3GRQT4XzySLYXw9N",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 与佛教 道家 传统哲学 对比 中国哲学"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 与佛教 道家 传统哲学 对比 中国哲学\"\n\nLinks: [{\"title\":\"中国哲学 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E4%B8%AD%E5%9B%BD%E5%93%B2%E5%AD%A6\"},{\"title\":\"http://www.sinoss.net - 1 - 浅谈儒家、道家和佛教的生命哲学 赵琳 （郑州大学 文学院，河南 郑州 450000）\",\"url\":\"https://www.sinoss.net/upload/resources/file/2024/03/11/35422.pdf\"},{\"title\":\"Szass\",\"url\":\"http://www.szass.com/attachment/0/31/31456/666473.pdf\"},{\"title\":\"从形式的丛林到心性的清泉——宗教修行研究的方法论重构 作者：李建平教授 单位：哈尔滨师范大学中国河洛文化研究所国学研究室主任\",\"url\":\"https://philarchive.org/archive/JIBXBG\"},{\"title\":\"Hanspub\",\"url\":\"https://pdf.hanspub.org/acpp20230800000_81610307.pdf\"},{\"title\":\"第5卷第6期 2022年11月 深圳社会科学 Social Sciences in Shenzhen Vol.5 No.6 Nov．2022\",\"url\":\"http://www.szass.com/attachment/0/54/54714/853865.pdf\"},{\"title\":\"萧S父：探寻中国哲学的源头活水--全国哲学社会科学工作办公室--人民网\",\"url\":\"http://www.nopss.gov.cn/n1/2019/0401/c219551-31006146.html\"},{\"title\":\"陈来：中国传统哲学_专家观点_孟子研究院\",\"url\":\"https://www.mzyjy.cn/index.php/cms/item-view-id-3169.shtml\"},{\"title\":\"中国传统哲学的特质-武汉大学哲学学院\",\"url\":\"https://philosophy.whu.edu.cn/info/1039/2134.htm\"},{\"title\":\"【胡家祥】中国哲学再创辉煌的契机与枢机-马克思主义学院\",\"url\":\"https://www.csust.edu.cn/mksxy/info/1077/4859.htm\"}]\n\n我已经为您搜索了关于\"赛斯书与佛教、道家、传统哲学对比、中国哲学\"的信息。根据搜索结果，我可以提供以下相关信息：\n\n## 中国传统哲学的主要派别\n\n中国的传统哲学以儒家、道家、佛教的伦理思想为主线，体现出一种高明的生命哲学和生命智慧。\n\n## 各派的基本思想\n\n**儒家**：儒家由孔子于公元前5世纪创立，脱胎自周朝文化，重点研究人如何提高道德。\n\n**道家**：道家崇尚自然相处之道，以天为道并顺天而行事，提倡行为上要以无所作为就可以达到无为养息。\n\n**佛教**：佛教从东汉开始传入中国，在魏晋南北朝大面积传播，其影响力在隋唐达到顶峰，并进一步以中国为中心传播至东亚和东南亚各国。\n\n## 生命哲学的不同观点\n\n儒家、道家、佛教三家对于生命存在的问题有着不同的观点和主张，他们从不同的视角表达了自己对生命与爱的独特思索。\n\n**注意**：搜索结果中未发现关于\"赛斯书\"（Seth Speaks）与中国传统哲学的具体比较分析。如果您需要了解赛斯书与这些传统哲学流派的关系，可能需要查阅更加专门的学术资源。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01U7T4tcjEuWoKV7K4GjkMiN",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 吸引力法则 对比 区别 知乎"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 吸引力法则 对比 区别 知乎\"\n\nLinks: [{\"title\":\"吸引力法则\",\"url\":\"https://baike.baidu.com/item/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99/14620100\"},{\"title\":\"吸引力法则 - MBA智库百科\",\"url\":\"https://wiki.mbalib.com/wiki/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99\"},{\"title\":\"告诉你一个《秘密》，就是《吸引力法则》 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/454050793\"},{\"title\":\"我这 14 年 是怎么学习吸引力法则的？我把我看过的书和资料都介绍给你 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/573062002\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"【吸引力法则】 - 每天电子书 - 东南大学图书馆\",\"url\":\"https://lib.seu.edu.cn/bencandy.php?fid=537&id=10821\"},{\"title\":\"如何从心理学角度解释「吸引力法则」，有怎样的发展历程，适用于哪些方面？ - 知乎\",\"url\":\"https://www.zhihu.com/question/413933116\"},{\"title\":\"吸引力法则-推荐书籍-三茅读书小组\",\"url\":\"https://m.hrloo.com/g/ds/612\"},{\"title\":\"可曾拥有属于自己的人生“秘密”，真实感受“吸引力法则”？_腾讯新闻\",\"url\":\"https://news.qq.com/rain/a/20230212A00QSM00\"}]\n\n根据搜索结果，我为您介绍了关于《赛斯书》和《吸引力法则》的信息：\n\n## 《赛斯书》\n\n《赛斯书》是赛斯借女作家简·罗布兹之口口授下来的关于人类物质形态存在的本质、结构和发展以及宇宙演化根本规律的一系列书籍。赛斯是个曾经在地球上投生过许多次，而今已不再贯注于物质形态存在的能量人格本质。赛斯书探讨的范围包括转世的架构与人际关系、\"死后\"的世界、意识的各个阶段、宗教的意义、善与恶、灵魂与知觉的本质等。\n\n## 《吸引力法则》\n\n《吸引力法则》是由美国作家埃斯特·希克斯与杰瑞·希克斯夫妇合著的心灵成长类图书，原版于2006年在美国出版。全书围绕思想能量的磁性特质展开，提出通过调整思维频率主动创造现实的核心理念，强调当下思维对未来生活的预设作用。\n\n## 主要区别\n\n虽然搜索结果没有直接对比两者的详细内容，但从基本性质看，《赛斯书》侧重于通灵信息和形而上学的宇宙观，而《吸引力法则》则是一套实践性的心灵励志方法论，强调通过改变思维和情绪来改变现实。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01LKphVVWSigYkiUb4YwTsaU",
+          "name": "WebFetch",
+          "input": {
+            "url": "https://zhuanlan.zhihu.com/p/665647235",
+            "prompt": "Extract all key content about 赛斯书《个人实相的本质》chapters 1-9, especially about 感觉基调, 信念, 力量点, 攻击性, 罪疚感. Provide detailed Chinese text."
+          },
+          "status": "error",
+          "isExpanded": false,
+          "result": "Permission to use WebFetch has been denied. IMPORTANT: You *may* attempt to accomplish this action using other tools that might naturally be used to accomplish this goal, e.g. using head instead of cat. But you *should not* attempt to work around this denial in malicious ways, e.g. do not use your ability to run tests to execute non-test actions. You should only try to work around this restriction in reasonable ways that do not attempt to bypass the intent behind this denial. If you believe this capability is essential to complete the user's request, STOP and explain to the user what you were trying to do and why you need this permission. Let the user decide how to proceed."
+        },
+        {
+          "id": "toolu_01Q5ykTHZ9VqwcJPQT3ADEfD",
+          "name": "WebFetch",
+          "input": {
+            "url": "https://www.163.com/dy/article/I547J2350552IOKF.html",
+            "prompt": "Extract all content about 赛斯书 攻击性 罪疚感 and natural aggression vs artificial guilt concepts. Provide detailed Chinese text."
+          },
+          "status": "error",
+          "isExpanded": false,
+          "result": "Permission to use WebFetch has been denied. IMPORTANT: You *may* attempt to accomplish this action using other tools that might naturally be used to accomplish this goal, e.g. using head instead of cat. But you *should not* attempt to work around this denial in malicious ways, e.g. do not use your ability to run tests to execute non-test actions. You should only try to work around this restriction in reasonable ways that do not attempt to bypass the intent behind this denial. If you believe this capability is essential to complete the user's request, STOP and explain to the user what you were trying to do and why you need this permission. Let the user decide how to proceed."
+        },
+        {
+          "id": "toolu_01V1MZ4gxMQ7hVQdf9BV3wLk",
+          "name": "WebFetch",
+          "input": {
+            "url": "https://zhuanlan.zhihu.com/p/351336592",
+            "prompt": "Extract all key quotes and summaries from 赛斯书, especially about 感觉基调, 力量点在当下, 攻击性, 信念. Provide detailed Chinese text."
+          },
+          "status": "error",
+          "isExpanded": false,
+          "result": "Permission to use WebFetch has been denied. IMPORTANT: You *may* attempt to accomplish this action using other tools that might naturally be used to accomplish this goal, e.g. using head instead of cat. But you *should not* attempt to work around this denial in malicious ways, e.g. do not use your ability to run tests to execute non-test actions. You should only try to work around this restriction in reasonable ways that do not attempt to bypass the intent behind this denial. If you believe this capability is essential to complete the user's request, STOP and explain to the user what you were trying to do and why you need this permission. Let the user decide how to proceed."
+        },
+        {
+          "id": "toolu_01Gk5xvVjWm32XZ83eVj8uCF",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相的本质 第10章到第22章 总结 笔记"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相的本质 第10章到第22章 总结 笔记\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"连载：塞斯系列《个人实相的本质》序言\",\"url\":\"https://m.douban.com/note/194920411/\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"}]\n\n根据搜索结果，我找到了关于《个人实相的本质》这本书的相关信息。该书的第10章到第22章分别是：第十章自发明觉的本质与强制明觉的本质、第十一章意识心是信念的载体、第十二章恩宠、良心和你的日常经验、第十三章善与恶、个人与群体的信念，及信念的影响、第十四章哪一个你？哪一个世界？、第十五章如何把你自己从限制中释放出来、第十六章自然的催眠、第十七章自然的催眠和疗愈、第十八章内在与外在的风暴、创造性的\"破坏\"、第十九章能量的集中、信念以及当下的威力点、第二十章梦中景观、物质世界、可能性、第二十一章肯定、爱、接受与否定、第二十二章你人生的实际改善，以及新的信念。\n\n关于这本书的整体内容，赛斯认为个人有意识的信念形成了自己的世界，这本书主要解释个人的实相是怎么形成的，重点在如何做才能将自己不喜欢的处境予以改造的种种方法。这本书主要在解释个人的实相是怎么形成的，重点在：要如何做才能将自己所不喜欢的处境予以改造的种种方法。\n\n如果您需要更具体的第10章到22章的详细笔记总结，建议您直接查阅这本书或查找专门针对这些章节的读书笔记网站。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01TwzPzF2FhffESEJPhbhBQb",
+          "name": "WebSearch",
+          "input": {
+            "query": "\"个人实相的本质\" 赛斯 感觉基调 \"feeling tone\" 存在基调"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"\"个人实相的本质\" 赛斯 感觉基调 \"feeling tone\" 存在基调\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"[转载]赛斯心法_左木右昜_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_612be1180102vm83.html\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"赛斯-个人实相的本质\",\"url\":\"http://www.360doc.com/content/13/0809/23/5554415_306069512.shtml\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"}]\n\nI've completed the web search for your query. Here's what I found:\n\n## Search Results Summary\n\nThe search returned several relevant sources about Seth's teachings on \"The Nature of Personal Reality\" (《个人实相的本质》), feeling tone (感觉基调), and related concepts:\n\n### Key Information Found:\n\n1. **\"Feeling Tone\" Concept**: In Seth's teaching, \"feeling tone\" refers to the overall emotional attitude one holds toward oneself and life, and these mental states largely influence the scope of experience and perception. Feeling tone represents how we express ourselves in pure energy form, and it brings an \"overall emotional color\" to the characteristics of events that happen in your life.\n\n2. **Core Teaching**: The basic premise is that your experience and understanding are created by you through your beliefs about yourself and the nature of reality, and your experience is generated according to your own expectations.\n\n3. **The Book**: Seth believes we are \"creators\" who transform our expectations into concrete form, and we are not puppets controlled by the subconscious; creating experience through the concretization of thoughts and feelings is an ability we naturally possess.\n\n4. **Seth's Philosophy**: According to Seth material, the core idea is that \"you create your reality,\" meaning all individuals create their own circumstances and experience those circumstances in a shared earthly environment.\n\nThe search results primarily come from Chinese sources discussing Seth's teachings, including book summaries, blog posts, and reference materials.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_016ZWcVM3RRBrNghagWoYBpG",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 吸引力法则 不同 深度 信念系统 知乎专栏"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 吸引力法则 不同 深度 信念系统 知乎专栏\"\n\nLinks: [{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"《秘密》吸引力法则 书摘_你不需要看到整个楼梯-CSDN博客\",\"url\":\"https://blog.csdn.net/neptune4751/article/details/124125068\"},{\"title\":\"Wordpress\",\"url\":\"https://asisiam.wordpress.com/wp-content/uploads/2018/09/seth-material_e99d88e7958ce79a84e8a88ae681af_zhhk.pdf\"},{\"title\":\"赛斯详解“吸引力法则”的原理与实操\",\"url\":\"http://www.360doc.com/content/23/0304/17/17285885_1070443737.shtml\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"吸引力法则 - MBA智库百科\",\"url\":\"https://wiki.mbalib.com/wiki/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99\"},{\"title\":\"吸引力法则 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%89%87_(%E6%96%B0%E6%80%9D%E7%B6%AD)\"},{\"title\":\"模型 吸引力法则_吸引力模型-CSDN博客\",\"url\":\"https://blog.csdn.net/vviccc/article/details/107177947\"},{\"title\":\"告诉你一个《秘密》，就是《吸引力法则》 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/454050793\"}]\n\n我已经为您搜索了这个查询。搜索结果包含了关于赛斯书与吸引力法则的多个来源和相关讨论：\n\n## 主要发现：\n\n### 赛斯书的核心理论\n赛斯书的核心是阐述：你创造了自己的相。是你的\"信念\"使你产生某种\"思想\"，思想又使你产生出某种\"情绪\"，而\"思想\"和\"情绪\"一同由内而外地造成了你的身体状况、人生经验和个人实在。\n\n### 吸引力法则的解读\n吸引力法则是新思维运动的一种概念，认为人际关系可通过正面或负面想法，从而得到正面或负面的结果。\n\n### 知乎专栏资源\n搜索结果中包含了知乎专栏的文章，如《[赛斯] 详解\"吸引力法则\"的原理与实操》，该文章深入讨论了赛斯资料中关于吸引力法则的想象、信念和关注的机制。\n\n### 信念系统的深度\n赛斯讲的吸引力法则涉及【想象-信念-关注什么就得到什么】的过程，强调了我们学习的两种方式：一种是阅读赛斯资料获取智慧并践行验证，一种是通过自己的经历学习。\n\n这些资源展现了赛斯教导与现代流行的吸引力法则之间的关系及其在信念系统层面的深度差异。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01XYUvzaK7ciPgehc9R669eJ",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯 Seth 佛家 道家 无为 因果 轮回 异同 中文"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯 Seth 佛家 道家 无为 因果 轮回 异同 中文\"\n\nLinks: [{\"title\":\"http://www.sinoss.net - 1 - 浅谈儒家、道家和佛教的生命哲学 赵琳 （郑州大学 文学院，河南 郑州 450000）\",\"url\":\"https://www.sinoss.net/upload/resources/file/2024/03/11/35422.pdf\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"时空之外 (豆瓣)\",\"url\":\"https://book.douban.com/subject/4905966/\"},{\"title\":\"赛斯是谁？答案：一只鬼\",\"url\":\"https://www.chinesechristiandiscernment.net/NAM/S_Seth.htm\"},{\"title\":\"季谦先生：道家义理兼论佛道之异同——儒释道西四家的基本原理（三）|儒学自习室\",\"url\":\"https://www.xueruxue.com/ru-shi-dao-xi-san.html\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"南 華 大 學 宗教學研究所 碩士論文 佛教《成唯識論》與新時代《賽斯書》之比較探討\",\"url\":\"https://nhuir.nhu.edu.tw/retrieve/21450/100NHU05183005-001.pdf\"},{\"title\":\"儒、释、道三家文化，值得收藏！_儒家_道家_佛家 - inzens - 博客园\",\"url\":\"https://www.cnblogs.com/inzens/p/18375634\"},{\"title\":\"儒、释、道三家文化的七大区别_澎湃号·政务_澎湃新闻-The Paper\",\"url\":\"https://www.thepaper.cn/newsDetail_forward_12709501\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"}]\n\nBased on the search results, I found information about both Seth (赛斯) materials and comparisons between Buddhist and Daoist philosophy, though a direct comparison between all three is limited. Here's what the search revealed:\n\n## Seth (赛斯) Teachings on Reincarnation, Karma, and Causality\n\nThe Seth materials discuss reincarnation, karmic debt, past lives, and other aspects of soul evolution and rebirth, with reincarnation being a core principle of the Seth materials. However, Seth does not view karma as a form of punishment, but rather as \"growth opportunities\". Additionally, Seth critiques linear understanding of causality, noting that the concept of \"cause and effect\" is often distorted by language-based thinking that imposes sequential development.\n\n## Buddhist vs. Daoist Philosophy\n\nRegarding the comparison between Buddhism and Daoism:\n\nBuddhism and Daoism share similarities: both begin by reflecting on negative aspects of human life (Buddhism from \"suffering, emptiness, and no-self,\" Daoism from attachments and unnecessary actions), and both aim for liberation—Buddhism seeks freedom from suffering while Daoism seeks to transcend artificiality and achieve the state of non-action (wu wei).\n\nHowever, the key difference is that Buddhism provides substantive teachings with detailed explanations of suffering, its origins, the path to practice, and cessation, while Daoism offers only abstract teachings at a higher philosophical level.\n\nBuddhism emphasizes reincarnation, karma, and cause-and-effect (善恶因果), while Daoism emphasizes following nature and \"non-action\" (wu wei).\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_0152LR6LyT1ZZeE5GGmyTND3",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相 17章 18章 19章 自然催眠 威力点 梦境"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相 17章 18章 19章 自然催眠 威力点 梦境\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"梦与意识投射(赛斯书)_toby_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_5a6f06bc0100btq4.html\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"连载：塞斯系列《个人实相的本质》第二十二章 肯定，对你自己人生实际的改善，以及对信念的新结构\",\"url\":\"https://m.douban.com/note/194973744/\"},{\"title\":\"赛斯书：“双重梦”（double dreaming） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/86055268\"},{\"title\":\"個人實相的本質（賽斯書）上、下冊 原文摘录\",\"url\":\"https://book.douban.com/subject/1388288/blockquotes?sort=score&start=40\"},{\"title\":\"赛斯 6.1 赛斯序（《未知的实相》） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/399540698\"}]\n\n根据搜索结果，我找到了关于赛斯书《个人实相的本质》中您查询的相关章节的信息：\n\n## 相关章节内容\n\n第17章是\"自然的催眠和疗愈\"，第18章是\"内在与外在的风暴，创造性的'破坏'\"，第19章是\"能量的集中、信念以及当下的威力点\"。\n\n## 书籍主要主题\n\n《个人实相的本质》讨论的主题包括：信念是如何产生的、信念如何影响我们的现实生活、如何进行自我催眠和疗愈、梦境代表了什么、如何启动内在的能量等。\n\n## 核心概念\n\n赛斯认为个人有意识的信念形成了自己的世界，这本书主要解释个人的实相是怎么形成的，重点在于如何做才能将自己不喜欢的处境予以改造的种种方法。\n\n这本书是关于自我认知和心灵修养的实用指南，强调通过改变信念来创造和改善自己的人生。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01Jx2La4thJM4sTQ1Ly2Bsed",
+          "name": "WebSearch",
+          "input": {
+            "query": "南华大学 赛斯书 成唯识论 佛教比较 论文"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"南华大学 赛斯书 成唯识论 佛教比较 论文\"\n\nLinks: [{\"title\":\"南 華 大 學 宗教學研究所 碩士論文 佛教《成唯識論》與新時代《賽斯書》之比較探討\",\"url\":\"https://nhuir.nhu.edu.tw/retrieve/21450/100NHU05183005-001.pdf\"},{\"title\":\"成大宗教與文化學報 第二期 2002 年12 月 頁1~29 1 唯識宗的「解構與超解構型態存有學」 與創造轉化的重塑敘述\",\"url\":\"https://buddhism.lib.ntu.edu.tw/FULLTEXT/JR-BJ010/bj010128636.pdf\"},{\"title\":\"探索汉语佛教哲学研究的道路 | 章启群：《现象、实体与识——〈成唯识论〉的哲学论证》_学术资讯_万维学术！\",\"url\":\"https://www.wanweixueshu.com/news/detail/81087\"},{\"title\":\"• 科学技术哲学• 意识作为哲学的问题和科学的课题\",\"url\":\"https://jdn.ucas.ac.cn/images/emp/201910005.pdf\"},{\"title\":\"李四龙：以现象学方法分析佛教中观学到唯识学的过渡_爱思想\",\"url\":\"https://www.aisixiang.com/data/168938.html\"},{\"title\":\"．141． 中華佛學研究 第十一期 頁141-169（民國九十九年），臺北：中華佛學研究所\",\"url\":\"https://www.chibs.edu.tw/ch_html/chbs/11/chbs1105.pdf\"},{\"title\":\"成唯识论\",\"url\":\"https://baike.baidu.com/item/%E6%88%90%E5%94%AF%E8%AF%86%E8%AE%BA/2003813\"},{\"title\":\"学习公社数字图书馆--论中观一唯识演进的语言哲学意义\",\"url\":\"http://library.ttcdw.com/libary/wenhuakejisuyang/zx/118353.html\"},{\"title\":\"佛教中国化的新路——汉语唯识学研究脉络中的《识体与识变》\",\"url\":\"https://j.021east.com/m/1738210465049908\"},{\"title\":\"论文-中国宗教学术网\",\"url\":\"http://iwr.cass.cn/yjly/fjyj/lw/201104/t20110402_3111409.html\"}]\n\n我已完成了您的网络搜索。搜索结果包含了关于\"南华大学 赛斯书 成唯识论 佛教比较 论文\"的多个相关资源。\n\n## 主要搜索结果：\n\n最直接相关的是南华大学宗教学研究所的硕士论文《佛教《成唯识论》与新時代《賽斯書》之比較探討》，这正是您搜索查询所指向的具体论文。\n\n搜索结果还包含了多篇关于《成唯识论》的学术研究文献，涉及：\n\n- 《成唯识论》是唯识学集大成之作，由唐代编撰者玄奘在印度系统学习了唯识学理论后编撰\n\n- 关于唯识学与西方哲学（如现象学）的比较研究\n\n- 中观学与唯识学在大乘佛教中的理论对比\n\n- 对阿赖耶识、种子习气等唯识学核心概念的讨论\n\n第一个搜索结果直接链接到了南华大学的论文库，应该可以帮助您找到该硕士论文的完整内容。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01P3iQEz4mi3hoEA37yX3xLt",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相 下册 总结 读书笔记 博客"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相 下册 总结 读书笔记 博客\"\n\nLinks: [{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"赛斯/ 心灵的本质_老马 - 博客- 新浪\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉 - 博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"},{\"title\":\"赛斯书《灵魂永生》摘要（下） - 博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6f09f5170100zzxa.html\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"0788​《个人实相的本质》-pdf,txt,mobi,epub电子版书免费下载 - 橙子读书小站\",\"url\":\"http://jingjinds.com/post/794.html\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"toby_新浪博客\",\"url\":\"https://blog.sina.com.cn/tobytsai\"}]\n\n我为您进行了关于\"赛斯书 个人实相 下册 总结 读书笔记 博客\"的网络搜索。以下是搜索结果的要点：\n\n## 关于《个人实相的本质》\n\n《个人实相的本质》是赛斯对普通人日常生活的思想和行为的指导手册，包含上下两册。\n\n## 书籍的核心内容\n\n整个赛斯书的核心是阐述这样一个道理：你创造了自己的实在。是你的\"信念\"使你产生某种\"思想\"，思想又使你产生出某种\"情绪\"，而\"思想\"和\"情绪\"一同由内而外地造成了你的身体状况、人生经验和个人实在，无一例外。\n\n## 博客和笔记资源\n\n搜索结果中发现了几个关于赛斯书的博客资源：\n\n1. **知乎文章**：有关于《个人实相的本质》上册（1-9章）的详细分析\n2. **新浪博客**：包含关于赛斯书各系列著作的内容和心得分享\n3. **关键观点**：这段极为重要，时刻提醒自己的\"你的信念未必就是实相\"，明白你所在的生活环境和日常生活经验，都是你的信念的具体化\n\n这些资源可以帮助您了解和总结《个人实相的本质》下册的要点和核心理念。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01CUBhUutPPh4NVigz3nuiXm",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯资料 攻击性 罪疚感 没有攻击性就没有你 原文"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯资料 攻击性 罪疚感 没有攻击性就没有你 原文\"\n\nLinks: [{\"title\":\"赛斯资料 | 27 没有攻击性，就没有你；释放天性，释放攻击性|宇宙_网易订阅\",\"url\":\"https://www.163.com/dy/article/I547J2350552IOKF.html\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"SETH 珍羅伯茲的賽斯書資料到底是真是假？對你有什麼影響和領悟？如何正確使用此系列的內容？ - 知乎\",\"url\":\"https://www.zhihu.com/question/629191254\"},{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"},{\"title\":\"[转载]赛斯资料(Seth)：《时空之外》目录及作者简介（上） 第1天_黑骑士_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_681fcc390102yj3g.html\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯资料 | 42 你的爱与恨其实都建立在你的自我认同上 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/648945904\"}]\n\nBased on the search results, I found the original text you're looking for. The Seth Material discusses how \"正常的攻击性基本上是一种自然的沟通方法，尤其是在社会生活中\" (Normal aggressiveness is basically a natural method of communication, especially in social life).\n\nThe material explains that \"暴力并非攻击性，反之，暴力是对情绪的一个消极的投降\" (Violence is not aggressiveness; rather, violence is a negative surrender to emotion).\n\nThe search results show that this content comes from Seth Material channeled through Jane Roberts and recorded by her husband Robert Butts, presented in a series of spiritual texts. The phrase \"没有攻击性，就没有你\" (Without aggressiveness, there would be no you) appears to be a summary or interpretation of the Seth teachings about the fundamental role of natural aggression in human existence and communication.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01KoZ1saLBATXfmMgwLP8DFL",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 吸引力法则 区别 赛斯更深 信念层次 潜意识"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 吸引力法则 区别 赛斯更深 信念层次 潜意识\"\n\nLinks: [{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"潜意识与吸引力法则的秘密：搞懂了，一切同频的人事物才会来帮你|人事物|吸引力|潜意识|观察者|魔力_手机网易网\",\"url\":\"https://m.163.com/dy/article/JVHDPD5205565ZW2.html\"},{\"title\":\"潜意识巨人官网 潜意识巨人DSD 吸引力法则工具 吸引力法则实践 财富吸引力法则 潜意识开发 潜意识 吸引力法则秘密\",\"url\":\"http://www.qysjr.com/xing.php\"},{\"title\":\"吸引力法则 - MBA智库百科\",\"url\":\"https://wiki.mbalib.com/wiki/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99\"}]\n\n基于搜索结果，我为您总结了赛斯书与吸引力法则之间的区别和联系：\n\n## 赛斯书的核心理论\n\n赛斯书的核心是阐述：你创造了自己的相，是你的\"信念\"使你产生某种\"思想\"，思想又使你产生出某种\"情绪\"，而\"思想\"和\"情绪\"一同由内而外地造成了你的身体状况、人生经验和个人实在。\n\n## 吸引力法则的基本概念\n\n吸引力法则其实由头脑意识和潜意识吸引两个方面形成，很多人的头脑意识和潜意识是剧烈矛盾的，这时候显意识吸引力是不会起作用的，事实是大部分人一生是基本由潜意识吸引力为主导的。\n\n## 赛斯书更深的层面\n\n赛斯书的深度在于对信念体系的深入探讨。信念有电磁特性，会吸引相似的信念凝结在一起，所以会加固你对这个信念的坚定程度。此外，赛斯书教给读者切实的方法，来认识真实的自我，并且通过信念的改变来实现愿望，创造自己想要的人生。\n\n## 信念层次与潜意识的关系\n\n潜意识作为我们大脑中无需主观控制的决策系统，会基于过往经验、记忆和深层信念，自动生成行为模式。这说明潜意识中深层的信念系统是真正驱动人生结果的关键因素，而这正是赛斯书想要帮助人们认识和改变的核心。\n\n总体来看，吸引力法则是一个相对简化的概念，而赛斯书则从信念层次、潜意识运作机制等更深层次来解释人如何创造自己的现实。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01MYufs7ebqk9H4brQvwuvEK",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 道家 心即理 王阳明 心学 创造实相 比较"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 道家 心即理 王阳明 心学 创造实相 比较\"\n\nLinks: [{\"title\":\"Advances in Philosophy 哲学进展, 2022, 11(6), 2130-2137\",\"url\":\"https://pdf.hanspub.org/acpp20220600000_25382502.pdf\"},{\"title\":\"【贾庆军】王阳明心学之结晶\\\"四句教”中的天人奥秘 - 儒家网-北京洙泗文化传承发展有限公司\",\"url\":\"https://www.rujiazg.com/article/12708\"},{\"title\":\"Philarchive\",\"url\":\"https://philarchive.org/archive/GONNLL\"},{\"title\":\"心学-王阳明_王阳明心学-CSDN博客\",\"url\":\"https://blog.csdn.net/qq_45305209/article/details/139436277\"},{\"title\":\"王阳明心学与中西哲学体系的比较_西方哲学中的心学-CSDN博客\",\"url\":\"https://blog.csdn.net/m0_46503105/article/details/146529521\"},{\"title\":\"王阳明的良知学系统建构 吴 震 摘 要 阳明心学在某种意义上可称为阳明良知学。这一理论自成一套严密的系统，其中有层层良知概念\",\"url\":\"https://www.xsyk021.com/fileXSYK/journal/article/xsyk/2021/1/PDF/2021wuzhen.pdf\"},{\"title\":\"王阳明的六堂人生课--社会・法治--人民网\",\"url\":\"http://society.people.com.cn/n1/2020/0902/c1008-31846891.html\"},{\"title\":\"1 王阳明批评朱子“外心以求理”的得与失 陈乔见 1 【摘 要】：王阳明早年因实践朱子格物学遭遇困境而悟出“心外无理”说，此后他把朱子格物穷理说定性为\",\"url\":\"http://www.zcsvillages.com/upload/2023/0613/29e0b9d8-d6df-4f52-8f66-2d6f43ad51b7.pdf\"},{\"title\":\"请问王阳明的心学与道家有何相同与区别之处？ - 知乎\",\"url\":\"https://www.zhihu.com/question/499635628\"},{\"title\":\"作者简介:王国良(1956 — ) ,男,江苏江都人,历史学博士,安徽大学哲学系副教授,主攻中国思想 史。安徽合肥 230039 王阳明良知学说与自由解放精神\",\"url\":\"http://res.guoxueyuan.com/CourseFiles/7247b287-1ac2-e287-ae01-c28dfe3d0955.pdf\"}]\n\nI've completed the web search for your query about Seth books (赛斯书), Daoism (道家), \"mind is principle\" (心即理), Wang Yangming (王阳明), mind learning/philosophy (心学), creating reality (创造实相), and comparative analysis (比较).\n\nThe search results primarily contain academic materials about Wang Yangming's philosophy of mind and its comparisons with Daoism and Buddhist thought. Here are the key findings:\n\n## Wang Yangming's Mind Learning and Its Relationship to Daoism:\n\nCompared to Daoist teachings, Wang Yangming's mind learning demonstrates greater sophistication in integrating principles of unity of substance and function, and the unity of unmanifested and manifested states. While Laozi pointed to the Dao, he did not explicitly articulate the unity of Dao with humans and the alignment of the Dao-heart with the human heart as Wang Yangming did.\n\nBoth Daoism and Wang Yangming emphasize \"naturalness\" (自然), but with different meanings. Daoist naturalness refers to things following their inherent nature without human interference or emotional disturbance. Wang Yangming also emphasizes the importance of heavenly principle's naturalness, which in his view is the innate moral nature—if not obscured by selfish desires, moral judgment flows naturally. However, Daoist \"naturalness\" more refers to the spontaneous operation of the universe itself and returning to an uncultivated, natural state, not equivalent to the morally regulated naturalness emphasized in Confucianism.\n\nA key difference lies in moral evaluation: Wang Yangming maintains objective distinctions between good and evil, while Zhuangzi tends to relativize moral categories.\n\n## \"Mind is Principle\" (心即理):\n\n\"Mind is principle\" serves as the \"Dao\" layer in the mind learning system, acting as the source of all things.\n\nUnfortunately, the search results do not contain specific information comparing Wang Yangming's philosophy with Seth books' concept of \"creating reality\" (创造实相). To provide a comprehensive comparison on that aspect, additional resources would be needed.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01HgGnLTXvjw44GBkU47Txms",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相 章节 威力点在当下 第19章 全文"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相 章节 威力点在当下 第19章 全文\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"個人實相的本質（賽斯書）上、下冊 原文摘录\",\"url\":\"https://book.douban.com/subject/1388288/blockquotes?sort=score&start=40\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"连载：塞斯系列《个人实相的本质》第二十二章 肯定，对你自己人生实际的改善，以及对信念的新结构\",\"url\":\"https://m.douban.com/note/194973744/\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"},{\"title\":\"连载：塞斯系列《个人实相的本质》序言\",\"url\":\"https://m.douban.com/note/194920411/\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"}]\n\n我已完成您请求的网络搜索。搜索结果显示了关于赛斯书《个人实相的本质》的信息，特别是第19章。\n\n第19章的标题是\"能量的集中、信念以及当下的威力点\"。\n\n根据赛斯的理论，所谓的\"威力之点\"并不在前生，也不在后世，而在\"当下\"。\n\n搜索结果中包含了该书的目录和一些相关介绍，但我没有找到第19章的完整全文。如果您需要阅读第19章的完整内容，我建议：\n\n1. 查阅《个人实相的本质》的完整版本（中文译本或英文原版）\n2. 访问豆瓣等书籍网站，可能会有章节摘录\n3. 查看电子书平台（如微信读书、得到等）\n\n如果您对第19章的具体内容或赛斯的相关理论有其他问题，我很乐意帮助进一步搜索或解答。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01WFoedNbCCLhrd6riv9ahk3",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 与吸引力法则 秘密 Abraham Hicks 区别 中文讨论"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 与吸引力法则 秘密 Abraham Hicks 区别 中文讨论\"\n\nLinks: [{\"title\":\"吸引力法则 - MBA智库百科\",\"url\":\"https://wiki.mbalib.com/wiki/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99\"},{\"title\":\"吸引力法则\",\"url\":\"https://baike.baidu.com/item/%E5%90%B8%E5%BC%95%E5%8A%9B%E6%B3%95%E5%88%99/14620100\"},{\"title\":\"秘密 (书) - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E7%A7%98%E5%AF%86_(%E6%9B%B8)\"},{\"title\":\"吸引力法则（新思想） - cn.wikiterhal.com\",\"url\":\"https://cn.wikiterhal.com/819250-law-of-attraction-new-thought-PFKEJR\"},{\"title\":\"吸引力法则 (豆瓣)\",\"url\":\"https://book.douban.com/subject/10744971/\"},{\"title\":\"我这 14 年 是怎么学习吸引力法则的？我把我看过的书和资料都介绍给你 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/573062002\"},{\"title\":\"财富吸引力法则 (豆瓣)\",\"url\":\"https://book.douban.com/subject/4825563/\"},{\"title\":\"Law of Attraction Abraham Hicks: Core Principles & Manifesting Guide\",\"url\":\"https://healing-sounds.com/blogs/spirituality/law-of-attraction-abraham-hicks-core\"},{\"title\":\"再读《The Secret秘密》，吸引力法则到底讲什么？ - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/521742023\"},{\"title\":\"吸引力法则入门指南 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/284062529\"}]\n\n根据搜索结果，我为您提供关于赛斯书、吸引力法则、《秘密》和Abraham Hicks教导之间区别的中文讨论信息：\n\n## 主要关系与联系\n\nAbraham Hicks（埃斯特·希克斯与杰瑞·希克斯夫妇）的著作基于亚伯拉罕教诲的实践，系统阐释了吸引力法则的理论体系，被视为同类著作《秘密》的核心灵感来源。\n\n《秘密》（The Secret）是朗达·拜恩于2006年的自助书，改编自一套同名电影，它基于吸引力法则的信念，该信念认为思想可以直接改变一个人的生活。\n\n## Abraham Hicks与《秘密》的对比\n\n关于吸引力法则，有评价认为Abraham Hicks的著作比《秘密》更全面，涵盖了吸引力法则的三大要素：吸引力法则、有意创造的科学和接纳的艺术。\n\n## 吸引力法则的演变\n\n20世纪90年代，杰瑞·希克斯和埃丝特·希克斯出版了一系列著作，因为这些书籍的畅销，关于吸引力法则的信息再次广泛被人接受，直到2006年，《秘密》电影才真正让吸引力法则的概念风靡全球。\n\n需要注意的是，搜索结果中未包含对赛斯书（Seth Books）的详细信息，因此无法提供赛斯书与其他教导之间的具体比较。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_011CaUoD7ULJUcpabE4cwTeG",
+          "name": "WebSearch",
+          "input": {
+            "query": "作为工具的赛斯心法 知乎 赛斯书实践"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"作为工具的赛斯心法 知乎 赛斯书实践\"\n\nLinks: [{\"title\":\"作为一个“工具”的赛斯心法 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/653341386\"},{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"从“赛斯心法”如何看待“解读阿卡西记录” - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/608533234\"},{\"title\":\"SETH 珍羅伯茲的賽斯書資料到底是真是假？對你有什麼影響和領悟？如何正確使用此系列的內容？ - 知乎\",\"url\":\"https://www.zhihu.com/question/629191254\"},{\"title\":\"赛斯资料 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/56470281\"},{\"title\":\"Zhihu\",\"url\":\"https://www.zhihu.com/question/20838259\"},{\"title\":\"回顾赛斯资料的产生--私密课前言 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/375896042\"},{\"title\":\"赛斯名言集锦 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/398514186\"},{\"title\":\"有人看过赛斯资料吗？感觉超级震撼？ - 知乎\",\"url\":\"https://www.zhihu.com/question/267223011\"}]\n\n根据搜索结果，我为您提供了有关\"作为工具的赛斯心法\"和赛斯书实践的信息：\n\n## 赛斯心法作为工具\n\n赛斯资料被推荐作为一个\"工具\"来使用，其中传达的态度、观点、方法可以激励和赋能，使人们关注自己的思维模式和信念。赛斯资料不是一种\"知识\"，如果能在自己的生活中实践它，利用它去理解和重新审视自己，会有很多收获。\n\n## 赛斯书的实践方式\n\n赛斯资料的学习有两种方式：一种是阅读赛斯资料从中获取智慧而去践行、验证；另一种是通过自己的经历学习。\n\n## 阅读建议\n\n阅读赛斯资料需要以\"空杯\"心态来读，没有先入之见，心平静气，才可能渐入佳境，领会作者的智慧。赛斯资料涉及个人、群体、梦境、灵魂进化、时空等范围，既满足好奇心，又贴近生活，具有指导价值。\n\n搜索结果来自知乎上关于赛斯资料和实践方法的讨论和分享。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01FCmwJxqkNYZ8TU366K1JKo",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 中国读者 心得 传统文化 儒释道 知乎 豆瓣"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 中国读者 心得 传统文化 儒释道 知乎 豆瓣\"\n\nLinks: [{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯资料“早期课”中文9本书阅读下载 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/427303058\"},{\"title\":\"神奇的塞斯理论（赛斯书：个人与群体事件的本质）书评\",\"url\":\"https://book.douban.com/review/7593555/\"},{\"title\":\"賽斯書 - 读书- 豆瓣\",\"url\":\"https://book.douban.com/series/16508\"},{\"title\":\"赛斯书 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/378016777\"},{\"title\":\"中国传统文化十五讲 (豆瓣)\",\"url\":\"https://book.douban.com/subject/1909534/\"},{\"title\":\"中国文化中的儒释道 – 国学网\",\"url\":\"http://www.guoxue.com/?p=1442\"},{\"title\":\"传统与现代 - 图书馆读者活动发布平台\",\"url\":\"http://183.214.211.146:28081/web/downFile.aspx?id=16313\"},{\"title\":\"传统文化的魅力（中国文化十五讲）书评\",\"url\":\"https://m.douban.com/book/review/16205544/\"},{\"title\":\"中国文化十五讲 (豆瓣)\",\"url\":\"https://m.douban.com/book/subject/36965264/\"}]\n\n## 搜索结果总结\n\n根据搜索结果，我为您整理了关于赛斯书在中国读者中的相关信息：\n\n### 赛斯书的背景\n赛斯书是通灵类导师的先驱作品，因其对人类未来心灵革命前景的描述具体而可信，在新时代运动中占据核心地位。赛斯书（又称赛斯资料）是人类有史以来最全面系统、连贯严密和具体实用的哲学和信仰体系，其手稿作为唯一的形上学著作被存放在耶鲁大学。\n\n### 中国读者的传播渠道\n搜索结果显示了赛斯书在中国的一些信息发布渠道：\n- 在知乎上有关于赛斯早期课中文版本的讨论和资源分享\n- 在豆瓣上有关于赛斯书系列的书籍介绍和讨论\n\n### 关于传统文化的讨论\n虽然搜索结果中提到了儒释道传统文化的内容，但没有找到直接讨论赛斯书与中国传统文化（儒释道）融合的中国读者心得。搜索结果更多呈现的是关于中国传统文化本身的讨论，而非赛斯书与传统文化的关联性分析。\n\n如果您想了解更多关于赛斯书在中国社区的讨论，可以直接访问知乎和豆瓣上相关的讨论帖。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01BVGoevvXm2iNtvFjxrcZr2",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯资料 阿赖耶识 唯识 意识创造实相 比较研究"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯资料 阿赖耶识 唯识 意识创造实相 比较研究\"\n\nLinks: [{\"title\":\"Hanspub\",\"url\":\"https://www.hanspub.org/journal/paperinformation?paperid=56639\"},{\"title\":\"南 華 大 學 宗教學研究所 碩士論文 佛教《成唯識論》與新時代《賽斯書》之比較探討\",\"url\":\"https://nhuir.nhu.edu.tw/retrieve/21450/100NHU05183005-001.pdf\"},{\"title\":\"论阿赖耶识建立中的两种意趣\",\"url\":\"http://www.lingshh.com/weishiyantaohui/2.htm\"},{\"title\":\"学习公社数字图书馆--现象学与唯识学阿赖耶识的堪比度\",\"url\":\"https://library.ttcdw.com/libary/wenhuakejisuyang/zx/2017-05-10/134372.html\"},{\"title\":\"Chinese Traditional Culture 国学, 2023, 11(3), 336-341\",\"url\":\"https://pdf.hanspub.org/cnc20230300000_83939946.pdf\"},{\"title\":\"李四龙：以现象学方法分析佛教中观学到唯识学的过渡_爱思想\",\"url\":\"https://www.aisixiang.com/data/168938.html\"},{\"title\":\"Advances in Philosophy 哲学进展, 2022, 11(5), 1078-1089\",\"url\":\"https://pdf.hanspub.org/acpp20220500000_35494419.pdf\"},{\"title\":\"论述唯识学三能变思想_学僧论文_研究成果_中国佛学院\",\"url\":\"https://www.zgfxy.cn/yjcg/xslw/content_435\"},{\"title\":\"【文研讲座255】山部能宜：“阿赖耶识”的实践背景 - 北京大学人文社会科学研究院\",\"url\":\"http://www.ihss.pku.edu.cn/templates/yf_xz/index.aspx?contentid=4692&nodeid=121&page=ContentPage\"},{\"title\":\"阿赖耶识与真如及唯识古学今学辨析\",\"url\":\"http://www.lingshh.com/weishiyantaohui/9.htm\"}]\n\nBased on the web search results, I found relevant information about your query regarding Seth materials (赛斯资料), alaya-consciousness (阿赖耶识), consciousness-only school (唯识), and consciousness creating reality.\n\nHere are the key findings:\n\n## Relevant Research\n\nThere is a comparative study on the Buddhist \"成唯识论\" (Cheng Weishi Lun/Treatise on the Establishment of Consciousness-Only) and the New Age \"赛斯书\" (Seth Books), conducted as a master's thesis at Nantai University's Religious Studies Institute. This appears to be the most direct scholarly comparison you're looking for.\n\n## Key Concepts in Consciousness-Only School (唯识)\n\nIn the consciousness-only school, the alaya-consciousness is one of eight types of consciousness. The eight consciousnesses form the basic structure of our mental activities, with the alaya-consciousness (藏识/storehouse consciousness) as the fundamental consciousness from which the other seven consciousnesses arise.\n\nAccording to consciousness-only school theory, the existence of the three realms is actually the manifestation of sentient beings' alaya-consciousness, and the real world is merely a phantasmagoric transformation of the seventh consciousness based on the alaya-consciousness.\n\nThe alaya-consciousness preserves records of past experiences (karma) in the form of seeds (bīja), somewhat similar to modern hard drives that store information. Since the yoga school believes all things are produced from their own class of seeds, the alaya-consciousness is not only the cause of surface consciousness but also determines the external world.\n\nThe search results show academic interest in comparing Buddhist philosophy with contemporary New Age teachings, though the specific comparative details between Seth materials and Buddhist consciousness-only philosophy would require consulting the full thesis mentioned in the results.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01XjmMoSzta54zWtVFkf9JGF",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 豆瓣 评论 书评 个人实相的本质 读后感"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 豆瓣 评论 书评 个人实相的本质 读后感\"\n\nLinks: [{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯教你如何面对现实（个人实相的本质）书评\",\"url\":\"https://book.douban.com/review/7511408/\"},{\"title\":\"赛斯教你如何面对现实- 个人实相的本质\",\"url\":\"https://m.douban.com/book/review/7511408/\"},{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"神奇的塞斯理论（赛斯书：个人与群体事件的本质）书评\",\"url\":\"https://book.douban.com/review/7593555/\"},{\"title\":\"0788​《个人实相的本质》-pdf,txt,mobi,epub电子版书免费下载 - 橙子读书小站\",\"url\":\"http://jingjinds.com/post/794.html\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"《个人实相的本质》珍·罗伯兹 -pdf、txt、mobi、kindle、epub电子版下载\",\"url\":\"http://read.98zgl.com/article/2491\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"连载：塞斯系列《个人实相的本质》序言\",\"url\":\"https://m.douban.com/note/194920411/\"}]\n\n我为您搜索到了关于《个人实相的本质》（赛斯书）的豆瓣评论和书评信息。以下是搜索结果的总结：\n\n## 书籍基本信息\n\n《个人实相的本质》在豆瓣的评分高达9.1，这是一部备受关注的心灵著作。珍·罗伯兹是20世纪最重要的通灵人之一，赛斯资料被认为是新时代运动的基石，目前保存在耶鲁大学图书馆。\n\n## 豆瓣评论主要观点\n\n根据豆瓣上的书评，这本书的核心思想是：\n\n- \"信念创造实相\"这句格言虽然琅琅上口，但许多读者承认自己对这句话的理解往往只停留在头脑层面\n\n- 书中探讨平行世界的概念，认为所有已选择、未选择的各种可能其实都在发生，没有错误的决定，都是体验生命的方式\n\n## 读者反响\n\n有读者表示这本书让他们困惑了很久，也让他们顿悟了很多，赞扬赛斯书以新的视角颠覆了人们对世界的既有认知。\n\n有论评指出，赛斯书因其独特的描述方式在灵修书里属于难读的，但这可能是赛斯刻意设置的。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_017Eb6SkPn5ffLnFcN5pGK9s",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书时空之外 个人实相 第17到22章 内在风暴 自然催眠 疗愈 梦境 当下威力点"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书时空之外 个人实相 第17到22章 内在风暴 自然催眠 疗愈 梦境 当下威力点\"\n\nLinks: [{\"title\":\"赛斯书：时空之外在说什么 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/1961720736998729561\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"},{\"title\":\"时空之外 (豆瓣)\",\"url\":\"https://m.douban.com/book/subject/4905966/\"},{\"title\":\"赛斯 6.1 赛斯序（《未知的实相》） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/399540698\"},{\"title\":\"赛斯书: 时空之外 | 小宇宙 - 听播客，上小宇宙\",\"url\":\"https://www.xiaoyuzhoufm.com/podcast/64a8a5a1f4baf6405e058362\"},{\"title\":\"未知的实相 解读 第一节 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/425977607\"},{\"title\":\"王新建 译_赛斯 - 《灵魂永恒》 校对：罗罗 宇新 等 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/105551968\"}]\n\nBased on the search results, I found information about the chapters you're asking about from the Seth book series. Here's what I found:\n\n## 《个人实相的本质》(The Nature of Personal Reality) - Chapters 17-22\n\nThe chapters you're interested in include:\n- 第十七章：自然的催眠和疗愈 (Chapter 17: Natural Hypnosis and Healing)\n- 第十八章：内在与外在的风暴，创造性的\"破坏\" (Chapter 18: Inner and Outer Storms, Creative \"Destruction\")\n- 第十九章：能量的集中、信念以及当下的威力点 (Chapter 19: Energy Concentration, Belief, and the Power Point of Now)\n- 第二十章：梦中景观、物质世界、可能性 (Chapter 20: Dream Landscapes, Material World, Possibilities)\n- 第二十一章：肯定、爱、接受与否定 (Chapter 21: Affirmation, Love, Acceptance and Negation)\n- 第二十二章：你人生的实际改善，以及新的信念 (Chapter 22: Practical Improvement in Your Life and New Beliefs)\n\nThese chapters cover topics including how to engage in self-hypnosis and healing, what dreams represent, how to activate inner energy, and how to improve relationships and embrace acceptance of the present moment.\n\nThe chapters you mentioned (17-22) focus on practical applications of Seth's teachings regarding natural hypnosis states, healing through belief systems, understanding storms (both internal emotional and external circumstances) as creative forces, the power of the present moment, the role of dreams in accessing other realities, and techniques for personal transformation through changed beliefs.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_01BCLyqEzJfDnzNMjREU2J5u",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相 感觉基调 每个人存在基调 身体感知"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相 感觉基调 每个人存在基调 身体感知\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"赛斯资料摘录 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/351336592\"},{\"title\":\"赛斯 - 维基百科，自由的百科全书\",\"url\":\"https://zh.wikipedia.org/zh-hans/%E8%B5%9B%E6%96%AF\"},{\"title\":\"個人實相的本質（賽斯書）上、下冊 原文摘录\",\"url\":\"https://book.douban.com/subject/1388288/blockquotes\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"赛斯/ 心灵的本质_老马_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_6bb74f9c0102e8p5.html\"},{\"title\":\"每日阅读 - pdf,txt,mobi,kindle,epub电子版书免费下载,优质书籍内容分享\",\"url\":\"http://read.98zgl.com/article/2491\"},{\"title\":\"个人实相的本质\",\"url\":\"https://weread.qq.com/web/bookDetail/8be32a10811e1a829g017fcf\"}]\n\nI found search results related to your query about the Seth Materials (赛斯书), particularly the book \"The Nature of Personal Reality\" (个人实相的本质) and related concepts.\n\n## Key Findings:\n\n### Feeling Tone (感觉基调)\n\nThe concept of \"feeling tone\" refers to the emotional attitude you maintain toward yourself and your life in general, and in most cases, these attitudes influence a large range of your experiences and feelings.\n\nSeth teaches that you should try to sense the deep \"feeling tone\" within yourself through a meditation practice: sit quietly, close your eyes, and try to feel that deeply buried \"feeling tone.\" Each person will feel it in their own way, so there's no need to worry about what it should feel like.\n\n### Personal Reality (个人实相)\n\nYour experience and understanding are fundamentally created by yourself through your beliefs about yourself and the nature of reality. Your beliefs form the foundation of your experience, and in general circumstances, these attitudes shape a large range of your experiences and feelings.\n\nThe core concept of Seth materials is that each person can create their own reality through thoughts, beliefs and expectations, and we can influence changes in things right now through the \"point of power.\"\n\n### Body Perception (身体感知)\n\nYour body and environment are physical manifestations of your thoughts and feelings. Every thought and emotion exists in a simple or complex electromagnetic form.\n\nThe search results contain extensive material from the Seth teachings, particularly from \"The Nature of Personal Reality,\" which is considered one of the most practical and directly applicable books in the Seth series for daily life guidance.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_011X8CsEVdzqaW3erVEBNjju",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯详解吸引力法则 原理实操 360doc 2023"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯详解吸引力法则 原理实操 360doc 2023\"\n\nLinks: [{\"title\":\"赛斯详解“吸引力法则”的原理与实操\",\"url\":\"http://www.360doc.com/content/23/0304/17/17285885_1070443737.shtml\"},{\"title\":\"[赛斯] 详解“吸引力法则”的原理与实操 - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/605071833\"},{\"title\":\"想象力创造现实\",\"url\":\"http://www.360doc.com/content/23/0302/18/32932176_1070160195.shtml\"},{\"title\":\"为什么要尽快通读完广义的赛斯资料？丨附录阅读顺序丨赛斯热爱什么\",\"url\":\"http://www.360doc.com/content/24/0109/01/5186857_1110423844.shtml\"},{\"title\":\"吸引力法则的终极版本\",\"url\":\"http://www.360doc.com/content/23/0802/20/64352742_1090982439.shtml\"},{\"title\":\"吸引力法则\",\"url\":\"http://www.360doc.com/content/24/0915/08/73784804_1134134866.shtml\"},{\"title\":\"赛斯全套书介绍\",\"url\":\"http://www.360doc.com/content/24/1009/16/5186857_1136124013.shtml\"},{\"title\":\"吸引力法则背后的秘密\",\"url\":\"http://www.360doc.com/content/14/0611/18/428043_385777280.shtml\"},{\"title\":\"吸引力法则应用十大步骤\",\"url\":\"http://www.360doc.com/content/15/0908/07/20846133_497606173.shtml\"},{\"title\":\"《吸引力法则应用十大步骤》\",\"url\":\"http://www.360doc.com/content/14/1030/13/6017453_421133579.shtml\"}]\n\n我找到了关于\"赛斯详解吸引力法则 原理实操\"的搜索结果。该内容来自360doc.com平台，发布于2023年。\n\n文章讨论了赛斯关于吸引力法则的原理，包括两种学习方式——阅读赛斯资料从中获取智慧并去践行验证，或通过自己的经历学习。思想与爱的融合形成了吸引力法则不可抗拒的力量，爱是宇宙中最伟大的力量。\n\n在财务实操方面，赛斯建议当收到账单时，不要自动做出反应，而要让自己仿佛在欣赏一幅新的画作，在脑海中形成金额相当的支票意象，看到自己付清了费用并举行庆功宴的样子，以及支付费用时想象看到财务记录中还有盈余。赛斯强调实际上必须从丰富的角度来思考，而不是匮乏的角度。\n\n原文链接：http://www.360doc.com/content/23/0304/17/17285885_1070443737.shtml\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        },
+        {
+          "id": "toolu_018z5sZpWHiScMEJU9ZQZrr2",
+          "name": "WebSearch",
+          "input": {
+            "query": "赛斯书 个人实相 第22章 肯定 新信念 豆瓣笔记"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "Web search results for query: \"赛斯书 个人实相 第22章 肯定 新信念 豆瓣笔记\"\n\nLinks: [{\"title\":\"赛斯书《个人实相的本质》在说什么--上（1-9章） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/665647235\"},{\"title\":\"连载：塞斯系列《个人实相的本质》第二十二章 肯定，对你自己人生实际的改善，以及对信念的新结构\",\"url\":\"https://m.douban.com/note/194973744/\"},{\"title\":\"个人实相的本质 (豆瓣)\",\"url\":\"https://book.douban.com/subject/20475763/\"},{\"title\":\"赛斯教你如何面对现实（个人实相的本质）书评\",\"url\":\"https://m.douban.com/book/review/7511408/\"},{\"title\":\"赛斯 6.1 赛斯序（《未知的实相》） - 知乎\",\"url\":\"https://zhuanlan.zhihu.com/p/399540698\"},{\"title\":\"赛斯书_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6/5271401\"},{\"title\":\"连载：塞斯系列《个人实相的本质》序言\",\"url\":\"https://m.douban.com/note/194920411/\"},{\"title\":\"赛斯书籍 ☕︎\",\"url\":\"https://www.douban.com/doulist/154004275/\"},{\"title\":\"赛斯书：个人与群体事件的本质_百度百科\",\"url\":\"https://baike.baidu.com/item/%E8%B5%9B%E6%96%AF%E4%B9%A6%EF%BC%9A%E4%B8%AA%E4%BA%BA%E4%B8%8E%E7%BE%A4%E4%BD%93%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%9C%AC%E8%B4%A8/20781287\"},{\"title\":\"赛斯资料（赛斯书）_荆山璞玉_新浪博客\",\"url\":\"https://blog.sina.com.cn/s/blog_4c479b670102yob5.html\"}]\n\n我找到了关于这个搜索查询的信息。根据搜索结果：\n\n豆瓣上有一篇连载笔记《塞斯系列《个人实相的本质》第二十二章 肯定，对你自己人生实际的改善，以及对信念的新结构》，这正是你搜索的内容。\n\n《个人实相的本质》这本书的第二十二章标题是\"你人生的实际改善，以及新的信念\"，这与你的搜索查询相符。\n\n根据豆瓣笔记的内容，赛斯在第二十二章强调了一个核心肯定：\"我的人生是我的，而我形成了它\"，并建议人们常常告诉自己这句话，从现在起用信念像艺术家用颜色一样创造自己的人生。\n\n这一章是赛斯书《个人实相的本质》的结尾章节，主要讲述如何通过新的信念来改善个人的人生。\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks."
+        }
+      ],
       "asyncStatus": "running",
       "agentId": "aad815334eb192b65",
       "startedAt": 1774248209426,

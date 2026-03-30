@@ -1,0 +1,16 @@
+# 方法论视图表
+
+filters:
+  and:
+    - note["base"] == link("方法论视图表.base")
+properties:
+  file.name:
+    displayName: 方法名称
+  方法类型:
+    displayName: 方法类型
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 方法类型

@@ -1,0 +1,19 @@
+# 通用思维
+
+filters:
+  and:
+    - note["base"] == link("通用思维.base")
+properties:
+  file.name:
+    displayName: 通用思维名称
+  思维简述:
+    displayName: 思维简述
+  思维类别:
+    displayName: 思维类别
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 思维简述
+      - 思维类别

@@ -1,0 +1,19 @@
+# 思考原则
+
+filters:
+  and:
+    - note["base"] == link("思考原则.base")
+properties:
+  file.name:
+    displayName: Name
+  内容简介:
+    displayName: 内容简介
+  类型:
+    displayName: 类型
+views:
+  - type: table
+    name: Table View
+    order:
+      - file.name
+      - 内容简介
+      - 类型
