@@ -1,8 +1,20 @@
 {
   "id": "conv-1774860278730-726uo3mv0",
-  "title": "整理段永平赚钱思想清单",
+  "title": "Generate Deng Xiaoping biography timeline",
   "titleGenerationStatus": "success",
   "createdAt": 1774860278731,
-  "updatedAt": 1774860292487,
-  "sessionId": null
+  "updatedAt": 1774861416499,
+  "lastResponseAt": 1774861416499,
+  "sessionId": "169e87b2-14bd-4602-a382-d0bfddb56244",
+  "sdkSessionId": "169e87b2-14bd-4602-a382-d0bfddb56244",
+  "currentNote": "42向量-知识库/名人堂/全部人物/邓小平.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 3550,
+    "cacheReadInputTokens": 18775,
+    "contextWindow": 200000,
+    "contextTokens": 22326,
+    "percentage": 11
+  }
 }
