@@ -9,7 +9,10 @@ source: "https://ccb.agent-aura.top/docs/introduction/architecture-overview"
 
 Claude Code 从上到下分为五个层次，每一层职责清晰、边界分明：
 
-![Claude Code 五层架构图](https://mintcdn.com/ccb-863780bf/JHKkFpZMjnizLjd9/docs/images/architecture-layers.png?w=2500&fit=max&auto=format&n=JHKkFpZMjnizLjd9&q=85&s=88f3ca4bfcd989cc76cea55bbfc76176)
+
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260413201255844.png)
+
 
 Claude Code 五层架构图
 
@@ -25,7 +28,8 @@ Claude Code 五层架构
 
 ## 一条主数据流的源码追踪
 
-![Claude Code 核心数据流](https://mintcdn.com/ccb-863780bf/JHKkFpZMjnizLjd9/docs/images/data-flow.png?w=2500&fit=max&auto=format&n=JHKkFpZMjnizLjd9&q=85&s=4cc502c1b8c923423e0b784b1fa79ad3)
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260413201311555.png)
+
 
 Claude Code 核心数据流
 

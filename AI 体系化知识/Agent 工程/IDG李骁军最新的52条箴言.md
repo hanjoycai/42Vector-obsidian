@@ -7,7 +7,9 @@ source: "https://mp.weixin.qq.com/s/wqphzA95PoRqnsERP1DwIA"
 ---
 原创 elsewhere *2026年4月8日 10:21*
 
-![图片](https://mmbiz.qpic.cn/sz_mmbiz_png/nC9q4iafQuPhGzkx7x8oJ5Sbtlr23UYtShUibThOC1YAFUxPWqDNhBpnhkApfMf8K63tickbbnWDnHomqLaM7WO4VoTOnR03MkEukqzicFAkAZw/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1#imgIndex=0)
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260413201228572.png)
+
 
 @刘旌  
 
