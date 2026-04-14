@@ -3,18 +3,18 @@
   "title": "Perfect requirements document",
   "titleGenerationStatus": "success",
   "createdAt": 1776135817067,
-  "updatedAt": 1776136212826,
-  "lastResponseAt": 1776136212826,
+  "updatedAt": 1776136779574,
+  "lastResponseAt": 1776136779574,
   "sessionId": "346dcc35-531c-4964-ae4a-c0363cae8c90",
   "sdkSessionId": "346dcc35-531c-4964-ae4a-c0363cae8c90",
   "currentNote": "AaaS-PRD.md",
   "usage": {
     "model": "sonnet",
-    "inputTokens": 2,
-    "cacheCreationInputTokens": 2173,
-    "cacheReadInputTokens": 66951,
+    "inputTokens": 3,
+    "cacheCreationInputTokens": 500,
+    "cacheReadInputTokens": 106820,
     "contextWindow": 200000,
-    "contextTokens": 69126,
-    "percentage": 35
+    "contextTokens": 107323,
+    "percentage": 54
   }
 }
