@@ -42,7 +42,7 @@
   "permissionMode": "normal",
   "model": "opus",
   "thinkingBudget": "medium",
-  "effortLevel": "high",
+  "effortLevel": "max",
   "enableAutoTitleGeneration": true,
   "titleGenerationModel": "",
   "enableChrome": false,
