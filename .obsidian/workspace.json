@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "42向量-知识库/名人堂/全部人物/张一鸣.md",
+                "file": "AaaS-PRD.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "张一鸣"
+              "title": "AaaS-PRD"
             }
           }
         ]
@@ -208,8 +208,9 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "33b9a09e24638a9c",
+  "active": "eea770fa4ded4f67",
   "lastOpenFiles": [
+    "42向量-知识库/名人堂/全部人物/张一鸣.md",
     "AaaS-PRD.md",
     "_replace_section.py",
     "Drawing 2026-04-14 10.59.31.excalidraw.md",

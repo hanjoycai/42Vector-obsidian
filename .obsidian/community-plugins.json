@@ -10,5 +10,6 @@
   "copy-image-text",
   "obsidian-image-auto-upload-plugin",
   "dataview",
-  "obsidian-importer"
+  "obsidian-importer",
+  "floating-toc"
 ]
