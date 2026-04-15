@@ -1,8 +1,20 @@
 {
   "id": "conv-1776257210315-0vppdqn8p",
-  "title": "Enhance AaaS platform with modules and developm...",
+  "title": "Add iteration schedule and rollout plan to AaaS...",
   "titleGenerationStatus": "success",
   "createdAt": 1776257210315,
-  "updatedAt": 1776257229797,
-  "sessionId": null
+  "updatedAt": 1776268710141,
+  "lastResponseAt": 1776268710141,
+  "sessionId": "197a2d67-dba8-4119-8213-fa34b1c697d4",
+  "sdkSessionId": "197a2d67-dba8-4119-8213-fa34b1c697d4",
+  "currentNote": "AaaS-PRD.md",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 489,
+    "cacheReadInputTokens": 75965,
+    "contextWindow": 200000,
+    "contextTokens": 76455,
+    "percentage": 38
+  }
 }
