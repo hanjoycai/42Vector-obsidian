@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 276.5,
-    "collapsed": true
+    "width": 276.5
   },
   "right": {
     "id": "e99cb2e16806af9b",
@@ -209,7 +208,7 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "eea770fa4ded4f67",
+  "active": "33b9a09e24638a9c",
   "lastOpenFiles": [
     "AaaS-E2E-Flow.html",
     "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
