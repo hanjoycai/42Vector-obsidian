@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS 验证平台/coding_agent_性能评估体系.md",
+                "file": "AaaS 验证平台/AaaS-PRD.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "coding_agent_性能评估体系"
+              "title": "AaaS-PRD"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 276.5
+    "width": 218.5
   },
   "right": {
     "id": "e99cb2e16806af9b",
@@ -190,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 366.5
+    "width": 425.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,10 +208,10 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "eea770fa4ded4f67",
+  "active": "33b9a09e24638a9c",
   "lastOpenFiles": [
-    "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台/coding_agent_性能评估体系.md",
+    "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台",
     "42向量-知识库/名人堂/全部人物/张一鸣.md",
     "42向量-知识库/名人堂/全部人物/段永平.md",
