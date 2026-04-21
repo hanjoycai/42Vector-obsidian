@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS-PRD.md",
+                "file": "AaaS 验证平台/coding_agent_性能评估体系.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AaaS-PRD"
+              "title": "coding_agent_性能评估体系"
             }
           }
         ]
@@ -210,11 +210,13 @@
   },
   "active": "eea770fa4ded4f67",
   "lastOpenFiles": [
+    "AaaS 验证平台/AaaS-PRD.md",
+    "AaaS 验证平台/coding_agent_性能评估体系.md",
+    "AaaS 验证平台",
     "42向量-知识库/名人堂/全部人物/张一鸣.md",
     "42向量-知识库/名人堂/全部人物/段永平.md",
     "42向量-知识库/名人堂/全部人物/段永平关于赚钱的100条思考.md",
     "42向量-知识库/名人堂/全部人物/巴菲特.md",
-    "AaaS-PRD.md",
     "AaaS-E2E-Flow.html",
     "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
     "_replace_section.py",
@@ -246,13 +248,11 @@
     "AI 体系化知识/Agent 工程/IDG李骁军最新的52条箴言.md",
     "AI 体系化知识/Agent 工程/架构全景 - Claude Code 五层架构详解.md",
     "AI 体系化知识/Agent 工程/万字解析  从 OpenClaw 出发，重新理解 AI产品.md",
-    "42向量-知识库/42 月刊/42 月刊.md",
     "AI 体系化知识/Agent 工程",
     "AI 体系化知识",
     "fmt_dyp.py",
     "42向量-知识库/名人堂/全部人物/全部人物.base",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/Vibe Coding.jpeg",
-    "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/AI加持，一天做一个小应用（20240811 燕园叶话）-白朋飞@FiitAI.pptx",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/AI通用助手.jpeg",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/AI视频&音乐&播客.jpeg",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/image 82.png"
