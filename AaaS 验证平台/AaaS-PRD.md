@@ -1352,6 +1352,7 @@ class LoopState:
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | 实验列表     | **功能说明：**<br>1. 列表字段：实验名称、关联 Agent、绑定评测集、评估器组、运行次数、最近运行时间、最近运行状态<br>2. 支持按 Agent、状态、场景类型筛选<br>3. 每行支持快捷操作：查看详情、快速运行、复制实验配置、归档                                                                                                                                                                                                                                                                                                                                                                                 | [📐 设计稿 — 实验列表页](https://www.figma.com/design/MdIym00fvsMTq4htpqfO2K/AaaS-%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0?node-id=308-33)                                                                                          |
 | 创建实验     | **交互说明：** 点击「新建实验」，分四步完成配置：<br><br>**Step 1 基础信息**<br>- 实验名称（必填，建议格式：`{Agent}-{场景}-{版本}`）<br>- 描述、场景标签、负责人<br><br>**Step 2 数据绑定**<br>- 选择关联 Agent 应用<br>- 选择评测集及具体版本号（只能选已发布版本）<br>- 预览所选版本的 Case 数量与字段结构<br><br>**Step 3 评估器配置**<br>- 添加评估器组：支持同时绑定多个评估器（各自设置权重）<br>- 配置综合评分计算方式：加权平均 / 最低分门控<br>- 预览评分维度汇总结构<br><br>**Step 4 运行参数**<br>- 模型参数：Temperature、Top-P、Max Tokens、Function Call 开关<br>- 并发数、单 Case 超时时间、失败重试次数<br>- 硬件环境标签：指定芯片型号 + 集群节点（跨芯片比对时创建多个实验分别绑定不同芯片）<br>- 评分器为 LLM-Judge 时：指定 Judge 模型来源 | [📐 设计稿 — 创建实验配置页](https://www.figma.com/design/MdIym00fvsMTq4htpqfO2K/AaaS-%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0?node-id=309-33)                                                                                          |
+| Coding Agent 实验增强配置 | **交互说明：** 创建 Coding Agent 类型实验时，额外展示以下配置项：<br><br>**并发语义配置（对应评估体系 §9.6）**<br>- **语义 A — 独占推理：** 每时刻只有 1 个 Case 占用推理资源，Agent 可多轮调用但独占 GPU。适用于基线测试。<br>- **语义 B — 共享推理：** N 个 Case 同时运行各自的 Agent，共享推理集群。测量真实并发下的 Goodput。<br>- **语义 C — 合成压测：** 不跑真实 Agent，只用 vLLM bench serve 打合成流量，测硬件极限。<br>- 并发数配置：1 / 4 / 8 / 16 / 32 / 64 / 自定义<br><br>**Warmup / Cooldown 配置**<br>- Warmup 阶段：前 N 个 Case 结果不纳入统计（默认 5），用于 KV Cache 预热<br>- Cooldown 阶段：最后 N 个 Case 结果不纳入统计（默认 3），排除收尾干扰<br><br>**Seed 管理**<br>- 全局 Seed：用于评测集抽样和 Case 执行顺序的随机种子<br>- 采样 Seed：LLM 推理采样 seed（temperature=0 + seed=42 为默认确定性配置）<br><br>**L1/L2/L3 分层执行策略**<br>- 支持选择执行层级：仅 L1 / 仅 L2 / 仅 L3 / L1+L2 / 全量<br>- 预设策略：日常 CI（L1 全量 + L2/L3 各 50 题）/ 月度全量 / 版本门禁 | — |
 | 第一步：基础信息 | 填写基础信息。输入实验名称和描述，然后单击 **下一步: 评测集**                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260415161324693.png)<br> |
 | 第二步：评测集  | 在 **评测集** 页面，选择你在步骤二创建的评测集，并选择要使用的评测集版本，然后单击**下一步：评测对象**。                                                                                                                                                                                                                                                                                                                                                                                                                                                     | ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260415161412921.png)<br> |
 | 第三步：评测对象 | 在 **评测对象** 页面，按照下面的参数说明配置评测对象。然后单击**下一步：评估器**<br><br>                                                                                                                                                                                                                                                                                                                                                                                                                                                         | ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260415161649626.png)<br> |
@@ -1415,6 +1416,7 @@ class LoopState:
 | BadCase 标注与管理 | **功能说明：**<br>1. 在比对视图中可直接将表现差的 Case 标记为 BadCase<br>2. **归因标签：** 模型问题 / 工具调用异常 / 芯片推理偏差 / 数据问题 / 提示词缺陷 / 其他<br>3. BadCase 池：汇总所有标记的 BadCase，支持按归因分类筛选和导出<br>4. BadCase 可一键回流至评测集，作为后续回归测试用例 | — |
 | 跨芯片比对模式 | **功能使用前提：** 同一评测集分别在不同芯片环境（如 A800 vs NGU800P）完成实验。<br><br>**功能说明：**<br>1. 在比对入口选择「芯片对比模式」，系统自动识别实验的芯片标签并分组展示<br>2. **核心比对维度：** TTFT 差异、吞吐量差异、成本比（¥/M-token）、任务完成率差异、精度损失（量化前后 Token 一致率）<br>3. **芯片商用可行性评估：** 对照 4.1 章节 SLO 阈值，逐项自动判定 ✅ 达标 / ⚠️ 接近阈值 / ❌ 未达标<br>4. 每个维度支持展开查看 Case 级散点分布，定位性能分化严重的具体 Case<br>5. **输出结论卡片：** 一键生成芯片对比结论摘要，可直接引用至验证报告 | [📐 设计稿 — 跨芯片比对页](https://www.figma.com/design/MdIym00fvsMTq4htpqfO2K/AaaS-%E9%AA%8C%E8%AF%81%E5%B9%B3%E5%8F%B0?node-id=312-33) |
 | 比对报告导出 | **功能说明：**<br>1. 一键生成结构化比对报告，支持 PDF / Markdown / CSV 格式<br>2. **报告内容：** 实验配置对比表、指标对比表、BadCase 清单（含归因统计）、散点图截图、芯片可行性结论<br>3. 导出时可选择报告章节（仅导出指标对比 / 仅导出 BadCase 等） | — |
+| Ceteris Paribus 校验 | **功能说明：**<br>1. **三层基线对比（对应评估体系 §12）：**<br>   a. **硬件基线：** 同一模型 + 同一推理引擎 + 同一评测集，A800 vs NGU800P vs X6000s<br>   b. **软件基线：** 同一芯片 + 同一模型，vLLM vs SGLang vs 自研引擎<br>   c. **历史基线：** 同一芯片 + 同一引擎 + 同一评测集，不同版本/日期的结果纵向对比<br>2. **Ceteris Paribus 自动校验：** 发起跨芯片比对时，系统自动检查以下变量是否对齐：<br>   a. 模型权重哈希（model_weight_hash）一致 ✅/❌<br>   b. Tokenizer 哈希一致 ✅/❌<br>   c. 量化方案一致 ✅/❌<br>   d. Agent Scaffold 版本一致 ✅/❌<br>   e. Scaffold Prompt 哈希一致 ✅/❌<br>   f. 评测集版本一致 ✅/❌<br>   g. 采样参数一致 ✅/❌<br>3. 校验不通过时弹出警告（标注不一致项），用户可选择「强制继续」或「返回修正」<br>4. 比对报告自动附加 Ceteris Paribus 校验清单 | — |
 
 ## 5.5 运行时总览
 
@@ -1615,8 +1617,21 @@ token 分析
 | 成本构成桑基图 | 桑基图展示成本从「算力资源 → 推理阶段 → 场景应用」的流向，直观展示各环节成本占比 | — |
 | ROI 评估看板 | 指标卡片组：节点 ROI、投入产出比、单位产能成本；附带与行业基准的对比（如 A800 市场参考价格） | — |
 
+#### Coding Agent 专属指标看板
 
+> [!note] 设计思路
+> 本看板针对 Coding Agent 场景特有的正确性和工具调用指标，与通用效果/性能指标互补。指标定义对齐 coding_agent_性能评估体系 §7。
 
+| 图表 | 图表详细说明 | 交互图例 |
+|------|------------|---------|
+| Resolved Rate 趋势 | 按实验 Run 维度展示 Resolved Rate 变化趋势（折线图），分别展示 L1 Pass@1 / L2 Resolved Rate / L3 Spec Compliance 三条线。支持按 Benchmark Suite 筛选。**核心指标：F2P 全部通过 AND P2P 全部通过的实例比例** | — |
+| Pass@k 对比 | 分组柱状图对比不同实验/芯片的 Pass@1 / Pass@3 / Pass@5，展示采样增益。支持按 L1/L2/L3 分层展示 | — |
+| Patch Apply Rate | 柱状图展示各实验的 Patch 语法合法率（生成的 patch 可 apply 的比例），低于 90% 标红。分实验/分芯片对比 | — |
+| F2P / P2P 通过率分布 | 堆叠柱状图展示每个 Case 的 F2P 和 P2P 通过情况。X 轴为 Case ID，Y 轴为测试通过数/总数。快速定位哪些 Case 的回归测试被破坏 | — |
+| Tool Call 准确率 | 展示 Agent 工具调用的多维准确率：AST 签名合法率 / 工具选择正确率 / 参数格式合规率。以雷达图叠加多实验对比 | — |
+| Failure Mode 分布 | 环形图展示各 failure_mode 的分布：wrong_answer / test_timeout / budget_exceeded / parse_error / tool_error / oom / patch_apply_failed / infinite_loop。支持点击下钻查看具体 Case 列表 | — |
+| Cost per Resolved Task | 柱状图对比不同芯片/实验解决一个 L2 任务的平均成本（$/task），含 Token 消耗成本 + 算力成本。叠加 Resolved Rate 折线，展示「成本-效果」权衡 | — |
+| Parity Rate 趋势 | 折线图展示 DUT vs Reference 的 Outcome Parity 变化趋势，叠加阈值参考线（HumanEval ≥98% / SWE-bench ≥97% / Terminal-Bench ≥93%）。Parity 低于阈值时自动标红 | — |
 
 ### 5.7.3 报告管理
 
@@ -1649,6 +1664,7 @@ token 分析
 |功能|功能详细说明|交互图例|
 |---|---|---|
 |评测集导入模板标准|**说明：** 本地导入 Case 时，CSV / JSON 文件需满足以下字段规范：  <br>  <br>**必填字段：**  <br>1. `case_id`：Case 唯一标识（可由导入方提供或系统自动生成）  <br>2. `input`：Agent 任务输入（字符串，支持 Markdown）  <br>3. `scenario_tag`：场景标签（`ai_coding` / `long_context` / `video_understanding` / `video_generation`）  <br>  <br>**可选字段：**  <br>4. `expected_output`：预期输出（有参考答案时填写，用于自动评分）  <br>5. `difficulty`：难度等级（`easy` / `medium` / `hard`）  <br>6. `sub_scenario`：子场景描述  <br>7. `annotator`：标注人  <br>8. `source`：数据来源（`manual` / `from_trace` / `benchmark_xxx`）  <br>  <br>**JSON 示例：**  <br>`json<br>{<br> "case_id": "case_001",<br> "input": "请帮我修复以下 Python 代码中的 bug：...",<br> "scenario_tag": "ai_coding",<br> "expected_output": "修复后的代码应输出...",<br> "difficulty": "medium",<br> "source": "from_trace"<br>}<br>`|
+| Coding Agent 扩展字段 | **说明：** Coding Agent 场景的 Case 需额外包含以下字段（对应 coding_agent_性能评估体系 §6）：<br><br>**环境字段（必填）：**<br>1. `interaction_mode`：交互模式（`ide_complete` / `single_chat` / `repo_agent` / `multi_turn_agent` / `cli_agent` / `batch`）<br>2. `task_level`：任务粒度层级（`L1` 函数级 / `L2` 仓库级 / `L3` 特性级）<br>3. `docker_image`：沙箱基础镜像 Tag（关联 5.20 沙箱管理）<br>4. `repo_snapshot_hash`：代码仓库快照 git commit SHA（关联 5.18 数据资产管理）<br><br>**评测参数字段：**<br>5. `isl_tokens`：预估输入 Token 规模（JSON：`{p50, p95, max}`）<br>6. `osl_tokens`：预估输出 Token 规模（JSON：`{p50, p95, max}`）<br>7. `turns`：预估交互轮次（整数或范围）<br>8. `tool_calls`：预估工具调用次数（整数或范围）<br>9. `repeat_count`：建议重复次数（≥3；短 Case ≥30 取 P99）<br>10. `sampling`：采样参数（JSON：`{temperature, top_p, max_tokens, seed}`）<br><br>**风险与溯源字段：**<br>11. `contamination_risk`：训练集污染风险（`low` / `medium` / `high`）<br>12. `source_id`：原始 Benchmark 中的 ID（用于溯源，如 `django__django-11133`）<br>13. `benchmark_suite`：所属 Benchmark 套件（关联 5.21 Benchmark Suite 管理）<br><br>**验证字段：**<br>14. `grader_type`：Grader 类型（`test_execution` / `ast_validation` / `script` / `composite`）<br>15. `f2p_tests`：Fail-to-Pass 测试列表（JSON 数组）<br>16. `p2p_tests`：Pass-to-Pass 测试列表（JSON 数组） | — |
 
 ---
 
@@ -1827,3 +1843,144 @@ token 分析
 | Mock 环境配置 | **功能说明：**<br>1. 将多个 MCP Mock + API Mock 组合为一个「Mock 环境」<br>2. Mock 环境可关联到实验配置，实验运行时自动启动关联的所有 Mock 服务<br>3. **环境模板：** 支持保存常用 Mock 组合为模板，快速复用<br>4. **环境变量注入：** Mock 服务的端点地址自动注入到 Agent 运行时环境变量<br>5. **版本锁定：** 实验关联 Mock 环境时锁定所有 Mock 数据集版本 | — |
 | Mock 服务生命周期 | **功能说明：**<br>1. **自动启停：** 实验开始时自动启动关联 Mock 服务，实验结束后自动停止<br>2. **健康检查：** Mock 服务启动后自动进行健康检查，确认所有端点可用<br>3. **资源隔离：** 不同实验的 Mock 服务在独立容器中运行，互不干扰<br>4. **故障恢复：** Mock 服务异常退出时自动重启，超过重试次数标记实验为异常 | — |
 | Mock 调用统计 | **功能说明：**<br>1. 实验维度统计 Mock 服务调用情况：<br>   a. 各 Tool / 端点的调用次数、平均延迟<br>   b. 匹配成功率（匹配的请求数 / 总请求数）<br>   c. 未匹配请求列表（帮助发现 Mock 覆盖盲区）<br>2. 跨实验对比：不同芯片上运行时的 Mock 调用模式是否一致（验证 Agent 行为确定性）<br>3. Mock 覆盖率报告：标注哪些配置的 Mock 响应在实验中从未被触发 | — |
+
+---
+
+## 5.20 沙箱与容器管理
+
+> Coding Agent 评测要求每个 Case 在**隔离的 Docker 容器**中执行，需禁用外网、限制资源、锁定 git commit。本模块提供评测沙箱的全生命周期管理，是 Coding Agent 场景的执行基础设施。
+
+### 设计思路
+
+> [!note] 沙箱隔离的三大目标
+> 1. **环境一致性**：同一 Case 在不同芯片集群上使用完全相同的 Docker 镜像 + 依赖 + 代码快照，消除环境变量。
+> 2. **安全隔离**：禁用容器网络（防 Agent 作弊访问互联网）、禁用 git log（防数据泄漏），资源配额防 OOM 级联。
+> 3. **并发支持**：支持数十到数百容器并行执行（对应 coding_agent_性能评估体系 §9.6 并发语义 B），为大规模评测提供算力调度。
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| 沙箱镜像管理 | **功能说明：**<br>1. 镜像列表展示：名称、Tag、大小、基础 OS、预装语言和框架、创建时间、关联仓库快照数<br>2. 支持从 Dockerfile 构建或从镜像仓库拉取<br>3. 镜像版本管理：不可变，SHA256 标识<br>4. 内置基础镜像模板：Python3.11+pip、Node18+npm、Go1.22、Rust1.78、Multi-lang<br>5. 镜像预热：将常用镜像提前分发到各集群节点 | — |
+| 沙箱配置模板 | **功能说明：**<br>1. 预设配置模板，字段：模板名称、基础镜像、CPU 限制、内存限制、磁盘限制、超时时间、网络策略、环境变量<br>2. 网络策略选项：完全隔离（禁用所有网络）/ 仅内网（允许访问 Mock 服务）/ 开放（仅开发调试）<br>3. 环境变量注入：Mock 服务端点、Agent Scaffold 配置、模型 API 地址<br>4. git 安全策略：禁用 git log / git blame（防数据泄漏） | — |
+| 沙箱实例管理 | **功能说明：**<br>1. 实例列表展示：沙箱 ID、关联 Case、状态（创建中 / 运行中 / 已完成 / 异常 / 已销毁）、CPU 使用、内存使用、运行时长、所在节点<br>2. 支持手动创建（调试用）和实验自动创建<br>3. 实例操作：启动 / 暂停 / 恢复 / 强制终止 / 销毁<br>4. 实时日志流：查看沙箱内 stdout / stderr 输出<br>5. 文件浏览：查看沙箱内文件系统（只读，用于调试） | — |
+| 沙箱调度与并发 | **功能说明：**<br>1. 集群级沙箱调度：根据各节点资源余量自动分配沙箱<br>2. 并发池管理：配置最大并发沙箱数（按集群 / 按实验）<br>3. 队列机制：超出并发上限的 Case 进入等待队列，支持优先级<br>4. 资源预留：为实验预留节点资源，防止沙箱争抢 | — |
+| 沙箱快照与恢复 | **功能说明：**<br>1. 沙箱执行完成后自动保存最终文件系统状态（用于 Grader 评分和结果溯源）<br>2. 支持从快照恢复沙箱（调试失败 Case）<br>3. 快照存储策略：成功 Case 保留 7 天 / 失败 Case 保留 30 天 / 可配置 | — |
+
+---
+
+## 5.21 Benchmark Suite 管理
+
+> Coding Agent 评测涉及十余个业界 Benchmark（HumanEval、SWE-bench Verified/Pro、Terminal-Bench、BFCL 等），需按 L1/L2/L3 三层组织、支持子集抽样与组合、标记数据污染风险。本模块提供 Benchmark 套件的统一管理能力，与评测集模块（5.4.1）深度联动。
+
+### 与评测集（5.4.1）的关系
+
+> [!note] 分层设计
+> - **Benchmark Suite（本模块）**= 业界标准题库的管理单元，关注来源、版本、污染风险、L1/L2/L3 分层。
+> - **评测集（5.4.1）**= 平台内的评测数据集，可从 Benchmark Suite 导入 Case 子集。
+> - 典型流程：选择 Benchmark Suite → 配置抽样策略 → 导出为评测集版本 → 关联实验。
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Suite 列表 | **功能说明：**<br>1. 展示所有已接入的 Benchmark 套件<br>2. **字段：** 套件名称、来源（HumanEval / SWE-bench Verified / SWE-bench Pro / Terminal-Bench / BFCL / LiveCodeBench / BigCodeBench / 内部私有）、任务层级（L1 函数级 / L2 仓库级 / L3 特性级）、Case 总数、语言覆盖、污染风险等级（低 / 中 / 高）、版本号、最近使用时间<br>3. 支持按层级 / 语言 / 污染风险筛选 | — |
+| Suite 导入与版本管理 | **功能说明：**<br>1. **导入方式：** 官方数据集下载（URL / 手动上传）/ 内部 GitLab 自动抽取（L2-D 流水线）/ LiveCodeBench 滚动同步<br>2. **版本管理：** 每次导入生成新版本，自动记录题目增减 diff，版本不可变<br>3. **内部 Case 构造流水线（L2-D）：** 扫描内部 GitLab → 筛选 merged PR + 关联 issue → 构建 Docker 镜像 → 提取 F2P / P2P 测试集 → 人工 review | — |
+| 子集抽样与组合 | **功能说明：**<br>1. **抽样策略：** 随机抽样 / 分层抽样（按语言 / 难度 / 任务类型均匀分布）/ 全量<br>2. **组合配置：** 从多个 Suite 中各抽取子集组合为一个评测集（如 L1 全量 + L2 抽 100 + L3 抽 30）<br>3. **预设组合模板：** 日常 CI（L1 全量 + L2/L3 各 50 题）/ 月度全量 / 版本发布门禁（L1 全量 + L2 全量 + L3 抽 30）<br>4. seed 固定：抽样使用固定 seed 保证可复现 | — |
+| 污染风险管理 | **功能说明：**<br>1. 每个 Case 标记 contamination_risk（Low / Medium / High）<br>2. **套件级污染策略：** 搭配 LiveCodeBench 滚动集（训练截止日后的新题）做反污染守门<br>3. **污染告警：** 当使用高污染风险的 Suite 且未搭配反污染集时自动提醒<br>4. 内部私有 Case（L2-D）自动标记为 Low 风险 | — |
+| 场景权重配置 | **功能说明：**<br>1. 按交互模式分配权重：IDE 补全 / 单轮 Chat / 仓库级 Agent / 多轮 Autonomous Agent / CLI Agent / 批处理<br>2. 权重影响综合评分的加权计算<br>3. **内置权重模板（可自定义）：** AI Coding 重点（IDE 30% + 仓库 Agent 25% + 单轮 Chat 20% + 多轮 Agent 15% + 其他 10%） | — |
+
+---
+
+## 5.22 Grader 执行引擎
+
+> Coding Agent 的正确性判定不能只靠 LLM-Judge，必须通过在沙箱内**执行测试脚本**来判定 Pass/Fail（对应评估体系 §7.5「Outcome 优于 Token」原则）。本模块扩展现有评估器（5.4.2）能力，新增**代码执行型 Grader**，支持 F2P/P2P 测试执行、AST 校验和自定义验证脚本。
+
+### 与评估器（5.4.2）的关系
+
+> [!note] 能力扩展
+> - 现有评估器支持：**规则型**（关键词 / 正则匹配）+ **LLM-Judge**（GPT-4o 评分）
+> - 本模块新增：**代码执行型 Grader**（在沙箱内运行 pytest / jest / go test 等）+ **AST 校验型**（工具调用签名验证）
+> - Grader 是评估器的子类型，复用评估器的管理 UI，扩展执行方式。
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Grader 类型管理 | **功能说明：**<br>1. **四种 Grader 类型：**<br>   a. **测试执行型：** 在沙箱内运行 pytest / jest / go test / cargo test，判定 F2P / P2P 是否通过<br>   b. **AST 校验型：** 验证 Agent 工具调用的签名和参数是否合法，对应 BFCL 评测<br>   c. **脚本验证型：** 自定义 Python / Shell 验证脚本，如检查文件是否存在 / 进程是否运行 / 输出格式是否正确<br>   d. **复合型：** 组合多个 Grader 按权重或 AND / OR 逻辑聚合<br>2. 每种类型展示：类型图标、描述、适用层级（L1 / L2 / L3）、配置示例 | — |
+| Grader 配置 | **功能说明：**<br>1. **测试执行型配置：** 测试框架（pytest / jest / go test 等）、F2P 测试文件列表、P2P 测试文件列表、超时时间、是否允许修改测试文件（默认禁止）<br>2. **AST 校验型配置：** 工具定义 Schema（JSON Schema）、必须调用的工具列表、禁止调用的工具列表、参数校验规则<br>3. **脚本验证型配置：** 验证脚本（Python / Shell）、期望退出码、输出匹配规则<br>4. **复合型配置：** 子 Grader 列表、聚合逻辑（全部通过 AND / 加权平均 / 最低分门控） | — |
+| Grader 沙箱执行 | **功能说明：**<br>1. Grader 在 Case 的沙箱内执行（共享 Agent 修改后的文件系统）<br>2. **执行流程：** Agent 完成 → 保存沙箱快照 → 在快照上运行 Grader → 收集测试结果<br>3. **F2P / P2P 分离判定：** F2P 全部通过 AND P2P 全部通过 → Resolved（对应 SWE-bench 标准）<br>4. **测试隔离：** Grader 执行时 Agent 进程已终止，防止干扰<br>5. **超时保护：** 单个测试执行超时 → 标记为 test_timeout 而非 wrong_answer | — |
+| 评分结果管理 | **功能说明：**<br>1. **结果字段：** case_id、grader_type、resolved（bool）、f2p_passed、f2p_total、p2p_passed、p2p_total、patch_lines_added、patch_lines_deleted、patch_files_changed、failure_mode<br>2. **failure_mode 枚举：** wrong_answer / test_timeout / budget_exceeded / parse_error / tool_error / oom / hardware_fault / patch_apply_failed / infinite_loop<br>3. **测试输出日志：** 完整的 pytest / jest 输出（含错误堆栈）<br>4. **一键标记 BadCase：** 标记归因（模型问题 / 工具调用异常 / 芯片推理偏差 / scaffold 问题） | — |
+| Grader 快速测试 | **功能说明：**<br>1. 选择一个 Case + 一个 Grader 配置 → 在临时沙箱中执行 → 查看测试输出<br>2. 用于验证 Grader 配置是否正确（在批量运行前）<br>3. 支持手动修改沙箱内文件后重新运行 Grader（模拟不同 Agent 输出） | — |
+
+---
+
+## 5.23 Parity 分析模块
+
+> Parity（一致性）是跨芯片对比的核心守门指标。当 DUT（自研芯片）与 Reference（A800/H100）在同一评测集上的 Resolved 结果出现显著偏差时，说明芯片级数值问题影响了模型输出，必须先排查再继续性能测试。本模块实现评估体系 §7.5 定义的**三层 Parity 判据**。
+
+### 三层 Parity 设计
+
+> [!note] 核心原则
+> **单 Case 的 Pass 判据用 Grader（5.22），不要求输出一致；但跨 Case 的 Parity 统计必须对齐——两者是不同层次的事。**
+> - 第 1 层 **Grader**：单 Case，主判据（已在 5.22 实现）
+> - 第 2 层 **Outcome Parity**：跨 Case 统计，芯片级守门
+> - 第 3 层 **First Token Agreement**：请求级，CI 冒烟
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Outcome Parity 矩阵 | **功能说明：**<br>1. 选择 DUT 实验和 Reference 实验（同一评测集 + 同一模型权重 + 同一采样参数），系统自动计算 2×2 混淆矩阵：<br>   - A（同对）：DUT Resolved ∧ Ref Resolved<br>   - B（DUT 对 Ref 错）：DUT Resolved ∧ Ref ¬Resolved<br>   - C（DUT 错 Ref 对）：DUT ¬Resolved ∧ Ref Resolved<br>   - D（同错）：DUT ¬Resolved ∧ Ref ¬Resolved<br>2. **Outcome Parity = (A+D) / (A+B+C+D)**<br>3. 按数据集规模自动适配阈值：HumanEval(164题) ≥ 98% / SWE-bench Verified(500题) ≥ 97% / Terminal-Bench(89题) ≥ 93% / 内部私有(<50题) ≥ 90%<br>4. 矩阵可视化：热力图展示 A/B/C/D 四象限，B 和 C 标红（不一致区域）<br>5. 点击 B 或 C 区域下钻查看具体不一致的 Case 列表 | — |
+| Parity 守门机制 | **功能说明：**<br>1. **⚠ 铁律：Parity 不通过即暂停性能测试**<br>2. 实验完成评分后，系统自动触发 Parity 检查（若已配置 Reference 实验）<br>3. Parity 低于阈值时：<br>   a. 实验状态标记为「Parity 未达标」（橙色警告）<br>   b. 禁止生成跨芯片比对报告（除非手动豁免）<br>   c. 自动创建排查任务：列出所有 B/C 区域 Case，建议排查方向（数值精度 / 量化差异 / KV Cache 实现差异）<br>4. 手动豁免流程：需角色为验证工程师以上，填写豁免理由，记入审计日志 | — |
+| First Token Agreement | **功能说明：**<br>1. 同 prompt + 贪心解码（temperature=0.0）下，DUT 与 Reference 前 N 个 token 的一致比例<br>2. **配置项：** 对比 token 数 N（默认 10）、阈值（默认 ≥ 80%）<br>3. **定位：** 最前置的冒烟测试，成本极低，可每次 CI 都跑<br>4. **诊断价值：** 如果前 1 个 token 就大幅不一致，说明 prefill numerics 有问题，根本不用往下测<br>5. 结果展示：逐 prompt 展示前 N token 对比（高亮差异 token） | — |
+| Parity 看板 | **功能说明：**<br>1. 汇总所有已完成 Parity 检查的实验对<br>2. **字段：** DUT 实验名、Reference 实验名、评测集、Outcome Parity（%）、First Token Agreement（%）、阈值、达标状态（✅/⚠️/❌）<br>3. Parity 趋势图：折线展示同一 DUT 芯片在不同版本/日期下的 Parity 变化<br>4. 按 Benchmark Suite 分组展示，快速定位哪类任务 Parity 最差 | — |
+| 小样本补救 | **功能说明：**<br>1. 当内部私有 Case 数量 < 50 时，自动启用补救策略：<br>   a. **多次重复投票：** 每 Case 跑 5 次，取多数结果作为「真 Resolved」<br>   b. **配公开 benchmark 守门：** 自动搭配 HumanEval 全量作为背景广谱检测<br>   c. **First Token Agreement 前置：** 先跑 10 个 prompt 的首 token 对比<br>2. 补救策略的执行状态和结果在 Parity 看板中独立展示 | — |
+
+---
+
+## 5.24 Agent Scaffold 管理
+
+> Agent 的评测结果 = 模型 + Scaffold（脚手架框架）+ 工具集三者共同作用。不同 Scaffold（OpenHands、SWE-agent、Aider 等）对同一模型同一题的 Resolved Rate 可差 10-20 个百分点。本模块管理 Scaffold 的版本、配置和关联关系，确保跨芯片对比时 Scaffold 变量严格对齐。
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Scaffold 注册 | **功能说明：**<br>1. 注册平台支持的 Agent Scaffold 框架<br>2. **字段：** Scaffold 名称（OpenHands / SWE-agent / Aider / Claude Code / 自定义）、版本号、安装方式（Docker 镜像 / pip 包 / 源码）、官方文档链接、支持的交互模式（仓库级 / 多轮 / CLI）<br>3. 每个 Scaffold 关联一个或多个 Docker 镜像（含预装 Scaffold + 依赖）<br>4. 注册时进行连通性测试：验证 Scaffold 可正常启动并接受任务 | — |
+| Scaffold 版本管理 | **功能说明：**<br>1. 同一 Scaffold 支持多版本并存（如 OpenHands v0.28 / v0.30 / v0.32）<br>2. **版本字段：** 版本号、发布日期、变更说明、Docker 镜像 Tag、Prompt 模板哈希<br>3. 版本 Diff：对比两个版本的 Prompt 模板差异和配置差异<br>4. 版本锁定：实验关联 Scaffold 时锁定到具体版本，Ceteris Paribus 校验自动检查 | — |
+| Scaffold 配置管理 | **功能说明：**<br>1. **System Prompt 管理：** 每个 Scaffold 版本绑定一套 System Prompt 模板，支持查看和导出（不可在平台内修改，保持与上游一致）<br>2. **Prompt Hash：** 自动计算 System Prompt 的 SHA256，用于 Ceteris Paribus 校验<br>3. **工具定义：** 展示 Scaffold 注册的可用工具列表（bash / str_replace / view / create_file 等）<br>4. **运行参数：** 配置 Scaffold 级参数（最大轮次 / 最大 Token 预算 / 工具调用上限 / 超时时间） | — |
+| Scaffold 与实验关联 | **功能说明：**<br>1. 创建实验时选择 Scaffold + 版本（仅 Coding Agent 类型实验）<br>2. 实验结果页展示 Scaffold 信息（名称、版本、Prompt Hash）<br>3. **跨 Scaffold 横评：** 支持同一模型 + 同一评测集 + 不同 Scaffold 的横向比对（定位 Scaffold 本身的影响）<br>4. Scaffold 使用统计：展示各 Scaffold 的使用频率、平均 Resolved Rate、平均成本 | — |
+
+---
+
+## 5.25 Trajectory 录制与回放
+
+> Agent 的执行轨迹（Trajectory）记录了每轮推理的完整 thinking → tool_call → observation → final_answer 链条。与 Trace（5.6 可观测）关注 LLM 调用性能不同，Trajectory 关注 Agent 的**决策逻辑和行为模式**，是评估体系 §8.3 Turn-level Schema 的产品化落地。
+
+### 与 Trace 分析（5.6）的关系
+
+> [!note] 分工
+> - **Trace（5.6）**= 性能视角，记录每次 LLM API 调用的延迟、Token、资源消耗
+> - **Trajectory（本模块）**= 行为视角，记录 Agent 每轮的决策意图、工具选择、中间状态变化
+> - 两者通过 `trace_id` 和 `turn_index` 关联，支持从 Trajectory 跳转到对应 Trace 的 Span 详情
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Trajectory 自动录制 | **功能说明：**<br>1. 实验运行时自动录制每个 Case 的完整执行轨迹<br>2. **每轮记录字段（对应 §8.3 Turn-level Schema）：**<br>   a. `turn_index`：轮次序号<br>   b. `turn_type`：thinking / tool_call / final_answer<br>   c. `tool_name`：调用的工具名称（bash / str_replace / view 等）<br>   d. `tool_input`：工具调用入参<br>   e. `tool_output`：工具返回结果<br>   f. `llm_response`：LLM 原始输出（含推理过程）<br>   g. `context_size_tokens`：当前累计上下文 Token 数<br>   h. `cumulative_tool_calls`：累计工具调用次数<br>   i. `turn_e2el_ms`：本轮端到端耗时<br>   j. `status`：ok / tool_error / parse_error / budget_exceeded<br>3. 存储格式：JSONL，每轮一行 | — |
+| Trajectory 查看器 | **功能说明：**<br>1. **时间线视图：** 纵向时间线展示 Agent 每轮操作，图标区分类型（💭 thinking / 🔧 tool_call / ✅ final_answer）<br>2. **展开详情：** 点击任一轮次展开完整的 LLM 输入/输出、工具调用参数和返回值<br>3. **上下文增长图：** 折线图展示 context_size_tokens 随轮次的增长趋势，标注 KV Cache 可能溢出的拐点<br>4. **工具调用统计：** 饼图展示各工具的调用频率分布<br>5. **跳转 Trace：** 每轮右侧提供「查看 Trace Span」链接，跳转到对应 LLM 调用的性能详情 | — |
+| 跨芯片 Trajectory 对比 | **功能说明：**<br>1. 选择同一 Case 在 DUT 和 Reference 上的两条 Trajectory 进行并排对比<br>2. **轮次对齐：** 按 turn_index 对齐（注意：不同芯片上 Agent 可能走不同路径，轮次数可能不同）<br>3. **差异标注：**<br>   a. 工具选择差异（DUT 选了 bash，Ref 选了 str_replace）→ 橙色高亮<br>   b. 轮次数差异（DUT 用了 15 轮，Ref 用了 23 轮）→ 顶部汇总<br>   c. 最终结果差异（DUT Resolved，Ref Not Resolved）→ 红色标注<br>4. **典型用途：** 当 Parity 不一致时，定位 Agent 从第几轮开始走向不同路径 | — |
+| Trajectory 批量统计 | **功能说明：**<br>1. 对整个实验的 Trajectory 集合做聚合分析<br>2. **轮次分布：** 直方图展示各 Case 的总轮次数分布<br>3. **工具调用模式：** 热力图展示各 Case × 各工具的调用频次<br>4. **上下文消耗分布：** 箱线图展示各 Case 的最终 context_size_tokens<br>5. **失败路径聚类：** 对失败 Case 的 Trajectory 做模式聚类，识别常见失败模式（如「陷入 bash 无限循环」「工具调用格式反复出错」） | — |
+
+---
+
+## 5.26 Reproducibility Pack 管理
+
+> 可还原包（Reproducibility Pack）是将评测环境 + 输入数据 + 参照结果打包为一个自包含的交付物，供他方（如客户集群或其他团队）复现验证结果。对应评估体系 §15.4 的「可还原性四层模型」。
+
+### 四层可还原性模型
+
+> [!note] 分层设计
+> | 层 | 要求 | 做法 |
+> |---|------|------|
+> | **L1 环境** | bit-exact | Docker 镜像 SHA256 + pip freeze + 系统包列表 |
+> | **L2 输入** | bit-exact | 评测集版本锁定 + 模型权重 hash + Scaffold 版本 + Prompt hash + seed |
+> | **L3 轨迹** | 完整记录 | Trajectory JSONL 全量归档（不要求一致，仅供对比分析） |
+> | **L4 结果** | 统计可复现 | Resolved Rate 95% CI 与原报告重叠即判定可复现 |
+
+| 功能 | 功能详细说明 | 交互图例 |
+|------|------------|---------|
+| Pack 创建 | **功能说明：**<br>1. 选择一个或多个实验 Run，一键打包为 Reproducibility Pack<br>2. **打包内容：**<br>   a. **环境层：** Docker 镜像导出（tar.gz）/ Dockerfile + 依赖锁文件 / 系统环境信息<br>   b. **输入层：** 评测集数据（Case JSONL）/ 模型权重 hash 记录 / Scaffold 版本与配置 / 采样参数 / Mock 数据集（若有）<br>   c. **轨迹层：** 所有 Case 的 Trajectory JSONL / Trace 数据导出<br>   d. **结果层：** Grader 评分结果 / Parity 矩阵 / 汇总指标 / 报告 PDF<br>3. **SHA256 校验清单：** 对包内每个文件生成 SHA256，打包时自动生成 MANIFEST.sha256<br>4. Pack 大小估算：打包前预估大小，超过阈值（如 50GB）提示压缩选项 | — |
+| Pack 版本管理 | **功能说明：**<br>1. Pack 列表：Pack 名称、关联实验、创建时间、大小、状态（打包中 / 已完成 / 已交付 / 已归档）<br>2. 版本关联：Pack 绑定实验 Run ID + 评测集版本 + Scaffold 版本，保证追溯性<br>3. Pack 不可变：创建后内容不可修改，只能创建新版本<br>4. 存储策略：活跃 Pack 保留 90 天，已交付 Pack 保留 1 年，到期自动归档 | — |
+| Pack 导入与校验 | **功能说明：**<br>1. **导入 Pack：** 上传外部创建的 Reproducibility Pack（ZIP/tar.gz），系统自动解析内容<br>2. **完整性校验：** 逐文件验证 SHA256 与 MANIFEST.sha256 一致性，不一致项标红<br>3. **环境还原：** 从 Pack 中的 Dockerfile / 镜像导出自动构建沙箱镜像<br>4. **一键复现：** 基于 Pack 内的评测集 + 配置 + 环境自动创建新实验，执行后对比结果<br>5. **复现判定：** 新实验的 Resolved Rate 95% CI 与 Pack 内结果重叠 → ✅ 可复现；不重叠 → ❌ 不可复现（需排查） | — |
+| 跨集群交付 | **功能说明：**<br>1. **交付工作流：** 创建 Pack → 内部验证（在本地集群复现一次）→ 标记为「已验证」→ 导出交付<br>2. **交付清单生成：** 自动生成交付物检查单（Checklist），列出接收方需确认的事项<br>3. **交付追踪：** 记录 Pack 交付给了哪个团队/客户、交付时间、反馈状态<br>4. **接收方指南：** Pack 内附带 README.md，指导接收方如何导入、还原环境、执行复现 | — |
