@@ -3,8 +3,8 @@
   "title": "Complete AaaS metrics documentation table",
   "titleGenerationStatus": "success",
   "createdAt": 1776826608909,
-  "updatedAt": 1776855180440,
-  "lastResponseAt": 1776855180440,
+  "updatedAt": 1776860367966,
+  "lastResponseAt": 1776860367966,
   "sessionId": "cf6dec50-605c-4394-952f-3be5d80ddb1a",
   "sdkSessionId": "cf6dec50-605c-4394-952f-3be5d80ddb1a",
   "currentNote": "AaaS 验证平台/AaaS输出指标汇总.md",
@@ -12,10 +12,10 @@
     "model": "opus[1m]",
     "inputTokens": 1,
     "cacheCreationInputTokens": 155,
-    "cacheReadInputTokens": 294263,
+    "cacheReadInputTokens": 342140,
     "contextWindow": 1000000,
-    "contextTokens": 294419,
-    "percentage": 29
+    "contextTokens": 342296,
+    "percentage": 34
   },
   "subagentData": {
     "toolu_01JhFbPV9ExrEnyp3YqyAYeM": {
