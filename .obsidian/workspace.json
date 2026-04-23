@@ -190,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 483.5
+    "width": 394.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -210,11 +210,11 @@
   },
   "active": "18f6c258fc216523",
   "lastOpenFiles": [
-    "AaaS 验证平台/AaaS输出指标汇总方案说明.md",
-    "AaaS 验证平台/AaaS指标报告模板.md",
-    "AaaS 验证平台/aaas-charts",
-    "AaaS 验证平台/coding_agent_性能评估体系.md",
     "AaaS 验证平台/AaaS-PRD.md",
+    "AaaS 验证平台/AaaS指标报告模板.md",
+    "AaaS 验证平台/AaaS输出指标汇总方案说明.md",
+    "AaaS 验证平台/coding_agent_性能评估体系.md",
+    "AaaS 验证平台/aaas-charts",
     "AaaS 验证平台",
     "42向量-知识库/名人堂/全部人物/张一鸣.md",
     "42向量-知识库/名人堂/全部人物/段永平.md",

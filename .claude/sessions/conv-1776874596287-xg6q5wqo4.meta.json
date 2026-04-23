@@ -3,19 +3,19 @@
   "title": "完善AaaS指标汇总报告模板",
   "titleGenerationStatus": "success",
   "createdAt": 1776874596288,
-  "updatedAt": 1776912646523,
-  "lastResponseAt": 1776912646523,
+  "updatedAt": 1776928742429,
+  "lastResponseAt": 1776928742429,
   "sessionId": "8dea9a66-4a5b-425a-ab56-9d58151a8072",
   "sdkSessionId": "8dea9a66-4a5b-425a-ab56-9d58151a8072",
   "currentNote": "AaaS 验证平台/AaaS指标报告模板.md",
   "usage": {
     "model": "opus[1m]",
     "inputTokens": 1,
-    "cacheCreationInputTokens": 19001,
-    "cacheReadInputTokens": 196971,
+    "cacheCreationInputTokens": 909,
+    "cacheReadInputTokens": 262220,
     "contextWindow": 1000000,
-    "contextTokens": 215973,
-    "percentage": 22
+    "contextTokens": 263130,
+    "percentage": 26
   },
   "subagentData": {
     "toolu_01DM6sFNvv9EeRqpNhL9HmuA": {
