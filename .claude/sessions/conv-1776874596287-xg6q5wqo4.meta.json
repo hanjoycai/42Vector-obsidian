@@ -3,19 +3,19 @@
   "title": "完善AaaS指标汇总报告模板",
   "titleGenerationStatus": "success",
   "createdAt": 1776874596288,
-  "updatedAt": 1776935662799,
-  "lastResponseAt": 1776935662799,
+  "updatedAt": 1776942518620,
+  "lastResponseAt": 1776942518620,
   "sessionId": "8dea9a66-4a5b-425a-ab56-9d58151a8072",
   "sdkSessionId": "8dea9a66-4a5b-425a-ab56-9d58151a8072",
   "currentNote": "AaaS 验证平台/AaaS指标报告模板.md",
   "usage": {
     "model": "opus[1m]",
     "inputTokens": 1,
-    "cacheCreationInputTokens": 6017,
-    "cacheReadInputTokens": 285925,
+    "cacheCreationInputTokens": 205,
+    "cacheReadInputTokens": 422934,
     "contextWindow": 1000000,
-    "contextTokens": 291943,
-    "percentage": 29
+    "contextTokens": 423140,
+    "percentage": 42
   },
   "subagentData": {
     "toolu_01DM6sFNvv9EeRqpNhL9HmuA": {
@@ -388,6 +388,18 @@
       "asyncStatus": "running",
       "agentId": "ac5ea07e695e5e9f6",
       "startedAt": 1776935168245
+    },
+    "toolu_011u4vQHUDiY5adNi7TcqVUx": {
+      "id": "toolu_011u4vQHUDiY5adNi7TcqVUx",
+      "description": "Upgrade all 计算说明 columns",
+      "prompt": "Read the file `AaaS 验证平台/AaaS指标报告模板.md` completely. Your task is to upgrade ALL \"计算说明\" columns in EVERY metric table to match the detailed format used in §6.5 MCP/外部工具调用影响 table's \"输出吞吐量\" row.\n\n## Reference Example (the standard to match)\n\nThe \"输出吞吐量\" in §6.5 currently has this format in its 计算说明 cell:\n\n```\n**输出吞吐量 = Σ(各成功请求的 output_tokens) / 测试总时长**<br><br>即：$Throughput_{output} = \\frac{\\sum_{i=1}^{N} output\\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N**：测试期间所有成功完成的请求数量<br>- **output_tokens_i**：第 i 个成功请求生成的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 只计算\"成功请求\"**——超时、报错、被限流的请求不纳入分子，避免虚高。<br><br>**2. 只统计 output_tokens**——区别于\"总吞吐量\"（input + output），输出吞吐量专注于模型实际生成的部分，因为生成（decode）阶段才是推理的性能瓶颈。<br><br>**3. 测试总时长是墙钟时间**——从第一个请求发出到最后一个请求完成的端到端时间，而非各请求耗时之和\n```\n\n## Structure pattern for each cell:\n1. **Bold formula** in natural language\n2. **LaTeX formula** (using $...$)\n3. **Variable definitions** with bullet list (其中: ...)\n4. **Units** (单位: ...)\n5. **1-3 numbered \"为什么这么算\" key notes** explaining design decisions or gotchas\n\n## Tables to upgrade (line numbers from current file):\n\n1. **§5.1 单任务基线** (line 281-295): 首轮TTFT, 末轮TTFT, 加权TPOT, max P99_ITL, AaaS-Latency, MaaS-Latency, Input tokens(累计), Input tokens(去重), Output tokens, 输出吞吐量(任务有效), 输出吞吐量(模型纯推理), QPS, QPM\n2. **§5.2 测试元数据** (line 342-350): 测试总时长, 总请求数, 成功请求数, 失败请求数, 超时请求数, 限流/拒绝请求数, 错误类型分布\n3. **§5.2 并发补充指标** (line 366-380): 请求吞吐量, 总吞吐量, 有效吞吐量Goodput, 端到端延迟均值, TPOT均值, ITL均值, Decode阶段平均延迟, 模型推理累计耗时, 平均排队等待时间, KV Cache使用率峰值, 被抢占请求数, 超时请求数, 限流/拒绝请求数\n4. **§6.1 链路拆解** (line 472-479): 排队等待, Prefill, Decode, 后处理, ITL Jitter\n5. **§6.2 Agent任务质量** (line 498-505): 任务完成率, 决策准确率, 工具调用正确率, 平均任务耗时, 平均交互轮数, ROUGE-1\n6. **§6.3 推理引擎调度** (line 509-520): KV Cache使用率峰值, 被抢占请求数, 运行中请求数峰值, 等待请求数峰值, Prefix Cache命中率, 总输入Token, 总生成Token, 成功请求数(引擎级), 网络发送吞吐, 网络接收吞吐\n7. **§6.4 量化精度** (line 533-538): Agent任务完成率, 决策准确率, 工具调用正确率, Token精度\n8. **§6.5 MCP工具调用** (line 552-560): GPU利用率, CPU利用率, 内存占用, 功耗, 工具调用平均延迟, 工具调用异常率 (输出吞吐量 already done - keep as-is!)\n9. **§6.6 存储诊断** (line 566-575): all 8 rows\n10. **§6.6 网络诊断** (line 579+): all rows\n11. **§6.6 集群健康** (line 591+): all rows\n12. **§7.1 硬件利用** (line 609-619): MFU, MBU, 加速卡利用率, 加速卡显存, CPU利用率, 内存利用率, 互联带宽, PCIe带宽, Goodput\n13. **§7.2 功耗能效** (line 623-629): 加速卡功耗, 系统总功耗, 加速卡温度, 每瓦吞吐量, 推理每token消耗\n14. **§7.3 成本核算** (line 633-637): 每小时成本, 单请求成本, ¥/M-token\n15. **§7.3 成本拆解** (line 641-648): Input token费用, Output token费用, 工具调用开销, 电力费用, 设备折旧分摊\n\n## CRITICAL RULES:\n- Keep ALL existing data values, comparison values, and judgments EXACTLY as-is\n- ONLY replace the content of the 计算说明 column cells\n- Keep ALL image URLs and placeholders exactly as-is\n- DO NOT change any other content or structure\n- The \"输出吞吐量\" row in §6.5 is already perfect - DO NOT change it\n- Use `<br>` for line breaks within cells, `<br><br>` for paragraph separations\n- Each formula should be contextually accurate for its specific metric\n- Variable names should match the actual data columns in the table\n\n## Example upgrades for key metrics:\n\n**首轮 TTFT** should become:\n```\n**首轮 TTFT = T(first_token_received) − T(request_sent)**<br><br>即：$TTFT_1 = t_{first\\_token}^{(R1)} - t_{request}^{(R1)}$<br><br>其中：<br>- **R1**：Agent 任务第 1 轮模型调用<br>- **t_first_token**：模型返回第一个 token 的时间戳<br>- **t_request**：客户端发送请求的时间戳<br>- 单位：**ms**<br><br>**1. 取首轮而非跨轮平均**——首轮 input_tokens 最少（~2K），TTFT 最小，代表用户首次感知的响应速度。<br><br>**2. 取 10 次重复的中位数**——排除偶发冷启动或 GC 抖动对结果的污染。\n```\n\n**加权 TPOT** should become:\n```\n**加权 TPOT = Σ(TPOT_i × output_tokens_i) / Σ(output_tokens_i)**<br><br>即：$TPOT_{weighted} = \\frac{\\sum_{r=1}^{8} TPOT_r \\times out_r}{\\sum_{r=1}^{8} out_r}$<br><br>其中：<br>- **r**：轮次编号（1-8）<br>- **TPOT_r**：第 r 轮的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1)<br>- **out_r**：第 r 轮的 output_tokens 数<br>- 单位：**ms/token**<br><br>**1. 按 output_tokens 加权而非算术平均**——生成 2000 token 的重轮次对用户体验影响远大于生成 100 token 的轻轮次。<br><br>**2. 跨 8 轮聚合后取 10 次重复的中位数**——先轮内计算 TPOT，再跨轮加权，最后跨重复取中位数。\n```\n\nNow read the full file and WRITE the updated version with ALL 计算说明 cells upgraded to this detailed format. Make sure to write the complete file.",
+      "mode": "async",
+      "isExpanded": false,
+      "status": "running",
+      "toolCalls": [],
+      "asyncStatus": "running",
+      "agentId": "a77b6824b64e617fb",
+      "startedAt": 1776936744869
     }
   }
 }

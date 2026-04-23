@@ -31,34 +31,44 @@ tags:
 
 ## 一、测试环境与配置
 
-### 1.1 硬件环境
+### 1.1 测试环境
 
-| 配置项         | NGU800P           | 基准：NVIDIA A800 80GB |
-| ----------- | ----------------- | ------------------- |
-| **芯片型号**    | NGU800P-80G Rev.2 | A800-SXM4-80GB      |
-| **显存容量**    | 80 GB HBM2e       | 80 GB HBM2e         |
-| **HBM 带宽**  | 2.4 TB/s          | 2.0 TB/s            |
-| **FP16 算力** | 350 TFLOPS        | 312 TFLOPS          |
-| **互联**      | 自研 XLink 600GB/s  | NVLink 600GB/s      |
-| **卡数/节点**   | 8 卡               | 8 卡                 |
-| **服务器型号**   | `[待填写]`           | DGX A800            |
-| **CPU**     | `[待填写]`           | AMD EPYC 7742 × 2   |
-| **RAM**     | `[待填写]`           | 1 TB DDR4           |
+| 配置类别      | 配置项                    | NGU800P                         | 基准 A800                         |
+| --------- | ---------------------- | ------------------------------- | ------------------------------- |
+| **芯片**    | 型号                     | NGU800P-80G Rev.2               | A800-SXM4-80GB                  |
+|           | 显存                     | 80 GB HBM2e                     | 80 GB HBM2e                     |
+|           | 驱动版本                   | NGU800P-Driver v2.4.1           | NVIDIA 535.129.03               |
+|           | 固件版本                   | NGU800P-FW v1.8.0               | —                               |
+| **服务器**   | **HBM 带宽**             | 2.4 TB/s                        | 2.0 TB/s                        |
+|           | **FP16 算力**            | 350 TFLOPS                      | 312 TFLOPS                      |
+|           | **互联**                 | 自研 XLink 600GB/s                | NVLink 600GB/s                  |
+|           | **卡数/节点**              | 8 卡                             | 8 卡                             |
+|           | **服务器型号**              | `[待填写]`                         | DGX A800                        |
+|           | **CPU**                | `[待填写]`                         | AMD EPYC 7742 × 2               |
+|           | **RAM**                | `[待填写]`                         | 1 TB DDR4                       |
+| **推理引擎**  | 引擎                     | vLLM v0.7.2 (NGU800P-fork)      | vLLM v0.7.2                     |
+|           | **KV Cache 配置**        | Automatic Prefix Caching ON     | Automatic Prefix Caching ON     |
+|           | tensor_parallel_size   | 4                               | 4                               |
+|           | max_model_len          | 32768                           | 32768                           |
+|           | max_num_batched_tokens | 8192                            | 8192                            |
+|           | enable_prefix_caching  | true                            | true                            |
+|           | gpu_memory_utilization | 0.92                            | 0.90                            |
+| **模型**    | 名称                     | GLM-4.7-350B                    | GLM-4.7-350B                    |
+|           | 量化模式                   | FP16                            | FP16                            |
+|           | temperature            | 0 (greedy)                      | 0 (greedy)                      |
+|           | top_p                  | 1.0                             | 1.0                             |
+|           | top_k                  | -1（不启用）                        | -1（不启用）                        |
+|           | n（生成数）                 | 1                               | 1                               |
+|           | max_tokens             | 4096                            | 4096                            |
+|           | frequency_penalty      | 0                               | 0                               |
+|           | presence_penalty       | 0                               | 0                               |
+|           | stop_sequences         | `["\n\nHuman:"]`                | `["\n\nHuman:"]`                |
+|           | 响应方式                   | Stream                          | Stream                          |
+| **Agent** | 框架                     | Claude Code Agent v3.2          | Claude Code Agent v3.2          |
+|           | 工具列表                   | Read, Write, Grep, Bash, Test   | Read, Write, Grep, Bash, Test   |
+|           | MCP Server             | file-ops v1.0, test-runner v1.0 | file-ops v1.0, test-runner v1.0 |
 
-### 1.2 模型环境
-
-| 配置项 | NGU800P | 基准 A800 |
-| --- | --- | --- |
-| **驱动版本** | NGU800P-Driver v2.4.1 | NVIDIA 535.129.03 |
-| **推理引擎** | vLLM v0.7.2 (NGU800P-fork) | vLLM v0.7.2 |
-| **模型** | GLM-4.7-350B | GLM-4.7-350B |
-| **量化模式** | FP8 (W8A8) | FP16 |
-| **Agent 框架** | Claude Code Agent v3.2 | Claude Code Agent v3.2 |
-| **KV Cache 配置** | Automatic Prefix Caching ON | Automatic Prefix Caching ON |
-| **max_model_len** | 32768 | 32768 |
-| **tensor_parallel_size** | 4 | 4 |
-
-### 1.3 Agent 场景定义：AI Coding
+### 1.2 Agent 场景定义：AI Coding
 
 | 场景属性 | 描述 |
 | --- | --- |
@@ -70,7 +80,7 @@ tags:
 | **工具调用类型** | 文件读写、Grep 搜索、代码执行、测试运行（MCP Server） |
 | **工具调用次数** | 3-5 次 / 任务 |
 
-### 1.4 集群环境与拓扑
+### 1.3 集群环境与拓扑
 
 **A800 × 1000 卡集群**：125 节点 × 8 卡/节点，按机架组织部署。
 
@@ -162,8 +172,6 @@ graph TB
 
 > **本章列出 AI Coding Agent 场景验证所用的全部评测 Case**，确保测试的可复现性和覆盖度。
 
-### 2.1 评测 Case 统一列表
-
 | Case ID | 来源 | 任务描述 | 难度 | 预期轮数 | 涉及工具/核心验证能力 |
 | ------- | --- | --- | --- | ----- | ------------ |
 | SWE-001 | SWE-bench Lite | 修复 django/django QuerySet.filter() 对空列表的处理 | 中等 | 6-8 | Read, Grep, Write, Test |
@@ -206,18 +214,18 @@ flowchart TB
     title["<b>AaaS 指标体系架构</b>"]
     style title fill:#f0edff,stroke:#6245f6,stroke-width:2px,color:#1a1a1a
 
-    L1["<b>第一层：体验指标（面向客户决策）</b><br/>&quot;Agent 跑得怎么样？&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>端到端延迟 · 吞吐量 · 首 token 响应<br/>单任务 / 并发 / 百分位分布"]
+    L1["<b>第一层：体验指标</b><br/>&quot;面向客户决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>端到端延迟 · 吞吐量 · 首 token 响应<br/>单任务 / 并发 / 百分位分布"]
     style L1 fill:#6245f6,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L2["<b>第二层：诊断指标（面向工程定位）</b><br/>&quot;慢在哪里？为什么慢？稳不稳？&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎调度状态（KV Cache / 抢占 / 批处理）<br/>工具调用影响 · 基础设施诊断"]
+    L2["<b>第二层：诊断指标</b><br/>&quot;（面向工程定位）&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎调度状态（KV Cache / 抢占 / 批处理）<br/>工具调用影响 · 基础设施诊断"]
     style L2 fill:#7c5ff7,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L3["<b>第三层：成本指标（面向商务/采购）</b><br/>&quot;花多少钱？值不值？&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率 · 功耗能效 · ¥/M-token<br/>每瓦吞吐量"]
+    L3["<b>第三层：成本指标</b><br/>&quot;市场的成本竞争力&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率 · 功耗能效 · ¥/M-token<br/>每瓦吞吐量"]
     style L3 fill:#9b80f9,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
     title -.-> L1
-    L1 -->|"体验不达标？向下钻取"| L2
-    L2 -->|"定位问题后算账"| L3
+    L1 -->|"体验不达标？向下诊断"| L2
+    L2 -->|"定位问题优化成本"| L3
 
     linkStyle 0 stroke:#cccccc,stroke-width:1px
     linkStyle 1 stroke:#6245f6,stroke-width:2px,color:#6245f6
@@ -227,7 +235,7 @@ flowchart TB
 
 ---
 
-## 四、AaaS 指标 vs MaaS 指标：核心区别
+## 四、AaaS 指标 vs MaaS 指标区别
 
 > **MaaS 指标是"单次模型调用的成绩单"，
 > AaaS 指标是"Agent 完成整个业务场景任务的成绩单"。
@@ -252,16 +260,7 @@ flowchart TB
 | **E2E Latency** | 单次请求端到端延迟 | 任务级 E2E（含工具+编排）+ 模型推理累计 | AaaS 含全链路 |
 | **Input tokens** | 单次请求输入 token 数 | 累计调用量 + 去重信息量 + 上下文膨胀率 | AaaS 报两个口径 |
 
-### 4.3 AaaS 独有指标
 
-| 指标 | 为什么 MaaS 没有 | AaaS 的价值 |
-| --- | --- | --- |
-| **Agent 任务完成率** | MaaS 不知道什么是"任务" | 直接衡量芯片能否支撑完整业务场景 |
-| **决策准确率** | MaaS 不评估输出正确性 | 检测芯片精度是否影响 Agent 决策质量 |
-| **工具调用正确率** | MaaS 不涉及工具调用 | 验证芯片上的 function calling 能力 |
-| **Agent 并发任务成功率** | MaaS 并发只看请求级 | 验证多 Agent 同时运行的可靠性 |
-
----
 
 # 第二部分：指标明细
 
@@ -269,7 +268,7 @@ flowchart TB
 
 ## 五、体验指标
 
-> **价值定位**：面向客户决策层的"芯片性能成绩单"，直接回答"够不够快、扛不扛得住并发"。
+> **价值定位**：面向客户决策层的"芯片性能成绩单"。体验指标直接回答三个业务问题——**单任务够不够快**（TTFT/TPOT/E2E 是否满足实时交互体验）、**并发扛不扛得住**（吞吐量和成功率在 10-100 Agent 并发下是否稳定）、**百分位长尾可不可控**（P99 延迟是否在客户 SLO 范围内）。客户的芯片 POC 验收和采购决策主要看这一层，指标不达标则直接否决。
 
 > [!note] 测试基数规则
 > 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
@@ -278,21 +277,22 @@ flowchart TB
 
 **【AI Coding 场景样例：Claude Code 修复 Bug，8 轮调用，10 次重复取中位数】**
 
-| 指标 | NGU800P | A800 80GB | 对比 | 判定 | 计算说明 |
-| --- | --- | --- | --- | --- | --- |
-| **首轮 TTFT** | 135 ms | 148 ms | -8.8% | 达标 | **首轮 TTFT = T(first_token_received) − T(request_sent)**<br><br>即：$TTFT_1 = t_{first\_token}^{(R1)} - t_{request}^{(R1)}$<br><br>其中：<br>- **R1**：Agent 任务第 1 轮模型调用<br>- **t_first_token**：模型返回第一个 token 的时间戳<br>- **t_request**：客户端发送请求的时间戳<br>- 单位：**ms**<br><br>**1. 取首轮而非跨轮平均**——首轮 input_tokens 最少（~2K），TTFT 最小，代表用户首次感知的响应速度。<br><br>**2. 取 10 次重复的中位数**——排除偶发冷启动或 GC 抖动对结果的污染。 |
-| **末轮 TTFT** | 980 ms | 1,020 ms | -3.9% | 达标 | **末轮 TTFT = T(first_token_received) − T(request_sent)，取第 8 轮**<br><br>即：$TTFT_8 = t_{first\_token}^{(R8)} - t_{request}^{(R8)}$<br><br>其中：<br>- **R8**：Agent 任务第 8 轮（末轮）模型调用<br>- **t_first_token**：模型返回第一个 token 的时间戳<br>- **t_request**：客户端发送请求的时间戳<br>- 单位：**ms**<br><br>**1. 末轮 input_tokens 最多（~18.5K）**——代表最长上下文下的 Prefill 性能，是 TTFT 的最坏情况。<br><br>**2. 首轮与末轮配对观察**——两者差距反映 Prefill 随上下文长度增长的劣化程度。 |
-| **加权 TPOT** | 13.8 ms/tok | 14.2 ms/tok | -2.8% | 达标 | **加权 TPOT = Σ(TPOT_i × output_tokens_i) / Σ(output_tokens_i)**<br><br>即：$TPOT_{weighted} = \frac{\sum_{r=1}^{8} TPOT_r \times out_r}{\sum_{r=1}^{8} out_r}$<br><br>其中：<br>- **r**：轮次编号（1-8）<br>- **TPOT_r**：第 r 轮的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1)<br>- **out_r**：第 r 轮的 output_tokens 数<br>- 单位：**ms/token**<br><br>**1. 按 output_tokens 加权而非算术平均**——生成 2000 token 的重轮次对用户体验影响远大于生成 100 token 的轻轮次。<br><br>**2. 跨 8 轮聚合后取 10 次重复的中位数**——先轮内计算 TPOT，再跨轮加权，最后跨重复取中位数。 |
-| **max P99_ITL** | 18.5 ms/tok | 17.2 ms/tok | +7.6% | 关注 | **max P99_ITL = max(各轮的 P99 ITL)**<br><br>即：$ITL_{max\_P99} = \max_{r=1}^{8} P99(ITL_r)$<br><br>其中：<br>- **ITL_r**：第 r 轮所有相邻 token 间隔时间的集合 $\{t_{k+1} - t_k\}$<br>- **P99(ITL_r)**：第 r 轮 ITL 分布的第 99 百分位值<br>- 单位：**ms/token**<br><br>**1. 取各轮 P99 的最大值而非平均**——用户感知的"卡顿"由最差轮次决定，均值会掩盖尾部抖动。<br><br>**2. 取 10 次重复的中位数**——确保最差轮次的 P99 ITL 是稳定可复现的，而非偶发抖动。 |
-| **AaaS-Latency（任务 E2E）** | 132 s | 140 s | -5.7% | 达标 | **AaaS-Latency = T(task_end) − T(task_start)**<br><br>即：$Latency_{AaaS} = t_{task\_end} - t_{task\_start}$<br><br>其中：<br>- **t_task_start**：Agent 接收到任务的时间戳<br>- **t_task_end**：Agent 输出最终结果的时间戳<br>- 包含：全部模型推理 + 工具调用 + Agent 编排调度耗时<br>- 单位：**s**<br><br>**1. 这是用户感知的完整任务时长**——从发出"修复这个 Bug"到收到最终答案的墙钟时间。<br><br>**2. 与 MaaS-Latency 配对观察**——两者差值 = 非推理开销（工具调用 + 编排 + 网络），用于定位瓶颈。 |
-| **MaaS-Latency（模型推理累计）** | 76 s | 81 s | -6.2% | 达标 | **MaaS-Latency = Σ(各轮模型推理耗时)**<br><br>即：$Latency_{MaaS} = \sum_{r=1}^{8} (t_{last\_token}^{(r)} - t_{request}^{(r)})$<br><br>其中：<br>- **r**：轮次编号（1-8）<br>- **t_last_token**：第 r 轮最后一个 token 返回的时间戳<br>- **t_request**：第 r 轮请求发送的时间戳<br>- 单位：**s**<br><br>**1. 仅累加模型推理部分**——不含工具调用、编排调度等非推理开销，纯粹衡量芯片推理能力。<br><br>**2. 模型推理占比 = MaaS-Latency / AaaS-Latency**——本例中 76/132 = 59.1%，说明约 40% 时间花在非推理环节。 |
-| **Input tokens（累计调用量）** | 81,500 | 81,500 | — | 同一评估集 | **累计 Input tokens = Σ(各轮 input_tokens)**<br><br>即：$Tokens_{input\_cum} = \sum_{r=1}^{8} input\_tokens_r$<br><br>其中：<br>- **input_tokens_r**：第 r 轮发送给模型的完整 input token 数（含历史上下文）<br>- 单位：**tokens**<br><br>**1. 包含跨轮重复上下文**——Agent 每轮会把前几轮对话历史拼入 input，导致累计调用量远大于净信息量。<br><br>**2. 与去重信息量配对使用**——膨胀率 = 累计 / 去重 = 81500 / 20000 = 4.1×，膨胀率越高说明上下文管理越低效。 |
-| **Input tokens（去重信息量）** | 20,000 | 20,000 | — | 同一评估集 | **去重 Input tokens = 去除跨轮重复后的净信息量**<br><br>即：$Tokens_{input\_dedup} = \|Union(\text{各轮 input 中的唯一 token 序列})\|$<br><br>其中：<br>- 去重方法：识别各轮 input 中重复出现的上下文片段（系统 prompt、历史对话等），只计一次<br>- 单位：**tokens**<br><br>**1. 反映任务的真实信息量**——81,500 累计调用中实际只有 20,000 token 是新增信息。<br><br>**2. 上下文膨胀率 = 累计 / 去重**——4.1× 的膨胀率意味着 Prefix Cache 命中潜力很大，可节省 75% 的 Prefill 计算。 |
-| **Output tokens（总量）** | 5,250 | 5,250 | — | 同一评估集 | **Output tokens = Σ(各轮 output_tokens)**<br><br>即：$Tokens_{output} = \sum_{r=1}^{8} output\_tokens_r$<br><br>其中：<br>- **output_tokens_r**：第 r 轮模型生成的 output token 数<br>- 单位：**tokens**<br><br>**1. 输出量决定 Decode 阶段耗时**——Decode 是逐 token 自回归生成，output_tokens 直接决定推理时长。<br><br>**2. 两张芯片的 output 数一致**——使用 temperature=0 greedy decoding，确保输出长度可比。 |
-| **输出吞吐量（任务有效）** | 39.8 tok/s | 37.5 tok/s | +6.1% | 优秀 | **任务有效输出吞吐量 = Σ(output_tokens) / task_duration**<br><br>即：$Throughput_{task} = \frac{\sum_{r=1}^{8} output\_tokens_r}{T_{task\_end} - T_{task\_start}}$<br><br>其中：<br>- **output_tokens_r**：第 r 轮生成的 output token 数<br>- **T_task_end − T_task_start**：任务端到端墙钟时间（含工具调用等待）<br>- 单位：**tokens/s**<br><br>**1. 分母是任务全程时间**——包含工具调用、编排等非推理等待，反映用户实际感受到的生成速度。<br><br>**2. 低于模型纯推理吞吐量是正常的**——任务有效吞吐 39.8 vs 纯推理 69.1，差距来自 40% 的非推理时间。 |
-| **输出吞吐量（模型纯推理）** | 69.1 tok/s | 64.8 tok/s | +6.6% | 优秀 | **模型纯推理输出吞吐量 = Σ(output_tokens) / Σ(各轮推理耗时)**<br><br>即：$Throughput_{model} = \frac{\sum_{r=1}^{8} output\_tokens_r}{\sum_{r=1}^{8} latency_r^{(inference)}}$<br><br>其中：<br>- **output_tokens_r**：第 r 轮生成的 output token 数<br>- **latency_r^(inference)**：第 r 轮的纯模型推理耗时（Prefill + Decode）<br>- 单位：**tokens/s**<br><br>**1. 分母仅含推理时间**——剔除工具调用、编排等非推理开销，纯粹衡量芯片的 Decode 生成能力。<br><br>**2. 与任务有效吞吐量配对观察**——两者比值反映推理时间占比，本例 39.8/69.1 ≈ 57.6%。 |
-| **QPS（系统请求吞吐）** | 5.2 req/s | 4.8 req/s | +8.3% | 达标 | **QPS = 成功完成的请求数 / 测试总时长**<br><br>即：$QPS = \frac{N_{success}}{T_{total}}$<br><br>其中：<br>- **N_success**：测试期间成功完成（HTTP 2xx 且结果有效）的请求数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**req/s**<br><br>**1. 只计"成功请求"**——超时、报错的请求不纳入，避免虚高。<br><br>**2. 反映系统在单任务基线下的请求处理能力**——并发场景下 QPS 会随并发数线性增长（理想情况）。 |
-| **QPM（分钟级吞吐）** | 312 req/min | 288 req/min | +8.3% | 达标 | **QPM = QPS × 60**<br><br>即：$QPM = QPS \times 60$<br><br>其中：<br>- **QPS**：每秒请求吞吐量<br>- 单位：**req/min**<br><br>**1. QPM 是 QPS 的分钟级换算**——便于与业务侧按分钟计费的 SLA 对齐。<br><br>**2. 适用于容量规划**——"1000 卡集群每分钟能处理多少请求"直接用 QPM × 节点数估算。 |
+| 指标                         | NGU800P     | A800 80GB   | 对比    | 判定    | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------- | ----------- | ----------- | ----- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **首轮 TTFT**                | 135 ms      | 148 ms      | -8.8% | 达标    | **首轮 TTFT = T(first_token_received) − T(request_sent)**<br><br>即：$TTFT_1 = t_{first\_token}^{(R1)} - t_{request}^{(R1)}$<br><br>其中：<br>- **R1**：Agent 任务第 1 轮模型调用<br>- **t_first_token**：模型返回第一个 token 的时间戳<br>- **t_request**：客户端发送请求的时间戳<br>- 单位：**ms**<br><br>**1. 取首轮而非跨轮平均**——首轮 input_tokens 最少（~2K），TTFT 最小，代表用户首次感知的响应速度。<br><br>**2. 取 10 次重复的中位数**——排除偶发冷启动或 GC 抖动对结果的污染。                                                                                                                    |
+| **末轮 TTFT**                | 980 ms      | 1,020 ms    | -3.9% | 达标    | **末轮 TTFT = T(first_token_received) − T(request_sent)，取第 8 轮**<br><br>即：$TTFT_8 = t_{first\_token}^{(R8)} - t_{request}^{(R8)}$<br><br>其中：<br>- **R8**：Agent 任务第 8 轮（末轮）模型调用<br>- **t_first_token**：模型返回第一个 token 的时间戳<br>- **t_request**：客户端发送请求的时间戳<br>- 单位：**ms**<br><br>**1. 末轮 input_tokens 最多（~18.5K）**——代表最长上下文下的 Prefill 性能，是 TTFT 的最坏情况。<br><br>**2. 首轮与末轮配对观察**——两者差距反映 Prefill 随上下文长度增长的劣化程度。                                                                                               |
+| **加权 平均TPOT**              | 13.8 ms/tok | 14.2 ms/tok | -2.8% | 达标    | **加权 TPOT = Σ(TPOT_i × output_tokens_i) / Σ(output_tokens_i)**<br><br>即：$TPOT_{weighted} = \frac{\sum_{r=1}^{8} TPOT_r \times out_r}{\sum_{r=1}^{8} out_r}$<br><br>其中：<br>- **r**：轮次编号（1-8）<br>- **TPOT_r**：第 r 轮的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1)<br>- **out_r**：第 r 轮的 output_tokens 数<br>- 单位：**ms/token**<br><br>**1. 按 output_tokens 加权而非算术平均**——生成 2000 token 的重轮次对用户体验影响远大于生成 100 token 的轻轮次。<br><br>**2. 跨 8 轮聚合后取 10 次重复的中位数**——先轮内计算 TPOT，再跨轮加权，最后跨重复取中位数。 |
+| **max P99_ITL**            | 18.5 ms/tok | 17.2 ms/tok | +7.6% | 关注    | **max P99_ITL = max(各轮的 P99 ITL)**<br><br>即：$ITL_{max\_P99} = \max_{r=1}^{8} P99(ITL_r)$<br><br>其中：<br>- **ITL_r**：第 r 轮所有相邻 token 间隔时间的集合 $\{t_{k+1} - t_k\}$<br>- **P99(ITL_r)**：第 r 轮 ITL 分布的第 99 百分位值<br>- 单位：**ms/token**<br><br>**1. 取各轮 P99 的最大值而非平均**——用户感知的"卡顿"由最差轮次决定，均值会掩盖尾部抖动。<br><br>**2. 取 10 次重复的中位数**——确保最差轮次的 P99 ITL 是稳定可复现的，而非偶发抖动。                                                                                                                                                 |
+| **AaaS-Latency（任务 E2E）**   | 132 s       | 140 s       | -5.7% | 达标    | **AaaS-Latency = T(task_end) − T(task_start)**<br><br>即：$Latency_{AaaS} = t_{task\_end} - t_{task\_start}$<br><br>其中：<br>- **t_task_start**：Agent 接收到任务的时间戳<br>- **t_task_end**：Agent 输出最终结果的时间戳<br>- 包含：全部模型推理 + 工具调用 + Agent 编排调度耗时<br>- 单位：**s**<br><br>**1. 这是用户感知的完整任务时长**——从发出"修复这个 Bug"到收到最终答案的墙钟时间。<br><br>**2. 与 MaaS-Latency 配对观察**——两者差值 = 非推理开销（工具调用 + 编排 + 网络），用于定位瓶颈。                                                                                                                    |
+| **MaaS-Latency（模型推理时长累计）** | 76 s        | 81 s        | -6.2% | 达标    | **MaaS-Latency = Σ(各轮模型推理耗时)**<br><br>即：$Latency_{MaaS} = \sum_{r=1}^{8} (t_{last\_token}^{(r)} - t_{request}^{(r)})$<br><br>其中：<br>- **r**：轮次编号（1-8）<br>- **t_last_token**：第 r 轮最后一个 token 返回的时间戳<br>- **t_request**：第 r 轮请求发送的时间戳<br>- 单位：**s**<br><br>**1. 仅累加模型推理部分**——不含工具调用、编排调度等非推理开销，纯粹衡量芯片推理能力。<br><br>**2. 模型推理占比 = MaaS-Latency / AaaS-Latency**——本例中 76/132 = 59.1%，说明约 40% 时间花在非推理环节。                                                                                                     |
+| **Input tokens（累计调用量）**    | 81,500      | 81,500      | —     | 同一评估集 | **累计 Input tokens = Σ(各轮 input_tokens)**<br><br>即：$Tokens_{input\_cum} = \sum_{r=1}^{8} input\_tokens_r$<br><br>其中：<br>- **input_tokens_r**：第 r 轮发送给模型的完整 input token 数（含历史上下文）<br>- 单位：**tokens**<br><br>**1. 包含跨轮重复上下文**——Agent 每轮会把前几轮对话历史拼入 input，导致累计调用量远大于净信息量。<br><br>**2. 与去重信息量配对使用**——膨胀率 = 累计 / 去重 = 81500 / 20000 = 4.1×，膨胀率越高说明上下文管理越低效。                                                                                                                                                  |
+| **Input tokens（去重信息量）**    | 20,000      | 20,000      | —     | 同一评估集 | **去重 Input tokens = 去除跨轮重复后的净信息量**<br><br>即：$Tokens_{input\_dedup} = \|Union(\text{各轮 input 中的唯一 token 序列})\|$<br><br>其中：<br>- 去重方法：识别各轮 input 中重复出现的上下文片段（系统 prompt、历史对话等），只计一次<br>- 单位：**tokens**<br><br>**1. 反映任务的真实信息量**——81,500 累计调用中实际只有 20,000 token 是新增信息。<br><br>**2. 上下文膨胀率 = 累计 / 去重**——4.1× 的膨胀率意味着 Prefix Cache 命中潜力很大，可节省 75% 的 Prefill 计算。                                                                                                                                              |
+| **Output tokens（总量）**      | 5,250       | 5,250       | —     | 同一评估集 | **Output tokens = Σ(各轮 output_tokens)**<br><br>即：$Tokens_{output} = \sum_{r=1}^{8} output\_tokens_r$<br><br>其中：<br>- **output_tokens_r**：第 r 轮模型生成的 output token 数<br>- 单位：**tokens**<br><br>**1. 输出量决定 Decode 阶段耗时**——Decode 是逐 token 自回归生成，output_tokens 直接决定推理时长。<br><br>**2. 两张芯片的 output 数一致**——使用 temperature=0 greedy decoding，确保输出长度可比。                                                                                                                                                        |
+| **输出吞吐量（任务有效）**            | 39.8 tok/s  | 37.5 tok/s  | +6.1% | 优秀    | **任务有效输出吞吐量 = Σ(output_tokens) / task_duration**<br><br>即：$Throughput_{task} = \frac{\sum_{r=1}^{8} output\_tokens_r}{T_{task\_end} - T_{task\_start}}$<br><br>其中：<br>- **output_tokens_r**：第 r 轮生成的 output token 数<br>- **T_task_end − T_task_start**：任务端到端墙钟时间（含工具调用等待）<br>- 单位：**tokens/s**<br><br>**1. 分母是任务全程时间**——包含工具调用、编排等非推理等待，反映用户实际感受到的生成速度。<br><br>**2. 低于模型纯推理吞吐量是正常的**——任务有效吞吐 39.8 vs 纯推理 69.1，差距来自 40% 的非推理时间。                                                                         |
+| **输出吞吐量（模型纯推理）**           | 69.1 tok/s  | 64.8 tok/s  | +6.6% | 优秀    | **模型纯推理输出吞吐量 = Σ(output_tokens) / Σ(各轮推理耗时)**<br><br>即：$Throughput_{model} = \frac{\sum_{r=1}^{8} output\_tokens_r}{\sum_{r=1}^{8} latency_r^{(inference)}}$<br><br>其中：<br>- **output_tokens_r**：第 r 轮生成的 output token 数<br>- **latency_r^(inference)**：第 r 轮的纯模型推理耗时（Prefill + Decode）<br>- 单位：**tokens/s**<br><br>**1. 分母仅含推理时间**——剔除工具调用、编排等非推理开销，纯粹衡量芯片的 Decode 生成能力。<br><br>**2. 与任务有效吞吐量配对观察**——两者比值反映推理时间占比，本例 39.8/69.1 ≈ 57.6%。                                                               |
+| **总吞吐量（输入+输出）** | 1,600 tok/s | 1,540 tok/s | +3.9% | 达标 | **总吞吐量 = Σ(input_tokens + output_tokens) / task_duration**<br><br>即：$Throughput_{total} = \frac{\sum_{r=1}^{8}(in_r + out_r)}{T_{task}}$<br><br>其中：<br>- **in_r / out_r**：第 r 轮的 input / output token 数<br>- **T_task**：任务端到端时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 包含 input+output**——区别于"输出吞吐量"仅统计 output，总吞吐量反映系统处理的完整 token 工作量。<br><br>**2. 对 input/output 比例差异大的 Agent 场景**——提供跨场景的公平比较基础。 |
+| **QPS（系统请求吞吐）**            | 5.2 req/s   | 4.8 req/s   | +8.3% | 达标    | **QPS = 成功完成的请求数 / 测试总时长**<br><br>即：$QPS = \frac{N_{success}}{T_{total}}$<br><br>其中：<br>- **N_success**：测试期间成功完成（HTTP 2xx 且结果有效）的请求数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**req/s**<br><br>**1. 只计"成功请求"**——超时、报错的请求不纳入，避免虚高。<br><br>**2. 反映系统在单任务基线下的请求处理能力**——并发场景下 QPS 会随并发数线性增长（理想情况）。                                                                                                                                                                                                            |
+| **QPM（分钟级吞吐）**             | 312 req/min | 288 req/min | +8.3% | 达标    | **QPM = QPS × 60**<br><br>即：$QPM = QPS \times 60$<br><br>其中：<br>- **QPS**：每秒请求吞吐量<br>- 单位：**req/min**<br><br>**1. QPM 是 QPS 的分钟级换算**——便于与业务侧按分钟计费的 SLA 对齐。<br><br>**2. 适用于容量规划**——"1000 卡集群每分钟能处理多少请求"直接用 QPM × 节点数估算。                                                                                                                                                                                                                                                                                 |
 
 #### Agent 多轮调用明细（样例 TASK-20260418-042）
 
@@ -335,49 +335,61 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > [!note] 测试基数规则
 > 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
 
-**【并发梯度：1 / 2 / 4 / 8 / 16 / 32 Agent 同时运行】**
+**【并发梯度：10 / 50 Agent 同时运行】**
 
 **测试元数据**：
 
-| 项目 | NGU800P | A800 | 计算说明 |
-| --- | --- | --- | --- |
-| **测试总时长** | 1,800 s | 1,800 s | **测试总时长 = 固定测试窗口时间**<br><br>即：$T_{total} = T_{window\_end} - T_{window\_start}$<br><br>其中：<br>- **T_window_start**：测试窗口开始时间戳<br>- **T_window_end**：测试窗口结束时间戳<br>- 单位：**s**<br><br>**1. 采用固定时长窗口而非固定请求数**——保证两张芯片在相同时间压力下对比，避免因吞吐差异导致测试时长不同。<br><br>**2. 1800s（30 分钟）覆盖全部并发梯度**——每个梯度运行足够时间以稳定统计量。 |
-| **总请求数** | 12,480 | 12,480 | **总请求数 = Σ(各并发梯度的请求数)**<br><br>即：$N_{total} = \sum_{c \in \{1,2,4,8,16,32\}} N_c$<br><br>其中：<br>- **c**：并发梯度<br>- **N_c**：并发数 c 下发出的总请求数<br>- 单位：**次**<br><br>**1. 含所有并发梯度的请求总和**——不区分成功/失败，是测试的总工作量基数。<br><br>**2. 两张芯片请求数一致**——使用相同的测试脚本和任务集，确保工作量完全对等。 |
-| **成功请求数** | 12,362 | 12,418 | **成功请求数 = HTTP 2xx 且结果有效的请求数**<br><br>即：$N_{success} = \|\{req_i \mid status_i = 2xx \land valid(result_i)\}\|$<br><br>其中：<br>- **status_i**：第 i 个请求的 HTTP 响应状态码<br>- **valid(result_i)**：结果通过格式校验且非空<br>- 单位：**次**<br><br>**1. 双重判定标准**——HTTP 2xx 只是网络层成功，还需校验模型输出是否有效（非截断、格式正确）。<br><br>**2. 成功率 = 成功请求数 / 总请求数**——是并发稳定性的核心指标。 |
-| **失败请求数** | 118 | 62 | **失败请求数 = 总请求数 − 成功请求数**<br><br>即：$N_{fail} = N_{total} - N_{success}$<br><br>其中：<br>- **N_total**：测试期间发出的总请求数<br>- **N_success**：HTTP 2xx 且结果有效的请求数<br>- 单位：**次**<br><br>**1. 失败请求需分类归因**——下方"错误类型分布"进一步拆解为超时、OOM、限流等子类。<br><br>**2. 失败率 = N_fail / N_total**——超过 2% 应触发告警排查。 |
-| **超时请求数** | 85 | 42 | **超时请求数 = 响应时间超过 SLO 阈值的请求数**<br><br>即：$N_{timeout} = \|\{req_i \mid latency_i > SLO_{threshold}\}\|$<br><br>其中：<br>- **latency_i**：第 i 个请求的端到端响应时间<br>- **SLO_threshold**：SLO 约定的最大响应时间阈值<br>- 单位：**次**<br><br>**1. 超时阈值需与业务 SLA 对齐**——不同场景的超时标准不同，本测试默认 30s/请求。<br><br>**2. 超时请求计入失败但不计入吞吐分子**——避免长尾请求拉低吞吐量。 |
-| **限流/拒绝请求数** | 33 | 20 | **限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数**<br><br>即：$N_{throttled} = \|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\|$<br><br>其中：<br>- **status_i = 429**：服务端返回 Too Many Requests<br>- **queue_overflow_i**：请求因调度队列已满被直接拒绝<br>- 单位：**次**<br><br>**1. 限流反映系统容量上限**——高并发下出现限流说明已接近系统最大承载能力。<br><br>**2. 限流策略应与 OOM 防护联动**——宁可限流也不让 OOM 导致全局服务中断。 |
-| **错误类型分布** | 超时 72% / OOM 18% / 限流 10% | 超时 68% / OOM 8% / 限流 24% | **错误类型分布 = 各类错误数 / 总失败数 × 100%**<br><br>即：$Ratio_{type} = \frac{N_{type}}{N_{fail}} \times 100\%$<br><br>其中：<br>- **type**：错误类型（超时 / OOM / 限流 / 其他）<br>- **N_type**：该类型的错误数量<br>- **N_fail**：总失败请求数<br>- 单位：**%**<br><br>**1. 错误类型决定优化方向**——超时多→优化 Decode 速度；OOM 多→优化显存管理；限流多→扩容或调优调度。<br><br>**2. NGU800P 的 OOM 占比（18%）高于 A800（8%）**——提示 KV Cache 内存管理需优化。 |
+| 项目           | NGU800P                   | A800                     | 计算说明                                                                                                                                                                                                                                                                                                                                                        |
+| ------------ | ------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **测试总时长**    | 1,800 s                   | 1,800 s                  | **测试总时长 = 固定测试窗口时间**<br><br>即：$T_{total} = T_{window\_end} - T_{window\_start}$<br><br>其中：<br>- **T_window_start**：测试窗口开始时间戳<br>- **T_window_end**：测试窗口结束时间戳<br>- 单位：**s**<br><br>**1. 采用固定时长窗口而非固定请求数**——保证两张芯片在相同时间压力下对比，避免因吞吐差异导致测试时长不同。<br><br>**2. 1800s（30 分钟）覆盖全部并发梯度**——每个梯度运行足够时间以稳定统计量。                                                           |
+| **总请求数**     | 12,480                    | 12,480                   | **总请求数 = Σ(各并发梯度的请求数)**<br><br>即：$N_{total} = \sum_{c \in \{1,2,4,8,16,32\}} N_c$<br><br>其中：<br>- **c**：并发梯度<br>- **N_c**：并发数 c 下发出的总请求数<br>- 单位：**次**<br><br>**1. 含所有并发梯度的请求总和**——不区分成功/失败，是测试的总工作量基数。<br><br>**2. 两张芯片请求数一致**——使用相同的测试脚本和任务集，确保工作量完全对等。                                                                                                   |
+| **成功请求数**    | 12,362                    | 12,418                   | **成功请求数 = HTTP 2xx 且结果有效的请求数**<br><br>即：$N_{success} = \|\{req_i \mid status_i = 2xx \land valid(result_i)\}\|$<br><br>其中：<br>- **status_i**：第 i 个请求的 HTTP 响应状态码<br>- **valid(result_i)**：结果通过格式校验且非空<br>- 单位：**次**<br><br>**1. 双重判定标准**——HTTP 2xx 只是网络层成功，还需校验模型输出是否有效（非截断、格式正确）。<br><br>**2. 成功率 = 成功请求数 / 总请求数**——是并发稳定性的核心指标。                           |
+| **失败请求数**    | 118                       | 62                       | **失败请求数 = 总请求数 − 成功请求数**<br><br>即：$N_{fail} = N_{total} - N_{success}$<br><br>其中：<br>- **N_total**：测试期间发出的总请求数<br>- **N_success**：HTTP 2xx 且结果有效的请求数<br>- 单位：**次**<br><br>**1. 失败请求需分类归因**——下方"错误类型分布"进一步拆解为超时、OOM、限流等子类。<br><br>**2. 失败率 = N_fail / N_total**——超过 2% 应触发告警排查。                                                                              |
+| **超时请求数**    | 85                        | 42                       | **超时请求数 = 响应时间超过 SLO 阈值的请求数**<br><br>即：$N_{timeout} = \|\{req_i \mid latency_i > SLO_{threshold}\}\|$<br><br>其中：<br>- **latency_i**：第 i 个请求的端到端响应时间<br>- **SLO_threshold**：SLO 约定的最大响应时间阈值<br>- 单位：**次**<br><br>**1. 超时阈值需与业务 SLA 对齐**——不同场景的超时标准不同，本测试默认 30s/请求。<br><br>**2. 超时请求计入失败但不计入吞吐分子**——避免长尾请求拉低吞吐量。                                              |
+| **限流/拒绝请求数** | 33                        | 20                       | **限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数**<br><br>即：$N_{throttled} = \|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\|$<br><br>其中：<br>- **status_i = 429**：服务端返回 Too Many Requests<br>- **queue_overflow_i**：请求因调度队列已满被直接拒绝<br>- 单位：**次**<br><br>**1. 限流反映系统容量上限**——高并发下出现限流说明已接近系统最大承载能力。<br><br>**2. 限流策略应与 OOM 防护联动**——宁可限流也不让 OOM 导致全局服务中断。            |
+| **错误类型分布**   | 超时 72% / OOM 18% / 限流 10% | 超时 68% / OOM 8% / 限流 24% | **错误类型分布 = 各类错误数 / 总失败数 × 100%**<br><br>即：$Ratio_{type} = \frac{N_{type}}{N_{fail}} \times 100\%$<br><br>其中：<br>- **type**：错误类型（超时 / OOM / 限流 / 其他）<br>- **N_type**：该类型的错误数量<br>- **N_fail**：总失败请求数<br>- 单位：**%**<br><br>**1. 错误类型决定优化方向**——超时多→优化 Decode 速度；OOM 多→优化显存管理；限流多→扩容或调优调度。<br><br>**2. NGU800P 的 OOM 占比（18%）高于 A800（8%）**——提示 KV Cache 内存管理需优化。 |
 
-**各并发梯度核心指标**：
 
-| 并发数 | 输出吞吐量 (tok/s) | | 成功率 (%) | | TTFT 均值 (ms) | | 计算说明 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| | **NGU800P** | **A800** | **NGU800P** | **A800** | **NGU800P** | **A800** | |
-| 1 | 69.1 | 64.8 | 100% | 100% | 135 | 148 | 基线单任务 |
-| 2 | 135.2 | 126.8 | 100% | 100% | 142 | 155 | — |
-| 4 | 258.4 | 244.5 | 99.9% | 99.9% | 168 | 178 | — |
-| 8 | 478.6 | 460.2 | 99.8% | 99.9% | 215 | 220 | — |
-| 16 | 856.3 | 845.1 | 99.6% | 99.8% | 320 | 310 | — |
-| 32 | 1,420.5 | 1,480.2 | 99.1% | 99.5% | 485 | 440 | 成功率 = 成功请求数 / 总请求数 × 100% |
+**并发Agent指标**（并发 10 Agent 场景）：
 
-**并发补充指标**（并发 16 Agent 场景）：
+| 指标                 | NGU800P     | A800        | 对比     | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------ | ----------- | ----------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **请求吞吐量**          | 42.5 req/s  | 40.8 req/s  | +4.2%  | **请求吞吐量 = 成功完成的请求数 / 测试总时长**<br><br>即：$RPS = \frac{N_{success}}{T_{total}}$<br><br>其中：<br>- **N_success**：测试期间成功完成的请求数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**req/s**<br><br>**1. 只计成功请求**——失败/超时请求不纳入，反映系统有效处理能力。<br><br>**2. 与 QPS 口径一致但场景不同**——此处在并发 16 Agent 下测量，体现高负载下的处理能力。                                                                                                                                                                  |
+| **总吞吐量（输入+输出）**    | 1,280 tok/s | 1,245 tok/s | +2.8%  | **总吞吐量 = Σ(input_tokens + output_tokens) / 测试总时长**<br><br>即：$Throughput_{total} = \frac{\sum_{i=1}^{N} (input\_tokens_i + output\_tokens_i)}{T_{total}}$<br><br>其中：<br>- **input_tokens_i**：第 i 个请求的输入 token 数<br>- **output_tokens_i**：第 i 个请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 含 input + output**——反映系统处理的总 token 吞吐能力，包括 Prefill 和 Decode 两阶段。<br><br>**2. 与输出吞吐量区分使用**——总吞吐量受 input 长度影响大，不宜单独用于跨场景对比。 |
+| **有效吞吐量 Goodput**  | 842 tok/s   | 838 tok/s   | +0.5%  | **Goodput = 仅成功请求的 output_tokens / 测试总时长**<br><br>即：$Goodput = \frac{\sum_{i=1}^{N_{success}} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N_success**：成功完成的请求数<br>- **output_tokens_i**：第 i 个成功请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 只计成功请求的 output**——超时、报错的请求产出的 token 对用户无价值，不应计入。<br><br>**2. Goodput 是最严格的吞吐量指标**——成功率 × 输出吞吐量的综合体现。                                                                |
+| **端到端延迟均值**        | 385 ms      | 360 ms      | +6.9%  | **端到端延迟均值 = mean(各请求的 E2E 延迟)**<br><br>即：$\overline{Latency_{E2E}} = \frac{1}{N} \sum_{i=1}^{N} (t_{last\_token}^{(i)} - t_{request}^{(i)})$<br><br>其中：<br>- **t_last_token**：第 i 个请求最后一个 token 返回的时间戳<br>- **t_request**：第 i 个请求发送的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 并发场景下延迟包含排队时间**——高并发时请求在调度队列中等待，导致 E2E 延迟高于单任务基线。<br><br>**2. 取 10 次重复的中位数**——消除偶发抖动对均值的干扰。                                                                     |
+| **TPOT 均值**        | 16.2 ms/tok | 15.5 ms/tok | +4.5%  | **TPOT 均值 = 按 output_tokens 加权的任务级 TPOT**<br><br>即：$\overline{TPOT} = \frac{\sum_{i=1}^{N} TPOT_i \times out_i}{\sum_{i=1}^{N} out_i}$<br><br>其中：<br>- **TPOT_i**：第 i 个请求的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1)<br>- **out_i**：第 i 个请求的 output_tokens 数<br>- 单位：**ms/token**<br><br>**1. 加权聚合口径同 §5.1**——按 output_tokens 加权而非算术平均，重请求贡献更大。<br><br>**2. 并发下 TPOT 通常高于单任务基线**——多请求共享 GPU 计算资源导致每个请求的 Decode 变慢。          |
+| **ITL 均值**         | 17.8 ms/tok | 16.5 ms/tok | +7.9%  | **ITL 均值 = mean(各请求的平均 ITL)**<br><br>即：$\overline{ITL} = \frac{1}{N} \sum_{i=1}^{N} \overline{ITL_i}$<br><br>其中：<br>- **$\overline{ITL_i}$**：第 i 个请求的平均 token 间隔时间 = mean({t_{k+1} − t_k})<br>- **N**：成功请求数<br>- 单位：**ms/token**<br><br>**1. ITL 反映用户感知的"流畅度"**——ITL 越稳定（方差越小），用户看到的打字效果越平滑。<br><br>**2. ITL 均值与 TPOT 近似但不相同**——TPOT 不含首 token，ITL 逐 token 计算包含更多细节。                                                                                |
+| **Decode 阶段平均延迟**  | 128 ms      | 118 ms      | +8.5%  | **Decode 阶段延迟 = T(decode_end) − T(decode_start)**<br><br>即：$Latency_{decode} = t_{last\_token} - t_{first\_token}$<br><br>其中：<br>- **t_first_token**：第一个生成 token 返回的时间戳（Prefill 结束）<br>- **t_last_token**：最后一个生成 token 返回的时间戳<br>- 单位：**ms**<br><br>**1. Decode 是推理的主要耗时阶段**——典型占比 60-70%，是优化 TPOT 的关键。<br><br>**2. Decode 延迟 ≈ TPOT × (output_tokens − 1)**——两者可交叉验证数据一致性。                                                                         |
+| **模型推理累计耗时**       | 42,800 ms   | 45,200 ms   | -5.3%  | **模型推理累计耗时 = Σ(各请求的推理耗时)**<br><br>即：$T_{inference\_total} = \sum_{i=1}^{N} (t_{last\_token}^{(i)} - t_{request}^{(i)})$<br><br>其中：<br>- **t_last_token**：第 i 个请求最后一个 token 返回的时间戳<br>- **t_request**：第 i 个请求到达推理引擎的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 累计耗时反映芯片的"总工作量"**——并发场景下多请求并行，累计耗时远大于墙钟时间。<br><br>**2. 推理效率 = 总 output_tokens / 累计耗时**——与输出吞吐量相互验证。                                                                              |
+| **平均排队等待时间**       | 65 ms       | 48 ms       | +35.4% | **平均排队等待时间 = mean(T(inference_start) − T(request_arrive))**<br><br>即：$\overline{T_{queue}} = \frac{1}{N} \sum_{i=1}^{N} (t_{infer\_start}^{(i)} - t_{arrive}^{(i)})$<br><br>其中：<br>- **t_arrive**：请求到达调度队列的时间戳<br>- **t_infer_start**：请求开始推理（Prefill 开始）的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 排队时间是并发场景的关键指标**——单任务基线下接近 0，高并发下可能占 E2E 延迟的 10-30%。<br><br>**2. 排队时间长说明调度器 batch 已满**——需增大 max_num_batched_tokens 或扩容。                    |
+| **KV Cache 使用率峰值** | 88%         | 82%         | 偏高     | **KV Cache 使用率峰值 = max(已用 KV Cache / 总 KV Cache 容量)**<br><br>即：$KV_{peak} = \max_{t} \frac{KV\_used(t)}{KV\_total} \times 100\%$<br><br>其中：<br>- **KV_used(t)**：时刻 t 的 KV Cache 已占用显存<br>- **KV_total**：KV Cache 可用显存总量（由 gpu_memory_utilization 参数决定）<br>- 单位：**%**<br><br>**1. KV Cache 峰值 > 85% 触发告警**——过高会导致请求被抢占或 OOM。<br><br>**2. NGU800P 峰值 88% 偏高**——建议调低 gpu_memory_utilization 或优化 KV Cache 分配策略。                                         |
+| **被抢占请求数**         | 12          | 5           | 抢占过多   | **被抢占请求数 = continuous batching 中被抢占的请求数**<br><br>即：$N_{preempt} = \|\{req_i \mid preempted_i = true\}\|$<br><br>其中：<br>- **preempted_i**：第 i 个请求在 Decode 过程中因 KV Cache 不足被调度器中断<br>- 被抢占的请求会被重新入队，导致延迟增加<br>- 单位：**次**<br><br>**1. 抢占是 KV Cache 压力的直接后果**——KV Cache 峰值 88% 时抢占频繁发生。<br><br>**2. 抢占导致请求延迟翻倍**——被抢占的请求需重新 Prefill 已生成的 KV Cache。                                                                                                      |
+| **超时请求数**          | 18          | 8           | —      | **超时请求数 = 响应时间超过 SLO 阈值的请求数**<br><br>即：$N_{timeout} = \|\{req_i \mid latency_i > SLO_{threshold}\}\|$<br><br>其中：<br>- **latency_i**：第 i 个请求的端到端响应时间<br>- **SLO_threshold**：SLO 约定的最大响应时间阈值<br>- 单位：**次**<br><br>**1. 并发 16 场景下的超时**——与测试元数据中的总超时数（85）区分，此处仅为并发 16 梯度的超时数。<br><br>**2. 超时原因需结合排队时间和 KV Cache 使用率联合诊断**——排队久 or Decode 慢都可能导致超时。                                                                                                      |
+| **限流/拒绝请求数**       | 5           | 3           | —      | **限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数**<br><br>即：$N_{throttled} = \|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\|$<br><br>其中：<br>- **status_i = 429**：服务端返回 Too Many Requests<br>- **queue_overflow_i**：请求因调度队列已满被直接拒绝<br>- 单位：**次**<br><br>**1. 并发 16 下限流量少**——说明系统容量尚未到极限，32 并发时限流会显著增加。<br><br>**2. 限流是系统的自我保护机制**——优于让请求全部涌入导致 OOM。                                                                                                       |
+
+**高并发 Agent 指标**（并发 100 Agent 场景）：
 
 | 指标 | NGU800P | A800 | 对比 | 计算说明 |
 | --- | --- | --- | --- | --- |
-| **请求吞吐量** | 42.5 req/s | 40.8 req/s | +4.2% | **请求吞吐量 = 成功完成的请求数 / 测试总时长**<br><br>即：$RPS = \frac{N_{success}}{T_{total}}$<br><br>其中：<br>- **N_success**：测试期间成功完成的请求数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**req/s**<br><br>**1. 只计成功请求**——失败/超时请求不纳入，反映系统有效处理能力。<br><br>**2. 与 QPS 口径一致但场景不同**——此处在并发 16 Agent 下测量，体现高负载下的处理能力。 |
-| **总吞吐量（输入+输出）** | 1,280 tok/s | 1,245 tok/s | +2.8% | **总吞吐量 = Σ(input_tokens + output_tokens) / 测试总时长**<br><br>即：$Throughput_{total} = \frac{\sum_{i=1}^{N} (input\_tokens_i + output\_tokens_i)}{T_{total}}$<br><br>其中：<br>- **input_tokens_i**：第 i 个请求的输入 token 数<br>- **output_tokens_i**：第 i 个请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 含 input + output**——反映系统处理的总 token 吞吐能力，包括 Prefill 和 Decode 两阶段。<br><br>**2. 与输出吞吐量区分使用**——总吞吐量受 input 长度影响大，不宜单独用于跨场景对比。 |
-| **有效吞吐量 Goodput** | 842 tok/s | 838 tok/s | +0.5% | **Goodput = 仅成功请求的 output_tokens / 测试总时长**<br><br>即：$Goodput = \frac{\sum_{i=1}^{N_{success}} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N_success**：成功完成的请求数<br>- **output_tokens_i**：第 i 个成功请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 只计成功请求的 output**——超时、报错的请求产出的 token 对用户无价值，不应计入。<br><br>**2. Goodput 是最严格的吞吐量指标**——成功率 × 输出吞吐量的综合体现。 |
-| **端到端延迟均值** | 385 ms | 360 ms | +6.9% | **端到端延迟均值 = mean(各请求的 E2E 延迟)**<br><br>即：$\overline{Latency_{E2E}} = \frac{1}{N} \sum_{i=1}^{N} (t_{last\_token}^{(i)} - t_{request}^{(i)})$<br><br>其中：<br>- **t_last_token**：第 i 个请求最后一个 token 返回的时间戳<br>- **t_request**：第 i 个请求发送的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 并发场景下延迟包含排队时间**——高并发时请求在调度队列中等待，导致 E2E 延迟高于单任务基线。<br><br>**2. 取 10 次重复的中位数**——消除偶发抖动对均值的干扰。 |
-| **TPOT 均值** | 16.2 ms/tok | 15.5 ms/tok | +4.5% | **TPOT 均值 = 按 output_tokens 加权的任务级 TPOT**<br><br>即：$\overline{TPOT} = \frac{\sum_{i=1}^{N} TPOT_i \times out_i}{\sum_{i=1}^{N} out_i}$<br><br>其中：<br>- **TPOT_i**：第 i 个请求的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1)<br>- **out_i**：第 i 个请求的 output_tokens 数<br>- 单位：**ms/token**<br><br>**1. 加权聚合口径同 §5.1**——按 output_tokens 加权而非算术平均，重请求贡献更大。<br><br>**2. 并发下 TPOT 通常高于单任务基线**——多请求共享 GPU 计算资源导致每个请求的 Decode 变慢。 |
-| **ITL 均值** | 17.8 ms/tok | 16.5 ms/tok | +7.9% | **ITL 均值 = mean(各请求的平均 ITL)**<br><br>即：$\overline{ITL} = \frac{1}{N} \sum_{i=1}^{N} \overline{ITL_i}$<br><br>其中：<br>- **$\overline{ITL_i}$**：第 i 个请求的平均 token 间隔时间 = mean({t_{k+1} − t_k})<br>- **N**：成功请求数<br>- 单位：**ms/token**<br><br>**1. ITL 反映用户感知的"流畅度"**——ITL 越稳定（方差越小），用户看到的打字效果越平滑。<br><br>**2. ITL 均值与 TPOT 近似但不相同**——TPOT 不含首 token，ITL 逐 token 计算包含更多细节。 |
-| **Decode 阶段平均延迟** | 128 ms | 118 ms | +8.5% | **Decode 阶段延迟 = T(decode_end) − T(decode_start)**<br><br>即：$Latency_{decode} = t_{last\_token} - t_{first\_token}$<br><br>其中：<br>- **t_first_token**：第一个生成 token 返回的时间戳（Prefill 结束）<br>- **t_last_token**：最后一个生成 token 返回的时间戳<br>- 单位：**ms**<br><br>**1. Decode 是推理的主要耗时阶段**——典型占比 60-70%，是优化 TPOT 的关键。<br><br>**2. Decode 延迟 ≈ TPOT × (output_tokens − 1)**——两者可交叉验证数据一致性。 |
-| **模型推理累计耗时** | 42,800 ms | 45,200 ms | -5.3% | **模型推理累计耗时 = Σ(各请求的推理耗时)**<br><br>即：$T_{inference\_total} = \sum_{i=1}^{N} (t_{last\_token}^{(i)} - t_{request}^{(i)})$<br><br>其中：<br>- **t_last_token**：第 i 个请求最后一个 token 返回的时间戳<br>- **t_request**：第 i 个请求到达推理引擎的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 累计耗时反映芯片的"总工作量"**——并发场景下多请求并行，累计耗时远大于墙钟时间。<br><br>**2. 推理效率 = 总 output_tokens / 累计耗时**——与输出吞吐量相互验证。 |
-| **平均排队等待时间** | 65 ms | 48 ms | +35.4% | **平均排队等待时间 = mean(T(inference_start) − T(request_arrive))**<br><br>即：$\overline{T_{queue}} = \frac{1}{N} \sum_{i=1}^{N} (t_{infer\_start}^{(i)} - t_{arrive}^{(i)})$<br><br>其中：<br>- **t_arrive**：请求到达调度队列的时间戳<br>- **t_infer_start**：请求开始推理（Prefill 开始）的时间戳<br>- **N**：成功请求数<br>- 单位：**ms**<br><br>**1. 排队时间是并发场景的关键指标**——单任务基线下接近 0，高并发下可能占 E2E 延迟的 10-30%。<br><br>**2. 排队时间长说明调度器 batch 已满**——需增大 max_num_batched_tokens 或扩容。 |
-| **KV Cache 使用率峰值** | 88% | 82% | 偏高 | **KV Cache 使用率峰值 = max(已用 KV Cache / 总 KV Cache 容量)**<br><br>即：$KV_{peak} = \max_{t} \frac{KV\_used(t)}{KV\_total} \times 100\%$<br><br>其中：<br>- **KV_used(t)**：时刻 t 的 KV Cache 已占用显存<br>- **KV_total**：KV Cache 可用显存总量（由 gpu_memory_utilization 参数决定）<br>- 单位：**%**<br><br>**1. KV Cache 峰值 > 85% 触发告警**——过高会导致请求被抢占或 OOM。<br><br>**2. NGU800P 峰值 88% 偏高**——建议调低 gpu_memory_utilization 或优化 KV Cache 分配策略。 |
-| **被抢占请求数** | 12 | 5 | 抢占过多 | **被抢占请求数 = continuous batching 中被抢占的请求数**<br><br>即：$N_{preempt} = \|\{req_i \mid preempted_i = true\}\|$<br><br>其中：<br>- **preempted_i**：第 i 个请求在 Decode 过程中因 KV Cache 不足被调度器中断<br>- 被抢占的请求会被重新入队，导致延迟增加<br>- 单位：**次**<br><br>**1. 抢占是 KV Cache 压力的直接后果**——KV Cache 峰值 88% 时抢占频繁发生。<br><br>**2. 抢占导致请求延迟翻倍**——被抢占的请求需重新 Prefill 已生成的 KV Cache。 |
-| **超时请求数** | 18 | 8 | — | **超时请求数 = 响应时间超过 SLO 阈值的请求数**<br><br>即：$N_{timeout} = \|\{req_i \mid latency_i > SLO_{threshold}\}\|$<br><br>其中：<br>- **latency_i**：第 i 个请求的端到端响应时间<br>- **SLO_threshold**：SLO 约定的最大响应时间阈值<br>- 单位：**次**<br><br>**1. 并发 16 场景下的超时**——与测试元数据中的总超时数（85）区分，此处仅为并发 16 梯度的超时数。<br><br>**2. 超时原因需结合排队时间和 KV Cache 使用率联合诊断**——排队久 or Decode 慢都可能导致超时。 |
-| **限流/拒绝请求数** | 5 | 3 | — | **限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数**<br><br>即：$N_{throttled} = \|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\|$<br><br>其中：<br>- **status_i = 429**：服务端返回 Too Many Requests<br>- **queue_overflow_i**：请求因调度队列已满被直接拒绝<br>- 单位：**次**<br><br>**1. 并发 16 下限流量少**——说明系统容量尚未到极限，32 并发时限流会显著增加。<br><br>**2. 限流是系统的自我保护机制**——优于让请求全部涌入导致 OOM。 |
+| **输出吞吐量** | 3,850 tok/s | 4,120 tok/s | -6.6% | **同 §5.1 输出吞吐量口径**，100 Agent 并发下的系统级聚合吞吐量。<br><br>**1. NGU800P 在 100 并发下吞吐落后 A800 6.6%**——与 10 并发时领先 4.2% 形成反转，高并发暴露了 KV Cache 管理的短板。 |
+| **成功率** | 96.8% | 98.2% | -1.4pp | **成功率 = 成功请求数 / 总请求数 × 100%**<br><br>**1. 100 并发下成功率显著下降**——NGU800P 降至 96.8%（10 并发时 99.6%），主要因 OOM 和超时增多。<br><br>**2. 低于 99% 的成功率在生产环境不可接受**——需优化 KV Cache 或限制最大并发数。 |
+| **TTFT 均值** | 1,250 ms | 980 ms | +27.6% | **同 §5.1 TTFT 口径**，100 并发下因 Prefill 排队导致 TTFT 剧烈退化。<br><br>**1. TTFT > 1s 用户感知明显等待**——100 并发下 NGU800P 的首 token 响应已进入"卡顿"区间。 |
+| **TPOT 均值** | 22.5 ms/tok | 19.8 ms/tok | +13.6% | **同 §5.1 加权 TPOT 口径**，100 并发下 Decode 资源争用加剧。<br><br>**1. TPOT > 20ms 对应输出速度 < 50 tok/s**——接近用户可感知的"慢速打字"体验阈值。 |
+| **端到端延迟 P99** | 8,500 ms | 6,200 ms | +37.1% | **E2E 延迟 = T(last_token) − T(request_sent)**，取 P99。<br><br>**1. P99 延迟 8.5s 远超生产 SLO**——典型 SLO 为 3-5s，100 并发下 NGU800P 不满足生产要求。 |
+| **平均排队等待时间** | 420 ms | 285 ms | +47.4% | **同 §5.2 排队等待口径**。<br><br>**1. 排队时间占 E2E 的 33%**——单任务基线下仅 2.3%，100 并发放大了调度瓶颈。 |
+| **KV Cache 使用率峰值** | 96% | 91% | 超限 | **同 §6.3 KV Cache 口径**。<br><br>**1. 96% 已触发危险线**——频繁抢占和 OOM 导致成功率下降。 |
+| **被抢占请求数** | 185 | 62 | 3× | **同 §6.3 口径**。<br><br>**1. 抢占数 185 = 约 1.5% 的请求被中断重试**——直接拉高尾部延迟。 |
+
+**高并发 Agent 任务质量**（并发 100 Agent 场景）：
+
+| 指标 | NGU800P | A800 | 对比 | 计算说明 |
+| --- | --- | --- | --- | --- |
+| **Agent 任务完成率** | 92.5% | 95.8% | -3.3pp | **同 §6.2 口径**，100 并发下因超时和 OOM 导致更多任务中途失败。<br><br>**1. 92.5% 意味着每 13 个任务有 1 个失败**——对 KA 客户而言不可接受（要求 > 99%）。 |
+| **决策准确率** | 94.2% | 96.5% | -2.3pp | **同 §6.2 口径**。<br><br>**1. 高并发下决策准确率下降 2.6pp**——推理延迟增大可能导致 Agent 在超时边界做出次优决策。 |
+| **工具调用正确率** | 93.8% | 95.5% | -1.7pp | **同 §6.2 口径**。<br><br>**1. 工具调用在高并发下更易失败**——MCP Server 连接池耗尽和响应超时增多。 |
+| **平均任务耗时** | 4.8 min | 3.5 min | +37.1% | **同 §6.2 口径**。<br><br>**1. 任务耗时翻倍**——从单任务 2.2min 到 100 并发 4.8min，排队和重试是主因。 |
+| **平均交互轮数** | 9.5 | 8.6 | +10.5% | **同 §6.2 口径**。<br><br>**1. 轮数增加 = 隐性成本膨胀**——因超时重试和决策错误需额外轮次修正，增加 ~15% 的 token 消耗。 |
 
 #### 图表 E2：并发扩展效率曲线
 
@@ -460,30 +472,29 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ## 六、诊断指标
 
-> **价值定位**：当体验指标不达标时，诊断指标帮助芯片工程团队快速定位瓶颈。
+> **价值定位**：当体验指标不达标时，诊断指标帮助工程团队快速定位瓶颈——**是推理引擎调度低效**（排队长、KV Cache 抢占多）、**是芯片算力/带宽不足**（Prefill 慢指向 FLOPs 瓶颈、Decode 慢指向 HBM 带宽瓶颈）、**是量化精度损失**（FP8 下工具调用正确率下降）、还是**工具层拖后腿**（MCP 调用延迟高、CPU 利用率飙升）。诊断指标面向推理芯片部门、推理量化部门和超节点工程部门，每个指标都指向一个可落地的优化动作。
 
 > [!note] 测试基数规则
 > 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
 
-### 6.1 推理延迟链路拆解
+### 6.1 推理调度指标
 
 **【单请求延迟拆解 —— AI Coding Agent R5（生成修复代码轮）】**
 
-| 阶段 | NGU800P | A800 | 占比（NGU800P） | 计算说明 |
-| --- | --- | --- | --- | --- |
-| 排队等待 | 15 ms | 12 ms | 2.3% | **排队等待 = T(inference_start) − T(request_arrive)**<br><br>即：$T_{queue} = t_{infer\_start} - t_{arrive}$<br><br>其中：<br>- **t_arrive**：请求到达调度队列的时间戳<br>- **t_infer_start**：请求被调度器选中、开始 Prefill 的时间戳<br>- 单位：**ms**<br><br>**1. 排队时间反映调度器负载**——单任务基线下接近 0，高并发下与 batch 队列深度正相关。<br><br>**2. 排队时间不应超过 E2E 的 10%**——否则说明需扩容或优化调度策略。 |
-| **Prefill** | 180 ms | 195 ms | 27.7% | **Prefill 延迟 = 输入 token 并行计算 KV Cache 的耗时**<br><br>即：$T_{prefill} = t_{first\_token} - t_{infer\_start}$<br><br>其中：<br>- **t_infer_start**：请求开始推理的时间戳<br>- **t_first_token**：第一个生成 token 返回的时间戳（= TTFT − 排队时间）<br>- 单位：**ms**<br><br>**1. Prefill 与 input_tokens 近似线性**——R5 轮 input 12,000 token，Prefill 耗时 180ms，约 15μs/token。<br><br>**2. FlashAttention 优化直接降低 Prefill**——FA-2 可将 Prefill 耗时降低 30-50%。 |
-| **Decode** | 420 ms | 450 ms | 64.6% | **Decode 延迟 = 逐 token 自回归生成的总耗时**<br><br>即：$T_{decode} = t_{last\_token} - t_{first\_token}$<br><br>其中：<br>- **t_first_token**：第一个生成 token 返回的时间戳<br>- **t_last_token**：最后一个生成 token 返回的时间戳<br>- 单位：**ms**<br><br>**1. Decode 是推理的主要瓶颈**——占比 64.6%，R5 生成 2000 token，TPOT ≈ 420/1999 ≈ 0.21ms/tok。<br><br>**2. Decode 受 HBM 带宽瓶颈制约**——Memory-bound 操作，HBM 带宽越高 Decode 越快。 |
-| 后处理 | 35 ms | 28 ms | 5.4% | **后处理延迟 = detokenize + 采样 + 结果封装的耗时**<br><br>即：$T_{post} = T_{total} - T_{queue} - T_{prefill} - T_{decode}$<br><br>其中：<br>- 后处理包含：detokenize（token→文本）、采样策略计算、结果封装和网络传输<br>- 单位：**ms**<br><br>**1. 后处理通常在 CPU 上执行**——NGU800P 后处理 35ms > A800 的 28ms，可能与 CPU 型号或驱动开销有关。<br><br>**2. 后处理占比应低于 10%**——超过则需排查 detokenizer 效率或结果封装逻辑。 |
-| **总计** | **650 ms** | **685 ms** | 100% | **总计 = 排队等待 + Prefill + Decode + 后处理**<br><br>即：$T_{total} = T_{queue} + T_{prefill} + T_{decode} + T_{post}$<br><br>其中：<br>- 各阶段耗时为单次请求的端到端拆解<br>- 单位：**ms**<br><br>**1. 各阶段之和应等于 E2E 延迟**——可用于交叉验证数据一致性。<br><br>**2. 占比分析指导优化方向**——Decode 占 64.6% 说明优化 HBM 带宽利用率收益最大。 |
-| **ITL Jitter（字间抖动）** | σ=3.2 ms | σ=2.8 ms | — | **ITL Jitter = std(各 token 间隔时间)**<br><br>即：$\sigma_{ITL} = \sqrt{\frac{1}{n-1} \sum_{k=1}^{n-1} (ITL_k - \overline{ITL})^2}$<br><br>其中：<br>- **ITL_k**：第 k 个与第 k+1 个 token 之间的间隔时间 = t_{k+1} − t_k<br>- **$\overline{ITL}$**：所有 ITL 的均值<br>- **n**：生成的 token 总数<br>- 单位：**ms**<br><br>**1. Jitter 反映用户感知的"流畅度"**——σ 越小，打字效果越平滑，用户体验越好。<br><br>**2. Jitter 大通常源于 continuous batching 干扰**——新请求加入 batch 时会导致当前请求的 ITL 出现毛刺。 |
+| 阶段                   | NGU800P    | A800       | 占比（NGU800P） | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------------- | ---------- | ---------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 排队等待                 | 15 ms      | 12 ms      | 2.3%        | **排队等待 = T(inference_start) − T(request_arrive)**<br><br>即：$T_{queue} = t_{infer\_start} - t_{arrive}$<br><br>其中：<br>- **t_arrive**：请求到达调度队列的时间戳<br>- **t_infer_start**：请求被调度器选中、开始 Prefill 的时间戳<br>- 单位：**ms**<br><br>**1. 排队时间反映调度器负载**——单任务基线下接近 0，高并发下与 batch 队列深度正相关。<br><br>**2. 排队时间不应超过 E2E 的 10%**——否则说明需扩容或优化调度策略。                                                                                               |
+| **Prefill 时延**       | 180 ms     | 195 ms     | 27.7%       | **Prefill 时延= 输入 token 并行计算 KV Cache 的耗时**<br><br>即：$T_{prefill} = t_{first\_token} - t_{infer\_start}$<br><br>其中：<br>- **t_infer_start**：请求开始推理的时间戳<br>- **t_first_token**：第一个生成 token 返回的时间戳（= TTFT − 排队时间）<br>- 单位：**ms**<br><br>**1. Prefill 与 input_tokens 近似线性**——R5 轮 input 12,000 token，Prefill 耗时 180ms，约 15μs/token。<br><br>**2. FlashAttention 优化直接降低 Prefill**——FA-2 可将 Prefill 耗时降低 30-50%。                   |
+| **Decode时延**         | 420 ms     | 450 ms     | 64.6%       | **Decode 时延 = 逐 token 自回归生成的总耗时**<br><br>即：$T_{decode} = t_{last\_token} - t_{first\_token}$<br><br>其中：<br>- **t_first_token**：第一个生成 token 返回的时间戳<br>- **t_last_token**：最后一个生成 token 返回的时间戳<br>- 单位：**ms**<br><br>**1. Decode 是推理的主要瓶颈**——占比 64.6%，R5 生成 2000 token，TPOT ≈ 420/1999 ≈ 0.21ms/tok。<br><br>**2. Decode 受 HBM 带宽瓶颈制约**——Memory-bound 操作，HBM 带宽越高 Decode 越快。                                                   |
+| 后处理时延                | 35 ms      | 28 ms      | 5.4%        | **后处理时延 = detokenize + 采样 + 结果封装的耗时**<br><br>即：$T_{post} = T_{total} - T_{queue} - T_{prefill} - T_{decode}$<br><br>其中：<br>- 后处理包含：detokenize（token→文本）、采样策略计算、结果封装和网络传输<br>- 单位：**ms**<br><br>**1. 后处理通常在 CPU 上执行**——NGU800P 后处理 35ms > A800 的 28ms，可能与 CPU 型号或驱动开销有关。<br><br>**2. 后处理占比应低于 10%**——超过则需排查 detokenizer 效率或结果封装逻辑。                                                                                          |
+| **总计时延**             | **650 ms** | **685 ms** | 100%        | **总计 = 排队等待 + Prefill + Decode + 后处理**<br><br>即：$T_{total} = T_{queue} + T_{prefill} + T_{decode} + T_{post}$<br><br>其中：<br>- 各阶段耗时为单次请求的端到端拆解<br>- 单位：**ms**<br><br>**1. 各阶段之和应等于 E2E 延迟**——可用于交叉验证数据一致性。<br><br>**2. 占比分析指导优化方向**——Decode 占 64.6% 说明优化 HBM 带宽利用率收益最大。                                                                                                                                                    |
+| **ITL Jitter（字间抖动）** | σ=3.2 ms   | σ=2.8 ms   | —           | **ITL Jitter = std(各 token 间隔时间)**<br><br>即：$\sigma_{ITL} = \sqrt{\frac{1}{n-1} \sum_{k=1}^{n-1} (ITL_k - \overline{ITL})^2}$<br><br>其中：<br>- **ITL_k**：第 k 个与第 k+1 个 token 之间的间隔时间 = t_{k+1} − t_k<br>- **$\overline{ITL}$**：所有 ITL 的均值<br>- **n**：生成的 token 总数<br>- 单位：**ms**<br><br>**1. Jitter 反映用户感知的"流畅度"**——σ 越小，打字效果越平滑，用户体验越好。<br><br>**2. Jitter 大通常源于 continuous batching 干扰**——新请求加入 batch 时会导致当前请求的 ITL 出现毛刺。 |
 
-#### 图表 D1：推理延迟时间拆解饼图
+#### 图表 D1：推理延迟时间分布图
 
 > 单次请求：排队等待 / Prefill / Decode / 后处理各占比
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041646239.png)
 
-![[aaas-charts/D1-latency-pie.png]]
-`<!-- 占位符：替换为实际饼图截图 -->`
 
 #### 图表 D2：各轮 TPOT 趋势折线
 
@@ -495,29 +506,31 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ### 6.2 Agent 任务质量
 
-| 指标 | NGU800P (FP8) | A800 (FP16) | NGU800P (BF16) | 判定 | 计算说明 |
-| --- | --- | --- | --- | --- | --- |
-| **Agent 任务完成率** | 98.5% | 99.1% | 99.0% | FP8 略有精度损失 | **任务完成率 = 成功完成任务数 / 总测试任务数 × 100%**<br><br>即：$Rate_{complete} = \frac{N_{success}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_success**：10 次重复中 ≥ 8 次通过判定的任务数<br>- **N_total**：总测试任务数（全部 Case 数）<br>- 通过判定标准：Agent 输出的代码修复通过全部测试用例<br>- 单位：**%**<br><br>**1. 采用 8/10 多数通过标准**——10 次重复中至少 8 次成功才算"完成"，排除偶发成功的噪声。<br><br>**2. 跨量化模式对比**——FP8 的 98.5% vs FP16 的 99.1%，差 0.6pp，需评估精度损失是否可接受。 |
-| **决策准确率** | 96.8% | 97.5% | 97.3% | 达标 | **决策准确率 = 正确决策步骤数 / 总决策步骤数 × 100%**<br><br>即：$Acc_{decision} = \frac{\sum_{i=1}^{N} correct\_steps_i}{\sum_{i=1}^{N} total\_steps_i} \times 100\%$<br><br>其中：<br>- **correct_steps_i**：第 i 个任务中 Agent 做出正确决策的步骤数（如正确选择工具、正确定位文件）<br>- **total_steps_i**：第 i 个任务中 Agent 的总决策步骤数<br>- 单位：**%**<br><br>**1. "决策"定义为 Agent 的每个行动选择**——包括选择哪个工具、决定读哪个文件、选择修改策略等。<br><br>**2. 决策准确率比任务完成率更敏感**——某些错误决策可能被后续轮次纠正，不影响最终完成率，但会增加耗时。 |
-| **工具调用正确率** | 95.2% | 96.8% | 96.5% | FP8 影响工具调用 | **工具调用正确率 = 正确工具调用数 / 总工具调用数 × 100%**<br><br>即：$Acc_{tool} = \frac{N_{tool\_correct}}{N_{tool\_total}} \times 100\%$<br><br>其中：<br>- **N_tool_correct**：工具调用参数正确且返回预期结果的次数<br>- **N_tool_total**：Agent 发起的总工具调用次数<br>- 单位：**%**<br><br>**1. FP8 量化对 function calling 影响最大**——FP8 的 95.2% vs FP16 的 96.8%，差 1.6pp，说明量化影响了结构化输出能力。<br><br>**2. 错误工具调用包括**——参数格式错误、调用不存在的工具、参数值错误等。 |
-| **平均任务耗时** | 2.2 min | 2.3 min | 2.5 min | NGU800P 更快 | **平均任务耗时 = mean(各任务的 E2E 时长)**<br><br>即：$\overline{T_{task}} = \frac{1}{N} \sum_{i=1}^{N} (t_{end}^{(i)} - t_{start}^{(i)})$<br><br>其中：<br>- **t_start**：Agent 接收到第 i 个任务的时间戳<br>- **t_end**：Agent 输出第 i 个任务最终结果的时间戳<br>- 取 10 次重复的中位数<br>- 单位：**min**<br><br>**1. NGU800P FP8 最快（2.2 min）**——FP8 量化虽损失精度但推理速度更快，整体任务耗时最短。<br><br>**2. 需结合完成率权衡**——FP8 更快但完成率低 0.6pp，BF16 精度更好但慢 14%。 |
-| **平均交互轮数** | 8.2 | 8.0 | 8.1 | 基本一致 | **平均交互轮数 = mean(各任务的模型调用轮数)**<br><br>即：$\overline{R} = \frac{1}{N} \sum_{i=1}^{N} rounds_i$<br><br>其中：<br>- **rounds_i**：第 i 个任务完成所需的模型调用轮数<br>- **N**：总任务数<br>- 单位：**轮**<br><br>**1. 轮数一致说明 Agent 行为稳定**——不同芯片/量化下 Agent 的推理路径基本相同。<br><br>**2. 轮数增多通常意味着决策错误**——Agent 走了弯路需要额外轮次纠正，反映在决策准确率上。 |
-| **输出质量 ROUGE-1** | 0.39 | 0.41 | 0.40 | 达标 | **ROUGE-1 = 输出与参考答案的 unigram 重叠 F1 分数**<br><br>即：$ROUGE\text{-}1 = \frac{2 \times P \times R}{P + R}$<br><br>其中：<br>- **P（精确率）**：输出中与参考答案匹配的 unigram 数 / 输出 unigram 总数<br>- **R（召回率）**：输出中与参考答案匹配的 unigram 数 / 参考答案 unigram 总数<br>- 单位：**0-1 之间的浮点数**<br><br>**1. ROUGE-1 衡量文本层面的输出一致性**——用于检测量化是否导致输出内容偏移。<br><br>**2. Coding 场景 ROUGE-1 在 0.35-0.45 是正常范围**——代码输出的表达多样性高，不追求与参考答案字面完全一致。 |
+| 指标               | NGU800P (FP8) | A800 (FP16) | NGU800P (BF16) | 判定         | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------- | ------------- | ----------- | -------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Agent 任务完成率**  | 98.5%         | 99.1%       | 99.0%          | FP8 略有精度损失 | **任务完成率 = 成功完成任务数 / 总测试任务数 × 100%**<br><br>即：$Rate_{complete} = \frac{N_{success}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_success**：10 次重复中 ≥ 8 次通过判定的任务数<br>- **N_total**：总测试任务数（全部 Case 数）<br>- 通过判定标准：Agent 输出的代码修复通过全部测试用例<br>- 单位：**%**<br><br>**1. 采用 8/10 多数通过标准**——10 次重复中至少 8 次成功才算"完成"，排除偶发成功的噪声。<br><br>**2. 跨量化模式对比**——FP8 的 98.5% vs FP16 的 99.1%，差 0.6pp，需评估精度损失是否可接受。                                 |
+| **决策准确率**        | 96.8%         | 97.5%       | 97.3%          | 达标         | **决策准确率 = 正确决策步骤数 / 总决策步骤数 × 100%**<br><br>即：$Acc_{decision} = \frac{\sum_{i=1}^{N} correct\_steps_i}{\sum_{i=1}^{N} total\_steps_i} \times 100\%$<br><br>其中：<br>- **correct_steps_i**：第 i 个任务中 Agent 做出正确决策的步骤数（如正确选择工具、正确定位文件）<br>- **total_steps_i**：第 i 个任务中 Agent 的总决策步骤数<br>- 单位：**%**<br><br>**1. "决策"定义为 Agent 的每个行动选择**——包括选择哪个工具、决定读哪个文件、选择修改策略等。<br><br>**2. 决策准确率比任务完成率更敏感**——某些错误决策可能被后续轮次纠正，不影响最终完成率，但会增加耗时。 |
+| **平均任务耗时**       | 2.2 min       | 2.3 min     | 2.5 min        | NGU800P 更快 | **平均任务耗时 = mean(各任务的 E2E 时长)**<br><br>即：$\overline{T_{task}} = \frac{1}{N} \sum_{i=1}^{N} (t_{end}^{(i)} - t_{start}^{(i)})$<br><br>其中：<br>- **t_start**：Agent 接收到第 i 个任务的时间戳<br>- **t_end**：Agent 输出第 i 个任务最终结果的时间戳<br>- 取 10 次重复的中位数<br>- 单位：**min**<br><br>**1. NGU800P FP8 最快（2.2 min）**——FP8 量化虽损失精度但推理速度更快，整体任务耗时最短。<br><br>**2. 需结合完成率权衡**——FP8 更快但完成率低 0.6pp，BF16 精度更好但慢 14%。                                      |
+| **平均交互轮数**       | 8.2           | 8.0         | 8.1            | 基本一致       | **平均交互轮数 = mean(各任务的模型调用轮数)**<br><br>即：$\overline{R} = \frac{1}{N} \sum_{i=1}^{N} rounds_i$<br><br>其中：<br>- **rounds_i**：第 i 个任务完成所需的模型调用轮数<br>- **N**：总任务数<br>- 单位：**轮**<br><br>**1. 轮数一致说明 Agent 行为稳定**——不同芯片/量化下 Agent 的推理路径基本相同。<br><br>**2. 轮数增多通常意味着决策错误**——Agent 走了弯路需要额外轮次纠正，反映在决策准确率上。                                                                                                                            |
+| **输出质量 ROUGE-1** | 0.39          | 0.41        | 0.40           | 达标         | **ROUGE-1 = 输出与参考答案的 unigram 重叠 F1 分数**<br><br>即：$ROUGE\text{-}1 = \frac{2 \times P \times R}{P + R}$<br><br>其中：<br>- **P（精确率）**：输出中与参考答案匹配的 unigram 数 / 输出 unigram 总数<br>- **R（召回率）**：输出中与参考答案匹配的 unigram 数 / 参考答案 unigram 总数<br>- 单位：**0-1 之间的浮点数**<br><br>**1. ROUGE-1 衡量文本层面的输出一致性**——用于检测量化是否导致输出内容偏移。<br><br>**2. Coding 场景 ROUGE-1 在 0.35-0.45 是正常范围**——代码输出的表达多样性高，不追求与参考答案字面完全一致。                                 |
 
 ### 6.3 推理引擎调度状态
 
-| 指标 | NGU800P | A800 | 判定 | 计算说明 |
-| --- | --- | --- | --- | --- |
-| **KV Cache 使用率峰值** | 88% | 82% | NGU800P 峰值偏高 | **KV Cache 使用率峰值 = max(已用 KV Cache / 总 KV Cache 容量)**<br><br>即：$KV_{peak} = \max_{t} \frac{KV\_used(t)}{KV\_total} \times 100\%$<br><br>其中：<br>- **KV_used(t)**：时刻 t 的 KV Cache 已占用显存量<br>- **KV_total**：KV Cache 可用显存总量（= 总显存 × gpu_memory_utilization − 模型权重占用）<br>- 采样周期：Prometheus DCGM 每秒采集<br>- 单位：**%**<br><br>**1. 峰值 > 85% 触发告警**——过高导致新请求无法分配 KV Cache，被迫排队或抢占。<br><br>**2. Agent 场景 KV Cache 压力特别大**——多轮对话的累计上下文（18K token）占用大量 KV Cache 空间。 |
-| **被抢占请求数**（并发 16） | 12 | 5 | 抢占过多 | **被抢占请求数 = continuous batching 抢占次数**<br><br>即：$N_{preempt} = \sum_{t} preempt\_events(t)$<br><br>其中：<br>- **preempt_events(t)**：时刻 t 调度器因 KV Cache 不足而中断正在 Decode 的请求数<br>- 数据来源：vLLM 引擎日志中的 preemption 事件计数<br>- 单位：**次**<br><br>**1. 抢占是 KV Cache 压力的直接后果**——NGU800P 抢占 12 次 vs A800 的 5 次，与 KV Cache 峰值 88% vs 82% 一致。<br><br>**2. 每次抢占导致约 2× 延迟增加**——被抢占的请求需丢弃部分 KV Cache 并重新 Prefill。 |
-| **运行中请求数峰值** | 28 | 32 | 达标 | **运行中请求数峰值 = max(同时处于推理中的请求数)**<br><br>即：$N_{running\_peak} = \max_{t} N_{running}(t)$<br><br>其中：<br>- **N_running(t)**：时刻 t 正在 GPU 上执行 Prefill 或 Decode 的请求数<br>- 数据来源：vLLM 引擎的 scheduler 状态<br>- 单位：**次**<br><br>**1. 运行中请求数受 max_num_batched_tokens 约束**——NGU800P 峰值 28 < A800 的 32，说明 NGU800P 的 batch 容量偏小。<br><br>**2. 运行数越高 GPU 利用率越高**——但过高会导致单请求 TPOT 劣化。 |
-| **等待请求数峰值** | 8 | 5 | 关注 | **等待请求数峰值 = max(调度队列中排队的请求数)**<br><br>即：$N_{waiting\_peak} = \max_{t} N_{waiting}(t)$<br><br>其中：<br>- **N_waiting(t)**：时刻 t 在调度队列中等待被调度的请求数<br>- 数据来源：vLLM 引擎的 scheduler 状态<br>- 单位：**次**<br><br>**1. 等待队列长直接增加排队延迟**——NGU800P 峰值 8 > A800 的 5，解释了排队等待时间 65ms vs 48ms 的差距。<br><br>**2. 等待数持续高说明系统过载**——需扩容或降低并发数。 |
-| **Prefix Cache 命中率** | 72% | 75% | 达标 | **Prefix Cache 命中率 = 命中 Prefix Cache 的请求数 / 总请求数 × 100%**<br><br>即：$Hit_{prefix} = \frac{N_{cache\_hit}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_cache_hit**：input 的 prefix 部分在 KV Cache 中已存在、无需重新计算的请求数<br>- **N_total**：总请求数<br>- 单位：**%**<br><br>**1. Agent 多轮场景天然适合 Prefix Cache**——每轮 input 的前缀（系统 prompt + 历史对话）高度重复，命中率应 > 60%。<br><br>**2. 命中率 72% 说明还有提升空间**——理论上 8 轮对话可达 87.5%（7/8 轮可复用前缀）。 |
-| **总输入 Token 数量（引擎级）** | 1,245,000 | 1,245,000 | — | **总输入 Token = 引擎侧统计的输入 token 总量**<br><br>即：$Tokens_{input\_engine} = \sum_{i=1}^{N} input\_tokens_i^{(engine)}$<br><br>其中：<br>- **input_tokens_i^(engine)**：引擎实际处理的第 i 个请求的 input token 数<br>- 包含 Prefix Cache 命中的 token（已缓存但仍计入统计）<br>- 单位：**tokens**<br><br>**1. 引擎级统计与客户端统计可能有差异**——引擎侧含 special tokens（BOS/EOS）和 padding。<br><br>**2. 两张芯片的引擎级输入一致**——验证测试工作量完全对等。 |
-| **总生成 Token 数量（引擎级）** | 82,500 | 82,500 | — | **总生成 Token = 引擎侧统计的生成 token 总量**<br><br>即：$Tokens_{output\_engine} = \sum_{i=1}^{N} output\_tokens_i^{(engine)}$<br><br>其中：<br>- **output_tokens_i^(engine)**：引擎实际生成的第 i 个请求的 output token 数<br>- 包含 EOS token<br>- 单位：**tokens**<br><br>**1. 引擎级 output 与客户端级可能有微小差异**——引擎计入 EOS token，客户端可能不计。<br><br>**2. 用于交叉验证客户端统计数据**——确保吞吐量计算的分子准确。 |
-| **成功请求数（引擎级）** | 980 | 985 | 达标 | **成功请求数（引擎级）= 引擎返回 HTTP 2xx 的请求数**<br><br>即：$N_{success}^{(engine)} = \|\{req_i \mid status_i^{(engine)} = 2xx\}\|$<br><br>其中：<br>- **status_i^(engine)**：引擎侧返回的 HTTP 状态码<br>- 不含客户端级别的有效性校验<br>- 单位：**次**<br><br>**1. 引擎级成功数 ≥ 客户端级成功数**——引擎返回 2xx 但客户端可能判定结果无效（如输出截断）。<br><br>**2. 两者差值 = "假成功"数量**——需排查引擎返回 200 但内容不完整的请求。 |
-| **网络发送吞吐** | 12.5 GB/s | 14.2 GB/s | 差 12% | **网络发送吞吐 = 网卡发送速率均值**<br><br>即：$BW_{tx} = \frac{\sum_{t} bytes\_sent(t)}{T_{total}}$<br><br>其中：<br>- **bytes_sent(t)**：时刻 t 网卡发送的字节数<br>- **T_total**：测试总时长<br>- 数据来源：网卡计数器 / Prometheus node_exporter<br>- 单位：**GB/s**<br><br>**1. 发送吞吐反映 Tensor Parallel 通信开销**——TP=4 时 All-Reduce 操作产生的节点间通信量。<br><br>**2. NGU800P 低 12% 需排查 XLink 驱动效率**——可能是 XLink 在小消息场景下的延迟高于 NVLink。 |
-| **网络接收吞吐** | 8.2 GB/s | 9.5 GB/s | 差 14% | **网络接收吞吐 = 网卡接收速率均值**<br><br>即：$BW_{rx} = \frac{\sum_{t} bytes\_received(t)}{T_{total}}$<br><br>其中：<br>- **bytes_received(t)**：时刻 t 网卡接收的字节数<br>- **T_total**：测试总时长<br>- 数据来源：网卡计数器 / Prometheus node_exporter<br>- 单位：**GB/s**<br><br>**1. 接收吞吐通常略低于发送**——TP 通信中发送量 > 接收量是 All-Reduce 算法特性。<br><br>**2. 发送/接收比例应稳定**——比例异常波动可能指示网络拥塞或丢包。 |
+| 指标                    | NGU800P   | A800       | 判定           | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------- | --------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **KV Cache 使用率峰值**    | 88%       | 82%        | NGU800P 峰值偏高 | **KV Cache 使用率峰值 = max(已用 KV Cache / 总 KV Cache 容量)**<br><br>即：$KV_{peak} = \max_{t} \frac{KV\_used(t)}{KV\_total} \times 100\%$<br><br>其中：<br>- **KV_used(t)**：时刻 t 的 KV Cache 已占用显存量<br>- **KV_total**：KV Cache 可用显存总量（= 总显存 × gpu_memory_utilization − 模型权重占用）<br>- 采样周期：Prometheus DCGM 每秒采集<br>- 单位：**%**<br><br>**1. 峰值 > 85% 触发告警**——过高导致新请求无法分配 KV Cache，被迫排队或抢占。<br><br>**2. Agent 场景 KV Cache 压力特别大**——多轮对话的累计上下文（18K token）占用大量 KV Cache 空间。                                    |
+| **被抢占请求数**（并发 16）     | 12        | 5          | 抢占过多         | **被抢占请求数 = continuous batching 抢占次数**<br><br>即：$N_{preempt} = \sum_{t} preempt\_events(t)$<br><br>其中：<br>- **preempt_events(t)**：时刻 t 调度器因 KV Cache 不足而中断正在 Decode 的请求数<br>- 数据来源：vLLM 引擎日志中的 preemption 事件计数<br>- 单位：**次**<br><br>**1. 抢占是 KV Cache 压力的直接后果**——NGU800P 抢占 12 次 vs A800 的 5 次，与 KV Cache 峰值 88% vs 82% 一致。<br><br>**2. 每次抢占导致约 2× 延迟增加**——被抢占的请求需丢弃部分 KV Cache 并重新 Prefill。                                                                                                |
+| **运行中请求数峰值**          | 28        | 32         | 达标           | **运行中请求数峰值 = max(同时处于推理中的请求数)**<br><br>即：$N_{running\_peak} = \max_{t} N_{running}(t)$<br><br>其中：<br>- **N_running(t)**：时刻 t 正在 GPU 上执行 Prefill 或 Decode 的请求数<br>- 数据来源：vLLM 引擎的 scheduler 状态<br>- 单位：**次**<br><br>**1. 运行中请求数受 max_num_batched_tokens 约束**——NGU800P 峰值 28 < A800 的 32，说明 NGU800P 的 batch 容量偏小。<br><br>**2. 运行数越高 GPU 利用率越高**——但过高会导致单请求 TPOT 劣化。                                                                                                                          |
+| **等待请求数峰值**           | 8         | 5          | 关注           | **等待请求数峰值 = max(调度队列中排队的请求数)**<br><br>即：$N_{waiting\_peak} = \max_{t} N_{waiting}(t)$<br><br>其中：<br>- **N_waiting(t)**：时刻 t 在调度队列中等待被调度的请求数<br>- 数据来源：vLLM 引擎的 scheduler 状态<br>- 单位：**次**<br><br>**1. 等待队列长直接增加排队延迟**——NGU800P 峰值 8 > A800 的 5，解释了排队等待时间 65ms vs 48ms 的差距。<br><br>**2. 等待数持续高说明系统过载**——需扩容或降低并发数。                                                                                                                                                                          |
+| **Prefix Cache 命中率**  | 72%       | 75%        | 达标           | **Prefix Cache 命中率 = 命中 Prefix Cache 的请求数 / 总请求数 × 100%**<br><br>即：$Hit_{prefix} = \frac{N_{cache\_hit}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_cache_hit**：input 的 prefix 部分在 KV Cache 中已存在、无需重新计算的请求数<br>- **N_total**：总请求数<br>- 单位：**%**<br><br>**1. Agent 多轮场景天然适合 Prefix Cache**——每轮 input 的前缀（系统 prompt + 历史对话）高度重复，命中率应 > 60%。<br><br>**2. 命中率 72% 说明还有提升空间**——理论上 8 轮对话可达 87.5%（7/8 轮可复用前缀）。                                                                                 |
+| **总输入 Token 数量（引擎级）** | 1,245,000 | 1,245,000  | —            | **总输入 Token = 引擎侧统计的输入 token 总量**<br><br>即：$Tokens_{input\_engine} = \sum_{i=1}^{N} input\_tokens_i^{(engine)}$<br><br>其中：<br>- **input_tokens_i^(engine)**：引擎实际处理的第 i 个请求的 input token 数<br>- 包含 Prefix Cache 命中的 token（已缓存但仍计入统计）<br>- 单位：**tokens**<br><br>**1. 引擎级统计与客户端统计可能有差异**——引擎侧含 special tokens（BOS/EOS）和 padding。<br><br>**2. 两张芯片的引擎级输入一致**——验证测试工作量完全对等。                                                                                                                     |
+| **总生成 Token 数量（引擎级）** | 82,500    | 82,500     | —            | **总生成 Token = 引擎侧统计的生成 token 总量**<br><br>即：$Tokens_{output\_engine} = \sum_{i=1}^{N} output\_tokens_i^{(engine)}$<br><br>其中：<br>- **output_tokens_i^(engine)**：引擎实际生成的第 i 个请求的 output token 数<br>- 包含 EOS token<br>- 单位：**tokens**<br><br>**1. 引擎级 output 与客户端级可能有微小差异**——引擎计入 EOS token，客户端可能不计。<br><br>**2. 用于交叉验证客户端统计数据**——确保吞吐量计算的分子准确。                                                                                                                                               |
+| **成功请求数（引擎级）**        | 980       | 985        | 达标           | **成功请求数（引擎级）= 引擎返回 HTTP 2xx 的请求数**<br><br>即：$N_{success}^{(engine)} = \|\{req_i \mid status_i^{(engine)} = 2xx\}\|$<br><br>其中：<br>- **status_i^(engine)**：引擎侧返回的 HTTP 状态码<br>- 不含客户端级别的有效性校验<br>- 单位：**次**<br><br>**1. 引擎级成功数 ≥ 客户端级成功数**——引擎返回 2xx 但客户端可能判定结果无效（如输出截断）。<br><br>**2. 两者差值 = "假成功"数量**——需排查引擎返回 200 但内容不完整的请求。                                                                                                                                                              |
+| **网络发送吞吐**            | 12.5 GB/s | 14.2 GB/s  | 差 12%        | **网络发送吞吐 = 网卡发送速率均值**<br><br>即：$BW_{tx} = \frac{\sum_{t} bytes\_sent(t)}{T_{total}}$<br><br>其中：<br>- **bytes_sent(t)**：时刻 t 网卡发送的字节数<br>- **T_total**：测试总时长<br>- 数据来源：网卡计数器 / Prometheus node_exporter<br>- 单位：**GB/s**<br><br>**1. 发送吞吐反映 Tensor Parallel 通信开销**——TP=4 时 All-Reduce 操作产生的节点间通信量。<br><br>**2. NGU800P 低 12% 需排查 XLink 驱动效率**——可能是 XLink 在小消息场景下的延迟高于 NVLink。                                                                                                               |
+| **输出吞吐量**             | 72 tok/s  | 39.8 tok/s | -44.7%       | **输出吞吐量 = Σ(各成功请求的 output_tokens) / 测试总时长**<br><br>即：$Throughput_{output} = \frac{\sum_{i=1}^{N} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N**：测试期间所有成功完成的请求数量<br>- **output_tokens_i**：第 i 个成功请求生成的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s****<br><br>1. 只计算"成功请求"**——超时、报错、被限流的请求不纳入分子，避免虚高。<br><br>**2. 只统计 output_tokens**——区别于"总吞吐量"（input + output），输出吞吐量专注于模型实际生成的部分，因为生成（decode）阶段才是推理的性能瓶颈。<br><br>**3. 测试总时长是墙钟时间**——从第一个请求发出到最后一个请求完成的端到端时间，而非各请求耗时之和 |
+| **内存占用**              | 48 GB     | 68 GB      | +20 GB       | **内存占用 = 进程 RSS 峰值**<br><br>即：$Mem_{peak} = \max_{t} RSS(t)$<br><br>其中：<br>- **RSS(t)**：时刻 t 推理进程的 Resident Set Size（常驻内存）<br>- 包含：模型权重、KV Cache、工具调用上下文、Agent 框架开销<br>- 单位：**GB**<br><br>**1. +20 GB 来自工具调用的上下文缓存**——Agent 框架需缓存文件内容、搜索结果、测试输出等工具返回数据。<br><br>**2. 需确保内存不超过物理限制**——68 GB / 1 TB = 6.8%，在安全范围内。                                                                                                                                                                            |
+| **功耗**                | 340 W     | 358 W      | +18 W        | **功耗 = DCGM 功耗采样均值**<br><br>即：$P_{avg} = \frac{1}{T} \sum_{t=1}^{T} power(t)$<br><br>其中：<br>- **power(t)**：时刻 t 的加速卡实时功耗（瓦特）<br>- **T**：采样周期总数<br>- 数据来源：DCGM gpu_power_usage<br>- 单位：**W**<br><br>**1. Agent 负载功耗略高于纯推理**——虽然 GPU 利用率下降，但 CPU 和内存子系统的额外负载增加了系统总功耗。<br><br>**2. +18 W 增量主要来自 CPU 和内存**——GPU 功耗实际因工具等待而略降，但被其他组件的增量抵消。                                                                                                                                                      |
+| **网络接收吞吐**            | 8.2 GB/s  | 9.5 GB/s   | 差 14%        | **网络接收吞吐 = 网卡接收速率均值**<br><br>即：$BW_{rx} = \frac{\sum_{t} bytes\_received(t)}{T_{total}}$<br><br>其中：<br>- **bytes_received(t)**：时刻 t 网卡接收的字节数<br>- **T_total**：测试总时长<br>- 数据来源：网卡计数器 / Prometheus node_exporter<br>- 单位：**GB/s**<br><br>**1. 接收吞吐通常略低于发送**——TP 通信中发送量 > 接收量是 All-Reduce 算法特性。<br><br>**2. 发送/接收比例应稳定**——比例异常波动可能指示网络拥塞或丢包。                                                                                                                                                  |
 
 #### 图表 D3：KV Cache 使用率时序图
 
@@ -525,41 +538,12 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > 标注 80% 告警线和 95% 危险线
 > **并发测试期间显存压力是否接近极限**
 
-![[aaas-charts/D3-kvcache-timeseries.png]]
-`<!-- 占位符：替换为实际 KV Cache 时序图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041746261.png)
 
-### 6.4 量化精度影响矩阵
 
-| 评估维度 \ 量化模式 | FP32 | FP16 | BF16 | INT8 | FP8 | 计算说明 |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Agent 任务完成率** | 99.2% | 99.1% | 99.0% | 98.2% | 98.5% | **任务完成率 = 成功完成任务数 / 总测试任务数 × 100%**<br><br>即：$Rate_{complete} = \frac{N_{success}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_success**：10 次重复中 ≥ 8 次通过判定的任务数<br>- **N_total**：总测试任务数<br>- 单位：**%**<br><br>**1. FP32 作为精度基准**——99.2% 是无量化损失的理论上限。<br><br>**2. 各量化模式与 FP32 的差值 = 量化精度损失**——INT8 损失最大（1.0pp），FP8 损失 0.7pp。 |
-| **决策准确率** | 97.8% | 97.5% | 97.3% | 96.0% | 96.8% | **决策准确率 = 正确决策步骤数 / 总决策步骤数 × 100%**<br><br>即：$Acc_{decision} = \frac{\sum correct\_steps}{\sum total\_steps} \times 100\%$<br><br>其中：<br>- **correct_steps**：Agent 做出正确决策的步骤数<br>- **total_steps**：Agent 的总决策步骤数<br>- 单位：**%**<br><br>**1. 决策准确率对量化更敏感**——INT8 的 96.0% 比 FP32 低 1.8pp，说明低精度影响 Agent 的推理判断能力。<br><br>**2. BF16 是最优权衡点**——仅损失 0.5pp 但推理速度接近 FP8。 |
-| **工具调用正确率** | 97.2% | 96.8% | 96.5% | 94.8% | 95.2% | **工具调用正确率 = 正确工具调用数 / 总工具调用数 × 100%**<br><br>即：$Acc_{tool} = \frac{N_{tool\_correct}}{N_{tool\_total}} \times 100\%$<br><br>其中：<br>- **N_tool_correct**：工具调用参数正确且返回预期结果的次数<br>- **N_tool_total**：Agent 发起的总工具调用次数<br>- 单位：**%**<br><br>**1. 工具调用对量化最敏感**——INT8 损失 2.4pp，FP8 损失 2.0pp，因为 function calling 需要精确的结构化 JSON 输出。<br><br>**2. 工具调用错误会级联放大**——一次工具调用失败可能导致后续多轮推理偏移。 |
-| **Token 精度（vs FP32）** | 100% | 99.8% | 99.7% | 98.5% | 99.0% | **Token 精度 = 与 FP32 输出的 token 一致率**<br><br>即：$Acc_{token} = \frac{\sum_{i=1}^{L} \mathbb{1}[token_i^{(quant)} = token_i^{(FP32)}]}{L} \times 100\%$<br><br>其中：<br>- **token_i^(quant)**：量化模型在位置 i 生成的 token<br>- **token_i^(FP32)**：FP32 基准模型在相同输入下在位置 i 生成的 token<br>- **L**：输出序列总长度<br>- 单位：**%**<br><br>**1. Token 精度是最底层的量化影响指标**——逐 token 对比，0.2% 的差异在长序列中可能导致语义偏移。<br><br>**2. FP8 的 99.0% 高于 INT8 的 98.5%**——FP8 在保持动态范围方面优于 INT8。 |
 
-> **解读**：FP8 量化在 Agent 任务完成率上损失 0.7pp，工具调用正确率损失 2.0pp；BF16 是精度-性能权衡的最优选择。
 
-#### 图表 D4：量化精度影响矩阵热力图
-
-> X = 量化模式，Y = 评估维度，颜色 = 得分
-> **什么量化方案在哪个维度精度损失最大**
-
-![[aaas-charts/D4-quantization-heatmap.png]]
-`<!-- 占位符：替换为实际热力图截图 -->`
-
-### 6.5 MCP / 外部工具调用影响
-
-| 指标           | 纯推理（无工具） | Agent 负载（含工具） | 增量     | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------ | -------- | ------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **输出吞吐量**    | 72 tok/s | 39.8 tok/s    | -44.7% | **输出吞吐量 = Σ(各成功请求的 output_tokens) / 测试总时长**<br><br>即：$Throughput_{output} = \frac{\sum_{i=1}^{N} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N**：测试期间所有成功完成的请求数量<br>- **output_tokens_i**：第 i 个成功请求生成的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s****<br><br>1. 只计算"成功请求"**——超时、报错、被限流的请求不纳入分子，避免虚高。<br><br>**2. 只统计 output_tokens**——区别于"总吞吐量"（input + output），输出吞吐量专注于模型实际生成的部分，因为生成（decode）阶段才是推理的性能瓶颈。<br><br>**3. 测试总时长是墙钟时间**——从第一个请求发出到最后一个请求完成的端到端时间，而非各请求耗时之和 |
-| **GPU 利用率**  | 87%      | 82%           | -5pp   | **GPU 利用率 = mean(采样周期内 gpu_utilization%)**<br><br>即：$U_{GPU} = \frac{1}{T} \sum_{t=1}^{T} gpu\_util(t)$<br><br>其中：<br>- **gpu_util(t)**：时刻 t 的 GPU 利用率百分比（SM 活跃占比）<br>- **T**：采样周期总数<br>- 数据来源：Prometheus DCGM exporter<br>- 单位：**%**<br><br>**1. Agent 负载下 GPU 利用率低于纯推理**——工具调用期间 GPU 处于空闲等待状态，拉低了整体利用率。<br><br>**2. -5pp 的降幅反映工具调用占比**——工具调用占任务时长约 40%，期间 GPU 基本闲置。 |
-| **CPU 利用率**  | 18%      | 42%           | +24pp  | **CPU 利用率 = mean(采样周期内 cpu_utilization%)**<br><br>即：$U_{CPU} = \frac{1}{T} \sum_{t=1}^{T} cpu\_util(t)$<br><br>其中：<br>- **cpu_util(t)**：时刻 t 的 CPU 利用率百分比（所有核心均值）<br>- **T**：采样周期总数<br>- 数据来源：Prometheus node_exporter<br>- 单位：**%**<br><br>**1. Agent 负载大幅推高 CPU 利用率**——工具调用（文件读写、Grep 搜索、代码执行）都是 CPU 密集型操作。<br><br>**2. +24pp 说明工具层是 CPU 瓶颈的来源**——需确保 CPU 不成为 Agent 场景的性能瓶颈。 |
-| **内存占用**     | 48 GB    | 68 GB         | +20 GB | **内存占用 = 进程 RSS 峰值**<br><br>即：$Mem_{peak} = \max_{t} RSS(t)$<br><br>其中：<br>- **RSS(t)**：时刻 t 推理进程的 Resident Set Size（常驻内存）<br>- 包含：模型权重、KV Cache、工具调用上下文、Agent 框架开销<br>- 单位：**GB**<br><br>**1. +20 GB 来自工具调用的上下文缓存**——Agent 框架需缓存文件内容、搜索结果、测试输出等工具返回数据。<br><br>**2. 需确保内存不超过物理限制**——68 GB / 1 TB = 6.8%，在安全范围内。 |
-| **功耗**       | 340 W    | 358 W         | +18 W  | **功耗 = DCGM 功耗采样均值**<br><br>即：$P_{avg} = \frac{1}{T} \sum_{t=1}^{T} power(t)$<br><br>其中：<br>- **power(t)**：时刻 t 的加速卡实时功耗（瓦特）<br>- **T**：采样周期总数<br>- 数据来源：DCGM gpu_power_usage<br>- 单位：**W**<br><br>**1. Agent 负载功耗略高于纯推理**——虽然 GPU 利用率下降，但 CPU 和内存子系统的额外负载增加了系统总功耗。<br><br>**2. +18 W 增量主要来自 CPU 和内存**——GPU 功耗实际因工具等待而略降，但被其他组件的增量抵消。 |
-| **工具调用平均延迟** | —        | 850 ms        | —      | **工具调用平均延迟 = mean(各次工具调用的耗时)**<br><br>即：$\overline{T_{tool}} = \frac{1}{M} \sum_{j=1}^{M} (t_{tool\_end}^{(j)} - t_{tool\_start}^{(j)})$<br><br>其中：<br>- **t_tool_start**：第 j 次工具调用发起的时间戳<br>- **t_tool_end**：第 j 次工具调用返回结果的时间戳<br>- **M**：总工具调用次数<br>- 单位：**ms**<br><br>**1. 工具调用延迟决定非推理时间占比**——850ms × 4 次 ≈ 3.4s，占任务 E2E 的约 2.6%。<br><br>**2. 不同工具延迟差异大**——file_read ~320ms、grep ~180ms、test_run ~4200ms，需按工具类型分析。 |
-| **工具调用异常率**  | —        | 1.8%          | —      | **工具调用异常率 = 异常工具调用数 / 总工具调用数 × 100%**<br><br>即：$Rate_{tool\_error} = \frac{N_{tool\_error}}{N_{tool\_total}} \times 100\%$<br><br>其中：<br>- **N_tool_error**：工具调用超时、报错或返回非预期结果的次数<br>- **N_tool_total**：Agent 发起的总工具调用次数<br>- 单位：**%**<br><br>**1. 异常率 < 2% 属于正常范围**——1.8% 主要来自 test_run 超时和文件权限错误。<br><br>**2. 工具异常不一定导致任务失败**——Agent 通常能自主重试或绕过失败的工具调用。 |
-
-### 6.6 基础设施与集群诊断
+### 6.4 基础设施与集群诊断
 
 **存储诊断**：
 
@@ -576,35 +560,44 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 **网络与互联诊断**：
 
-| 指标 | NGU800P | A800 | 判定 | 计算说明 |
-| --- | --- | --- | --- | --- |
-| **节点内 NVLink/XLink 带宽利用率 (%)** | 72% | 78% | 达标 | **带宽利用率 = 实际带宽 / 理论峰值带宽 × 100%**<br><br>即：$U_{link} = \frac{BW_{actual}}{BW_{peak}} \times 100\%$<br><br>其中：<br>- **BW_actual**：NVLink/XLink 实际传输速率（DCGM 采样均值）<br>- **BW_peak**：理论峰值带宽（600 GB/s）<br>- 单位：**%**<br><br>**1. TP=4 场景下 All-Reduce 通信量 = 2×(TP-1)/TP × 数据量**——利用率 72-78% 属于高效范围。<br><br>**2. NGU800P 的 XLink 利用率低 6pp**——可能是 XLink 协议栈的调度效率或拓扑差异导致。 |
-| **节点间网络带宽利用率 (%)** | 65% | 68% | 达标 | **节点间带宽利用率 = 实际流量 / 理论峰值 × 100%**<br><br>即：$U_{net} = \frac{BW_{actual}}{100 Gbps} \times 100\%$<br><br>其中：<br>- **BW_actual**：RoCEv2 网卡实际传输速率<br>- 理论峰值：100 Gbps（双上联，单链路）<br>- 数据来源：网卡计数器采样<br>- 单位：**%**<br><br>**1. 节点间通信用于 Pipeline Parallel 和数据传输**——TP=4 时主要是节点内通信，节点间带宽需求相对低。<br><br>**2. 利用率 65-68% 说明网络非瓶颈**——有约 30% 的余量应对突发流量。 |
-| **网络延迟 P99 (intra-rack μs)** | 8.5 | 7.2 | 达标 | **同机架网络延迟 P99 = 同机架节点间 RDMA 延迟的第 99 百分位值**<br><br>即：$Lat_{intra\_P99} = P99(\{lat_{RDMA}^{(i)}\})$<br><br>其中：<br>- **lat_RDMA^(i)**：第 i 次 RDMA send 操作的单程延迟<br>- 测量工具：`ib_send_lat`，1000 次采样<br>- 单位：**μs**<br><br>**1. 同机架走 Leaf 交换机单跳**——延迟 < 10μs 是 RoCEv2 的正常水平。<br><br>**2. NGU800P 略高 1.3μs**——可能是网卡驱动或 PCIe 延迟差异。 |
-| **网络延迟 P99 (inter-rack μs)** | 18.2 | 15.8 | 达标 | **跨机架网络延迟 P99 = 跨机架节点间 RDMA 延迟的第 99 百分位值**<br><br>即：$Lat_{inter\_P99} = P99(\{lat_{RDMA}^{(i)}\})$<br><br>其中：<br>- **lat_RDMA^(i)**：第 i 次跨机架 RDMA send 操作的单程延迟<br>- 测量工具：`ib_send_lat`，1000 次采样<br>- 跨机架路径：Leaf → Spine → Leaf（3 跳）<br>- 单位：**μs**<br><br>**1. 跨机架延迟约为同机架的 2 倍**——多经过一级 Spine 交换机。<br><br>**2. 18.2μs 在可接受范围**——TP 通信走节点内互联，跨机架延迟主要影响 PP 和数据传输。 |
-| **All-Reduce 延迟 (ms)** | 2.8 | 2.4 | 达标 | **All-Reduce 延迟 = Tensor Parallel 场景下 All-Reduce 操作的延迟**<br><br>即：$T_{allreduce} = t_{allreduce\_end} - t_{allreduce\_start}$<br><br>其中：<br>- **t_allreduce_start**：All-Reduce 操作发起的时间戳<br>- **t_allreduce_end**：所有参与节点完成 Reduce 的时间戳<br>- 测量工具：NCCL/XCCL test<br>- 单位：**ms**<br><br>**1. All-Reduce 延迟直接影响每一步 Decode**——TP=4 时每生成一个 token 需执行一次 All-Reduce。<br><br>**2. NGU800P 的 XCCL 慢 0.4ms**——累计到 2000 token 的 Decode 上相当于额外 0.8s 延迟。 |
-| **丢包率 (%)** | 0.002% | 0.001% | 达标 | **丢包率 = 丢弃包数 / 发送包数 × 100%**<br><br>即：$Loss = \frac{N_{dropped}}{N_{sent}} \times 100\%$<br><br>其中：<br>- **N_dropped**：网卡计数器报告的丢弃包数<br>- **N_sent**：网卡计数器报告的发送包数<br>- 数据来源：网卡硬件计数器<br>- 单位：**%**<br><br>**1. 丢包率 < 0.01% 属于正常**——RoCEv2 无损网络设计目标为零丢包。<br><br>**2. 丢包会导致 RDMA 重传**——增加通信延迟和尾部抖动。 |
-| **网络抖动 (μs)** | 3.5 | 2.8 | 达标 | **网络抖动 = std(连续 ping 延迟)**<br><br>即：$Jitter_{net} = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (lat_i - \overline{lat})^2}$<br><br>其中：<br>- **lat_i**：第 i 次 ping 的往返延迟<br>- **$\overline{lat}$**：所有 ping 延迟的均值<br>- **n**：采样次数（1000 次）<br>- 单位：**μs**<br><br>**1. 抖动反映网络稳定性**——σ 越小，通信延迟越可预测，推理性能越稳定。<br><br>**2. 抖动 < 5μs 对推理影响可忽略**——All-Reduce 延迟的主要成分是数据传输而非抖动。 |
+| 指标                           | NGU800P | A800   | 判定  | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------- | ------- | ------ | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **节点内带宽利用率 (%)**             | 72%     | 78%    | 达标  | **带宽利用率 = 实际带宽 / 理论峰值带宽 × 100%**<br><br>即：$U_{link} = \frac{BW_{actual}}{BW_{peak}} \times 100\%$<br><br>其中：<br>- **BW_actual**：NVLink/XLink 实际传输速率（DCGM 采样均值）<br>- **BW_peak**：理论峰值带宽（600 GB/s）<br>- 单位：**%**<br><br>**1. TP=4 场景下 All-Reduce 通信量 = 2×(TP-1)/TP × 数据量**——利用率 72-78% 属于高效范围。<br><br>**2. NGU800P 的 XLink 利用率低 6pp**——可能是 XLink 协议栈的调度效率或拓扑差异导致。                                                                            |
+| **节点间网络带宽利用率 (%)**           | 65%     | 68%    | 达标  | **节点间带宽利用率 = 实际流量 / 理论峰值 × 100%**<br><br>即：$U_{net} = \frac{BW_{actual}}{100 Gbps} \times 100\%$<br><br>其中：<br>- **BW_actual**：RoCEv2 网卡实际传输速率<br>- 理论峰值：100 Gbps（双上联，单链路）<br>- 数据来源：网卡计数器采样<br>- 单位：**%**<br><br>**1. 节点间通信用于 Pipeline Parallel 和数据传输**——TP=4 时主要是节点内通信，节点间带宽需求相对低。<br><br>**2. 利用率 65-68% 说明网络非瓶颈**——有约 30% 的余量应对突发流量。                                                                                                   |
+| **网络延迟 P99 (intra-rack μs)** | 8.5     | 7.2    | 达标  | **同机架网络延迟 P99 = 同机架节点间 RDMA 延迟的第 99 百分位值**<br><br>即：$Lat_{intra\_P99} = P99(\{lat_{RDMA}^{(i)}\})$<br><br>其中：<br>- **lat_RDMA^(i)**：第 i 次 RDMA send 操作的单程延迟<br>- 测量工具：`ib_send_lat`，1000 次采样<br>- 单位：**μs**<br><br>**1. 同机架走 Leaf 交换机单跳**——延迟 < 10μs 是 RoCEv2 的正常水平。<br><br>**2. NGU800P 略高 1.3μs**——可能是网卡驱动或 PCIe 延迟差异。                                                                                                                   |
+| **网络延迟 P99 (inter-rack μs)** | 18.2    | 15.8   | 达标  | **跨机架网络延迟 P99 = 跨机架节点间 RDMA 延迟的第 99 百分位值**<br><br>即：$Lat_{inter\_P99} = P99(\{lat_{RDMA}^{(i)}\})$<br><br>其中：<br>- **lat_RDMA^(i)**：第 i 次跨机架 RDMA send 操作的单程延迟<br>- 测量工具：`ib_send_lat`，1000 次采样<br>- 跨机架路径：Leaf → Spine → Leaf（3 跳）<br>- 单位：**μs**<br><br>**1. 跨机架延迟约为同机架的 2 倍**——多经过一级 Spine 交换机。<br><br>**2. 18.2μs 在可接受范围**——TP 通信走节点内互联，跨机架延迟主要影响 PP 和数据传输。                                                                            |
+| **丢包率 (%)**                  | 0.002%  | 0.001% | 达标  | **丢包率 = 丢弃包数 / 发送包数 × 100%**<br><br>即：$Loss = \frac{N_{dropped}}{N_{sent}} \times 100\%$<br><br>其中：<br>- **N_dropped**：网卡计数器报告的丢弃包数<br>- **N_sent**：网卡计数器报告的发送包数<br>- 数据来源：网卡硬件计数器<br>- 单位：**%**<br><br>**1. 丢包率 < 0.01% 属于正常**——RoCEv2 无损网络设计目标为零丢包。<br><br>**2. 丢包会导致 RDMA 重传**——增加通信延迟和尾部抖动。                                                                                                                                            |
+| **网络抖动 (μs)**                | 3.5     | 2.8    | 达标  | **网络抖动 = std(连续 ping 延迟)**<br><br>即：$Jitter_{net} = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (lat_i - \overline{lat})^2}$<br><br>其中：<br>- **lat_i**：第 i 次 ping 的往返延迟<br>- **$\overline{lat}$**：所有 ping 延迟的均值<br>- **n**：采样次数（1000 次）<br>- 单位：**μs**<br><br>**1. 抖动反映网络稳定性**——σ 越小，通信延迟越可预测，推理性能越稳定。<br><br>**2. 抖动 < 5μs 对推理影响可忽略**——All-Reduce 延迟的主要成分是数据传输而非抖动。                                                                                |
 
 **集群整体健康**：
 
-| 指标 | NGU800P | A800 | 判定 | 计算说明 |
-| --- | --- | --- | --- | --- |
-| **节点可用率 (%)** | 99.6% | 99.8% | 达标 | **节点可用率 = 正常运行节点数 / 总节点数 × 100%**<br><br>即：$Avail_{node} = \frac{N_{healthy}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_healthy**：通过健康检查（GPU 可用 + 网络通 + 服务就绪）的节点数<br>- **N_total**：集群总节点数（125）<br>- 采样方式：滚动 7 天均值<br>- 单位：**%**<br><br>**1. 7 天均值而非瞬时值**——捕获间歇性故障和维护窗口的影响。<br><br>**2. 99.6% 意味着平均每天约 0.5 个节点不可用**——需结合故障率指标分析原因。 |
-| **加速卡故障率 (次/千卡·天)** | 0.12 | 0.08 | 关注 | **加速卡故障率 = 故障卡次数 / (总卡数 / 1000) / 天数**<br><br>即：$\lambda_{GPU} = \frac{N_{fault}}{(N_{cards} / 1000) \times D}$<br><br>其中：<br>- **N_fault**：观测期内发生故障的加速卡次数（含重复故障）<br>- **N_cards**：集群总卡数（1000）<br>- **D**：观测天数<br>- 单位：**次/千卡·天**<br><br>**1. 故障定义**——加速卡出现 ECC 不可纠正错误、掉卡、温度过热保护等需人工干预的事件。<br><br>**2. NGU800P 故障率高 50%**——0.12 vs 0.08，需分析是硬件成熟度还是散热设计问题。 |
-| **调度队列深度 (max)** | 24 | 18 | 关注 | **调度队列深度 = 调度器等待队列最大深度**<br><br>即：$Q_{max} = \max_{t} queue\_depth(t)$<br><br>其中：<br>- **queue_depth(t)**：时刻 t 调度器等待队列中的请求数<br>- 数据来源：Prometheus 采集的 vLLM 调度器指标<br>- 单位：**次**<br><br>**1. 队列深度反映系统负载饱和度**——深度持续 > 20 说明系统接近超载。<br><br>**2. NGU800P 峰值 24 > A800 的 18**——与 KV Cache 使用率偏高一致，需优化显存管理。 |
-| **集群吞吐效率 (vs 理论线性值 %)** | 82% | 86% | 达标 | **集群吞吐效率 = 实际集群吞吐 / (单节点吞吐 × 节点数) × 100%**<br><br>即：$\eta_{cluster} = \frac{Throughput_{cluster}}{Throughput_{node} \times N_{nodes}} \times 100\%$<br><br>其中：<br>- **Throughput_cluster**：整个集群的实际吞吐量<br>- **Throughput_node**：单节点的基线吞吐量<br>- **N_nodes**：参与计算的节点数<br>- 单位：**%**<br><br>**1. 效率 < 100% 是正常的**——通信开销、调度损耗、负载不均都会导致效率损失。<br><br>**2. 82% 意味着 18% 的扩展损耗**——主要来自跨节点通信和调度器的全局协调开销。 |
+| 指标                      | NGU800P | A800  | 判定  | 计算说明                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------- | ------- | ----- | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **节点可用率 (%)**           | 99.6%   | 99.8% | 达标  | **节点可用率 = 正常运行节点数 / 总节点数 × 100%**<br><br>即：$Avail_{node} = \frac{N_{healthy}}{N_{total}} \times 100\%$<br><br>其中：<br>- **N_healthy**：通过健康检查（GPU 可用 + 网络通 + 服务就绪）的节点数<br>- **N_total**：集群总节点数（125）<br>- 采样方式：滚动 7 天均值<br>- 单位：**%**<br><br>**1. 7 天均值而非瞬时值**——捕获间歇性故障和维护窗口的影响。<br><br>**2. 99.6% 意味着平均每天约 0.5 个节点不可用**——需结合故障率指标分析原因。                                                          |
+| **加速卡故障率 (次/千卡·天)**     | 0.12    | 0.08  | 关注  | **加速卡故障率 = 故障卡次数 / (总卡数 / 1000) / 天数**<br><br>即：$\lambda_{GPU} = \frac{N_{fault}}{(N_{cards} / 1000) \times D}$<br><br>其中：<br>- **N_fault**：观测期内发生故障的加速卡次数（含重复故障）<br>- **N_cards**：集群总卡数（1000）<br>- **D**：观测天数<br>- 单位：**次/千卡·天**<br><br>**1. 故障定义**——加速卡出现 ECC 不可纠正错误、掉卡、温度过热保护等需人工干预的事件。<br><br>**2. NGU800P 故障率高 50%**——0.12 vs 0.08，需分析是硬件成熟度还是散热设计问题。                                    |
+| **调度队列深度 (max)**        | 24      | 18    | 关注  | **调度队列深度 = 调度器等待队列最大深度**<br><br>即：$Q_{max} = \max_{t} queue\_depth(t)$<br><br>其中：<br>- **queue_depth(t)**：时刻 t 调度器等待队列中的请求数<br>- 数据来源：Prometheus 采集的 vLLM 调度器指标<br>- 单位：**次**<br><br>**1. 队列深度反映系统负载饱和度**——深度持续 > 20 说明系统接近超载。<br><br>**2. NGU800P 峰值 24 > A800 的 18**——与 KV Cache 使用率偏高一致，需优化显存管理。                                                                                           |
+| **集群吞吐效率 (vs 理论线性值 %)** | 82%     | 86%   | 达标  | **集群吞吐效率 = 实际集群吞吐 / (单节点吞吐 × 节点数) × 100%**<br><br>即：$\eta_{cluster} = \frac{Throughput_{cluster}}{Throughput_{node} \times N_{nodes}} \times 100\%$<br><br>其中：<br>- **Throughput_cluster**：整个集群的实际吞吐量<br>- **Throughput_node**：单节点的基线吞吐量<br>- **N_nodes**：参与计算的节点数<br>- 单位：**%**<br><br>**1. 效率 < 100% 是正常的**——通信开销、调度损耗、负载不均都会导致效率损失。<br><br>**2. 82% 意味着 18% 的扩展损耗**——主要来自跨节点通信和调度器的全局协调开销。 |
+
+#### 图表 D6：MFU/MBU 硬件效率跨芯片对比
+
+> **关注方：推理芯片部门领导 + 超节点工程部门**
+> 双 Y 轴柱状图：MFU / MBU / GPU 利用率 / 显存占用率 / 互联带宽利用率
+> NGU800P（蓝色）vs A800（灰色）并列
+> **一眼看清芯片在各硬件维度的利用效率差距和优化空间**
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041840996.png)
+
 
 ---
 
 ## 七、成本指标
 
-> **价值定位**：把体验指标和诊断指标转化为财务语言——每百万 token 花多少钱、每瓦功耗产出多少吞吐。
+> **价值定位**：把体验指标和诊断指标转化为财务语言，直接回答采购决策问题——**跑同样的业务花多少钱**（¥/M-token 跨芯片对比）、**每瓦电费产出多少推理**（能效比决定数据中心功耗预算下的最大算力密度）、**投资多久能回本**（节点 ROI 是 CFO 签采购合同的核心依据）。成本指标将技术性能的优势/劣势转化为可直接计算的经济价值，是 50,000 卡大规模采购决策的底层数据支撑。
 
 > [!note] 测试基数规则
 > 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
 
-### 7.1 硬件利用效率
+### 7.1 硬件利用率
 
 | 指标 | NGU800P | A800 | 理论峰值 | NGU800P 利用率 | 计算说明 |
 | --- | --- | --- | --- | --- | --- |
@@ -630,22 +623,24 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ### 7.3 成本核算
 
-| 指标 | NGU800P | A800 | 公有云 (GPT-4o) | 对比 | 计算说明 |
-| --- | --- | --- | --- | --- | --- |
-| **每小时成本** | ¥4.2/h | ¥5.8/h | — | 省 27.6% | **每小时成本 = 设备折旧 + 电费 + 运维分摊**<br><br>即：$Cost_{hourly} = \frac{Price_{device}}{L_{life} \times H_{year}} + P_{system} \times Price_{elec} + Cost_{ops}$<br><br>其中：<br>- **Price_device**：单节点设备采购价<br>- **L_life**：设备使用寿命（年）<br>- **H_year**：年有效运行小时数<br>- **P_system**：系统功耗（kW）<br>- **Price_elec**：电价（¥/kWh）<br>- **Cost_ops**：运维人力分摊<br>- 单位：**¥/h**<br><br>**1. 含设备折旧、电费和运维三部分**——全面反映运行成本，不仅仅是电费。<br><br>**2. NGU800P 省 27.6% 来自设备价格优势和能效优势**——设备价格更低 + 功耗更低 = 双重节省。 |
-| **单请求成本** | ¥0.0008/req | ¥0.0012/req | — | 省 33.3% | **单请求成本 = 每小时成本 / 小时请求量**<br><br>即：$Cost_{req} = \frac{Cost_{hourly}}{QPS \times 3600}$<br><br>其中：<br>- **Cost_hourly**：每小时运行成本<br>- **QPS**：每秒请求吞吐量<br>- 单位：**¥/req**<br><br>**1. 单请求成本受 QPS 和小时成本双重影响**——QPS 越高、成本越低，单请求成本越小。<br><br>**2. 适用于按请求计费的商业模式**——客户关心"调一次 API 要多少钱"。 |
-| **¥/M-token** | ¥0.82 | ¥1.26 | ¥17.5（~$2.5） | 比 A800 省 35%，比公有云省 95% | **¥/M-token = 每小时成本 / (吞吐量 × 3600) × 1,000,000**<br><br>即：$Cost_{Mtoken} = \frac{Cost_{hourly}}{Throughput_{output} \times 3600} \times 10^6$<br><br>其中：<br>- **Cost_hourly**：每小时运行成本（¥）<br>- **Throughput_output**：输出吞吐量（tokens/s）<br>- 单位：**¥/百万 token**<br><br>**1. ¥/M-token 是成本对比的统一度量衡**——跨芯片、跨方案、跨公有云的可比指标。<br><br>**2. 比公有云省 95% 是自建集群的核心价值**——¥0.82 vs ¥17.5，但需考虑运维和资本投入。 |
+| 指标            | NGU800P     | A800        | 公有云 (GPT-4o) | 对比                     | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | ----------- | ----------- | ------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **每小时成本**     | ¥4.2/h      | ¥5.8/h      | —            | 省 27.6%                | **每小时成本 = 设备折旧 + 电费 + 运维分摊**<br><br>即：$Cost_{hourly} = \frac{Price_{device}}{L_{life} \times H_{year}} + P_{system} \times Price_{elec} + Cost_{ops}$<br><br>其中：<br>- **Price_device**：单节点设备采购价<br>- **L_life**：设备使用寿命（年）<br>- **H_year**：年有效运行小时数<br>- **P_system**：系统功耗（kW）<br>- **Price_elec**：电价（¥/kWh）<br>- **Cost_ops**：运维人力分摊<br>- 单位：**¥/h**<br><br>**1. 含设备折旧、电费和运维三部分**——全面反映运行成本，不仅仅是电费。<br><br>**2. NGU800P 省 27.6% 来自设备价格优势和能效优势**——设备价格更低 + 功耗更低 = 双重节省。 |
+| **单请求成本**     | ¥0.0008/req | ¥0.0012/req | —            | 省 33.3%                | **单请求成本 = 每小时成本 / 小时请求量**<br><br>即：$Cost_{req} = \frac{Cost_{hourly}}{QPS \times 3600}$<br><br>其中：<br>- **Cost_hourly**：每小时运行成本<br>- **QPS**：每秒请求吞吐量<br>- 单位：**¥/req**<br><br>**1. 单请求成本受 QPS 和小时成本双重影响**——QPS 越高、成本越低，单请求成本越小。<br><br>**2. 适用于按请求计费的商业模式**——客户关心"调一次 API 要多少钱"。                                                                                                                                                                                       |
+| **¥/M-token** | ¥0.82       | ¥1.26       | ¥17.5（~$2.5） | 比 A800 省 35%，比公有云省 95% | **¥/M-token = 每小时成本 / (吞吐量 × 3600) × 1,000,000**<br><br>即：$Cost_{Mtoken} = \frac{Cost_{hourly}}{Throughput_{output} \times 3600} \times 10^6$<br><br>其中：<br>- **Cost_hourly**：每小时运行成本（¥）<br>- **Throughput_output**：输出吞吐量（tokens/s）<br>- 单位：**¥/百万 token**<br><br>**1. ¥/M-token 是成本对比的统一度量衡**——跨芯片、跨方案、跨公有云的可比指标。<br><br>**2. 比公有云省 95% 是自建集群的核心价值**——¥0.82 vs ¥17.5，但需考虑运维和资本投入。                                                                                     |
+| **节点 ROI**    | **1.8**     | 1.2         | —            | 高 50%                  | **节点 ROI = 节点收益 / 节点成本**<br><br>即：$ROI = \frac{Revenue_{node}}{Cost_{node}} = \frac{N_{req} \times Price_{req}}{Cost_{hourly} \times T_{hours}}$<br><br>其中：<br>- **N_req**：节点在运行期间处理的总请求数<br>- **Price_req**：单请求收费价格<br>- **Cost_hourly**：节点每小时运行成本<br>- **T_hours**：运行总小时数<br>- 单位：**无量纲比值**<br><br>**1. ROI > 1.0 意味着节点产出价值超过成本**——ROI 1.8 = 每投入 1 元产出 1.8 元，约 8 个月回本。<br><br>**2. 直接驱动大规模采购决策**——ROI 是 CFO 和采购部门最看重的综合商业指标。                                         |
+
+
 
 **AI Coding Agent 单任务成本拆解**：
 
-| 成本项 | NGU800P | A800 | 计算说明 |
-| --- | --- | --- | --- |
-| Input token 费用 | ¥0.067 | ¥0.103 | **Input token 费用 = input_tokens × ¥/M-token / 1,000,000**<br><br>即：$Cost_{input} = Tokens_{input} \times \frac{Cost_{Mtoken}}{10^6}$<br><br>其中：<br>- **Tokens_input**：任务的累计 input token 数（81,500）<br>- **Cost_Mtoken**：每百万 token 的成本<br>- 单位：**¥**<br><br>**1. Input token 是 Agent 场景的主要成本来源**——上下文膨胀率 4.1× 导致 input 费用占比 70%。<br><br>**2. 优化上下文管理可显著降低 input 成本**——通过更高效的 Prefix Cache 或上下文压缩减少累计 input。 |
-| Output token 费用 | ¥0.004 | ¥0.007 | **Output token 费用 = output_tokens × ¥/M-token / 1,000,000**<br><br>即：$Cost_{output} = Tokens_{output} \times \frac{Cost_{Mtoken}}{10^6}$<br><br>其中：<br>- **Tokens_output**：任务的总 output token 数（5,250）<br>- **Cost_Mtoken**：每百万 token 的成本<br>- 单位：**¥**<br><br>**1. Output 费用远低于 Input**——5,250 vs 81,500 token，output 仅占总 token 的 6%。<br><br>**2. 部分公有云 API 对 output 单独定价更高**——因为 Decode 的计算成本/token 远高于 Prefill。 |
-| 工具调用开销 | ¥0.002 | ¥0.002 | **工具调用开销 = 工具调用次数 × 单次工具成本**<br><br>即：$Cost_{tool} = N_{tool} \times Cost_{per\_tool}$<br><br>其中：<br>- **N_tool**：任务中的工具调用次数（约 4 次）<br>- **Cost_per_tool**：单次工具调用的计算资源成本（CPU + I/O + 内存）<br>- 单位：**¥**<br><br>**1. 工具成本与芯片无关**——工具在 CPU 上执行，两张芯片的工具成本一致。<br><br>**2. 工具成本占比极低（约 2%）**——主要成本在模型推理的 token 消耗。 |
-| 电力费用 | ¥0.015 | ¥0.018 | **电力费用 = 系统功耗 × 任务时长 × 电价**<br><br>即：$Cost_{elec} = P_{system} \times T_{task} \times Price_{elec}$<br><br>其中：<br>- **P_system**：系统总功耗（kW）<br>- **T_task**：任务耗时（小时）<br>- **Price_elec**：电价（¥/kWh）<br>- 单位：**¥**<br><br>**1. 电力费用受功耗和任务时长双重影响**——NGU800P 功耗低 + 任务快，电费更省。<br><br>**2. 数据中心电价通常 ¥0.6-0.8/kWh**——含空调、UPS 等 PUE 系数后实际约 ¥1.0-1.2/kWh。 |
-| 设备折旧分摊 | ¥0.008 | ¥0.012 | **设备折旧分摊 = 设备总价 / 使用寿命 / 总任务数**<br><br>即：$Cost_{deprec} = \frac{Price_{device}}{L_{life} \times N_{tasks\_lifetime}}$<br><br>其中：<br>- **Price_device**：单节点设备采购总价<br>- **L_life**：设备使用寿命（通常 3-5 年）<br>- **N_tasks_lifetime**：设备生命周期内预计处理的总任务数<br>- 单位：**¥**<br><br>**1. 折旧分摊假设高利用率**——按 7×24 小时运行计算，低利用率会提高单任务折旧成本。<br><br>**2. NGU800P 折旧更低**——设备采购价格更优惠。 |
-| **总计（修一个 Bug 的成本）** | **¥0.096** | **¥0.142** | **单任务总成本 = Input 费用 + Output 费用 + 工具开销 + 电力费用 + 设备折旧**<br><br>即：$Cost_{task} = Cost_{input} + Cost_{output} + Cost_{tool} + Cost_{elec} + Cost_{deprec}$<br><br>其中：<br>- 各子项如上所述<br>- 单位：**¥**<br><br>**1. Input token 费用占主导地位（约 70%）**——¥0.067 / ¥0.096 = 69.8%，优化上下文管理是降本的关键。<br><br>**2. NGU800P 单任务成本省 32%**——¥0.096 vs ¥0.142，年化到百万级任务可节省约 ¥4.6 万。 |
+| 成本项                 | NGU800P    | A800       | 计算说明                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------- | ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Input token 费用      | ¥0.067     | ¥0.103     | **Input token 费用 = input_tokens × ¥/M-token / 1,000,000**<br><br>即：$Cost_{input} = Tokens_{input} \times \frac{Cost_{Mtoken}}{10^6}$<br><br>其中：<br>- **Tokens_input**：任务的累计 input token 数（81,500）<br>- **Cost_Mtoken**：每百万 token 的成本<br>- 单位：**¥**<br><br>**1. Input token 是 Agent 场景的主要成本来源**——上下文膨胀率 4.1× 导致 input 费用占比 70%。<br><br>**2. 优化上下文管理可显著降低 input 成本**——通过更高效的 Prefix Cache 或上下文压缩减少累计 input。         |
+| Output token 费用     | ¥0.004     | ¥0.007     | **Output token 费用 = output_tokens × ¥/M-token / 1,000,000**<br><br>即：$Cost_{output} = Tokens_{output} \times \frac{Cost_{Mtoken}}{10^6}$<br><br>其中：<br>- **Tokens_output**：任务的总 output token 数（5,250）<br>- **Cost_Mtoken**：每百万 token 的成本<br>- 单位：**¥**<br><br>**1. Output 费用远低于 Input**——5,250 vs 81,500 token，output 仅占总 token 的 6%。<br><br>**2. 部分公有云 API 对 output 单独定价更高**——因为 Decode 的计算成本/token 远高于 Prefill。 |
+| 电力费用                | ¥0.015     | ¥0.018     | **电力费用 = 系统功耗 × 任务时长 × 电价**<br><br>即：$Cost_{elec} = P_{system} \times T_{task} \times Price_{elec}$<br><br>其中：<br>- **P_system**：系统总功耗（kW）<br>- **T_task**：任务耗时（小时）<br>- **Price_elec**：电价（¥/kWh）<br>- 单位：**¥**<br><br>**1. 电力费用受功耗和任务时长双重影响**——NGU800P 功耗低 + 任务快，电费更省。<br><br>**2. 数据中心电价通常 ¥0.6-0.8/kWh**——含空调、UPS 等 PUE 系数后实际约 ¥1.0-1.2/kWh。                                                                   |
+| 设备折旧分摊              | ¥0.008     | ¥0.012     | **设备折旧分摊 = 设备总价 / 使用寿命 / 总任务数**<br><br>即：$Cost_{deprec} = \frac{Price_{device}}{L_{life} \times N_{tasks\_lifetime}}$<br><br>其中：<br>- **Price_device**：单节点设备采购总价<br>- **L_life**：设备使用寿命（通常 3-5 年）<br>- **N_tasks_lifetime**：设备生命周期内预计处理的总任务数<br>- 单位：**¥**<br><br>**1. 折旧分摊假设高利用率**——按 7×24 小时运行计算，低利用率会提高单任务折旧成本。<br><br>**2. NGU800P 折旧更低**——设备采购价格更优惠。                                                         |
+| **总计（修一个 Bug 的成本）** | **¥0.096** | **¥0.142** | **单任务总成本 = Input 费用 + Output 费用 + 工具开销 + 电力费用 + 设备折旧**<br><br>即：$Cost_{task} = Cost_{input} + Cost_{output} + Cost_{tool} + Cost_{elec} + Cost_{deprec}$<br><br>其中：<br>- 各子项如上所述<br>- 单位：**¥**<br><br>**1. Input token 费用占主导地位（约 70%）**——¥0.067 / ¥0.096 = 69.8%，优化上下文管理是降本的关键。<br><br>**2. NGU800P 单任务成本省 32%**——¥0.096 vs ¥0.142，年化到百万级任务可节省约 ¥4.6 万。                                                           |
 
 > **解读**：在NGU800P 上用 AI Coding Agent 修一个 Bug 的全链路成本约 ¥0.10，比 A800 便宜 32%。
 
@@ -653,32 +648,24 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 > NGU800P / A800 / H100 / 公有云 API 对比
 > **我们比 A800 和公有云便宜多少**
+`
 
-![[aaas-charts/C1-cost-comparison.png]]
-`<!-- 占位符：替换为实际成本对比图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042111055.png)
 
-#### 图表 C2：Agent 任务成本拆解瀑布图
 
-> 一个 AI Coding Agent 任务的成本拆解
-> **修一个 Bug 的钱花在哪了**
-
-![[aaas-charts/C2-cost-waterfall.png]]
-`<!-- 占位符：替换为实际成本瀑布图截图 -->`
 
 #### 图表 C3：每瓦吞吐量对比
 
 > NGU800P / A800 / H100 / 昇腾 的 token/s/W 对比
-
-![[aaas-charts/C3-power-efficiency.png]]
-`<!-- 占位符：替换为实际能效对比图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042236413.png)
 
 #### 图表 C4：节点 ROI 随并发变化曲线
 
 > X = 并发数，Y = 节点 ROI，标注 ROI=1.0 盈亏线
 > **多大并发量开始赚钱**
 
-![[aaas-charts/C4-roi-curve.png]]
-`<!-- 占位符：替换为实际 ROI 曲线图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042308708.png)
+
 
 ---
 
@@ -748,81 +735,19 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 >
 > 包含字段：request_id, trace_id, agent_task_id, round_num, timestamp_start, timestamp_end, model, input_tokens, output_tokens, ttft_ms, tpot_ms, itl_mean_ms, itl_p99_ms, e2e_latency_ms, tool_name, tool_duration_ms, tool_result, temperature, top_p, max_tokens, chip_type, cluster_id
 
-### 附录 C：Prometheus / AaaS 平台看板截图
 
-> 测试期间的核心监控看板截图。
-
-#### C.1 GPU 利用率与显存时序
-
-![[aaas-charts/appendix-C1-gpu-monitor.png]]
-`<!-- 占位符：替换为实际 GPU 监控截图 -->`
-
-#### C.2 KV Cache 与调度状态
-
-![[aaas-charts/appendix-C2-kvcache-scheduler.png]]
-`<!-- 占位符：替换为实际调度状态截图 -->`
-
-#### C.3 功耗与温度时序
-
-![[aaas-charts/appendix-C3-power-temp.png]]
-`<!-- 占位符：替换为实际功耗温度截图 -->`
-
-#### C.4 Agent 多轮诊断图表
-
-> ① TTFT vs Input Tokens 散点图
-
-![[aaas-charts/appendix-C4-1-ttft-scatter-detail.png]]
-`<!-- 占位符 -->`
-
-> ② 各轮 TPOT 趋势折线图
-
-![[aaas-charts/appendix-C4-2-tpot-trend-detail.png]]
-`<!-- 占位符 -->`
-
-> ③ 各轮 E2E 瀑布图
-
-![[aaas-charts/appendix-C4-3-e2e-waterfall-detail.png]]
-`<!-- 占位符 -->`
-
-> ④ Input Tokens 递增曲线
-
-![[aaas-charts/appendix-C4-4-input-tokens-growth.png]]
-`<!-- 占位符 -->`
-
-### 附录 D：测试环境完整配置
-
-| 配置类别 | 配置项 | NGU800P | 基准 A800 |
-| --- | --- | --- | --- |
-| **芯片** | 型号 | NGU800P-80G Rev.2 | A800-SXM4-80GB |
-| | 显存 | 80 GB HBM2e | 80 GB HBM2e |
-| | 驱动版本 | NGU800P-Driver v2.4.1 | NVIDIA 535.129.03 |
-| | 固件版本 | NGU800P-FW v1.8.0 | — |
-| **推理引擎** | 引擎 | vLLM v0.7.2 (NGU800P-fork) | vLLM v0.7.2 |
-| | tensor_parallel_size | 4 | 4 |
-| | max_model_len | 32768 | 32768 |
-| | max_num_batched_tokens | 8192 | 8192 |
-| | enable_prefix_caching | true | true |
-| | gpu_memory_utilization | 0.92 | 0.90 |
-| **模型** | 名称 | GLM-4.7-350B | GLM-4.7-350B |
-| | 量化模式 | FP8 (W8A8) | FP16 |
-| | temperature | 0 (greedy) | 0 (greedy) |
-| | max_tokens | 4096 | 4096 |
-| **Agent** | 框架 | Claude Code Agent v3.2 | Claude Code Agent v3.2 |
-| | 工具列表 | Read, Write, Grep, Bash, Test | Read, Write, Grep, Bash, Test |
-| | MCP Server | file-ops v1.0, test-runner v1.0 | file-ops v1.0, test-runner v1.0 |
-
-### 附录 E：执行摘要（Executive Summary）
+### 附录 C：执行摘要（Executive Summary）
 
 > **说明**：本附录为报告的执行摘要页，供领导快速浏览时使用。建议在正式汇报时将此页作为开场 1-pager。
 
-#### E.1 报告结论
+#### C.1 报告结论
 
 > [!important] 核心结论
 > 1. **性能**：NGU800P 在 AI Coding Agent 场景下归一化吞吐量 = A800 的 **1.2×**，首轮 TTFT **135ms**（A800: 148ms），加权 TPOT **13.8ms/tok**（A800: 14.2ms/tok）
 > 2. **成本**：¥/M-token 为 **¥0.82**，比 A800（¥1.26）**降低 35%**
 > 3. **可用性**：**5 个模型**适配验证全部通过，算子覆盖率 98.5%
 
-#### E.2 关键指标比对
+#### C.2 关键指标比对
 
 | KPI | NGU800P | A800 80GB | 对比 | 状态 |
 | --- | --- | --- | --- | --- |
@@ -830,53 +755,19 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **加权 TPOT** | 13.8 ms/tok | 14.2 ms/tok | 快 2.8% | 达标 |
 | **Agent 任务成功率** | 98.5% | 99.1% | 差 0.6pp | 关注 |
 
-#### E.3 性能雷达图
+#### C.3 性能雷达图
 
 > [!note] 图表 E1：跨芯片性能雷达图
 > 5 维对比：TTFT / TPOT / 吞吐量 / 成功率 / 任务完成率
 > NGU800P（蓝色）vs A800（灰色）叠加
 
-![[aaas-charts/E1-radar-chart.png]]
-`<!-- 占位符：替换为实际雷达图截图 -->`
-
-#### E.4 风险标注
-
-| 风险项 | 级别 | 说明 | 建议措施 |
-| --- | --- | --- | --- |
-| Agent 任务成功率差距 | 中 | NGU800P 比 A800 低 0.6pp，主要因 FP8 量化下工具调用正确率下降 | 建议测试 BF16 精度部署 |
-| P99 TTFT 尾部延迟 | 中 | NGU800P 在 16+ 并发时 P99 TTFT 达 480ms，接近 500ms 红线 | 优化 KV Cache 预分配策略 |
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042514498.png)
 
 ---
 
-> **报告生成时间**：`[YYYY-MM-DD HH:MM]`
-> **报告生成方**：AaaS 验证平台 v1.0
-> **审核人**：`[待填写]`
-> **批准人**：`[待填写]`
-
----
-
-> [!info] 图表占位符清单
-> 本报告共预留 **13 个可视化图表占位符**，均以 `![[aaas-charts/xxx.png]]` 格式嵌入。
-> 生成实际图表后，将 PNG 文件放入 `aaas-charts/` 文件夹即可自动渲染。
->
-> | 编号 | 图表名称 | 类型 | 位置 |
-> | --- | --- | --- | --- |
-> | E1 | 跨芯片性能雷达图 | 雷达图 | 附录 E.3 |
-> | E2 | 并发扩展效率曲线 | 折线图 | §5.2 |
-> | E3 | TTFT vs Input Tokens 散点图 | 散点+回归 | §5.1 |
-> | E4 | 延迟百分位分布对比 | 柱状图 | §5.3 |
-> | E5 | Agent 任务时间瀑布图 | 堆叠柱状 | §5.1 |
-> | D1 | 推理延迟时间拆解饼图 | 饼图 | §6.1 |
-> | D2 | 各轮 TPOT 趋势折线 | 折线图 | §6.1 |
-> | D3 | KV Cache 使用率时序图 | 面积图 | §6.3 |
-> | D4 | 量化精度影响矩阵 | 热力图 | §6.4 |
-> | C1 | 跨芯片 ¥/M-token 对比 | 柱状图 | §7.3 |
-> | C2 | Agent 任务成本拆解瀑布图 | 瀑布图 | §7.3 |
-> | C3 | 每瓦吞吐量对比 | 横向柱状 | §7.3 |
-> | C4 | 节点 ROI 随并发变化曲线 | 折线图 | §7.3 |
 
 
-### 附录 F：Agent 多轮数据聚合方法论
+### 附录 D：Agent 多轮数据聚合计算方法的说明
 
 > [!warning] 关键提醒
 > 一个 Agent 任务（如 AI Coding Agent 修复一个 Bug）通常包含 **5-20 轮模型调用**，每轮的输入 token 数因上下文积累而递增（2K→18K）。**简单的算术平均会严重掩盖真实性能分布**。
