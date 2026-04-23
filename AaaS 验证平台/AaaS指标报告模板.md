@@ -260,16 +260,14 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > 两色对比：NGU800P（蓝）vs A100（灰）
 > **斜率越平 = 长上下文 Prefill 越高效**
 
-![[aaas-charts/E3-ttft-scatter.png]]
-`<!-- 占位符：替换为实际散点图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422201924382.png)
 
 #### 📊 图表 E5：Agent 任务时间瀑布图
 
 > 一个 AI Coding Agent 任务各轮耗时拆解：Prefill + Decode + 工具 + 编排
 > **一眼看出时间花在哪了**
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202033707.png)
 
-![[aaas-charts/E5-waterfall.png]]
-`<!-- 占位符：替换为实际瀑布图截图 -->`
 
 ---
 
@@ -312,8 +310,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > 两条线：NGU800P（蓝）vs A100（灰）
 > **曲线越平 = 扩展越好**
 
-![[aaas-charts/E2-concurrency-scaling.png]]
-`<!-- 占位符：替换为实际并发扩展图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202125245.png)
 
 #### 📊 图表 E6：SLA 达标率热力图
 
@@ -348,8 +345,8 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > NGU800P vs A100 并列柱状图
 > **重点看 P99 尾部延迟**
 
-![[aaas-charts/E4-percentile-bar.png]]
-`<!-- 占位符：替换为实际百分位分布图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202447974.png)
+
 
 ---
 
@@ -393,8 +390,8 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > X = 轮次 (R1→R8)，Y = TPOT (ms/tok)，标注理论恒定线
 > **TPOT 应各轮持平——逐轮上升说明 KV Cache 或热节流问题**
 
-![[aaas-charts/D2-tpot-trend.png]]
-`<!-- 占位符：替换为实际 TPOT 趋势图截图 -->`
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202551087.png)
+
 
 ### 6.2 Agent 任务质量
 
@@ -483,7 +480,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ---
 
-## 七、成本指标 —— "花多少钱？值不值？"
+## 七、成本指标 
 
 > **价值定位**：把体验指标和诊断指标转化为财务语言——每百万 token 花多少钱、每瓦功耗产出多少吞吐、节点 ROI 是多少。
 
@@ -597,11 +594,11 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ### 8.3 后续测试计划
 
-| 阶段 | 内容 | 时间 | 目标 |
-| --- | --- | --- | --- |
+| 阶段      | 内容              | 时间      | 目标                          |
+| ------- | --------------- | ------- | --------------------------- |
 | Phase 2 | KA 客户真实业务场景 POC | 2026-05 | 验证 NGU800P 在客户自有 Agent 上的表现 |
-| Phase 3 | 多模型混合部署测试 | 2026-06 | 验证 7B 路由 + 72B 执行模型共置效率 |
-| Phase 4 | 下一代 X2 芯片基准测试 | 2026-Q3 | 建立 X2 vs NGU800P vs A100 三方对比基线 |
+| Phase 3 | 多模型混合部署测试       | 2026-06 | 验证 7B 路由 + 72B 执行模型共置效率     |
+| Phase 4 | 下一个芯片基准测试       | 2026-Q3 | 建立NGU800P vs A100 三方对比基线    |
 
 ---
 
