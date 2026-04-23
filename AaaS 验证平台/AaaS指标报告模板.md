@@ -14,7 +14,6 @@ tags:
   - 指标模板
 ---
 
-# AaaS 芯片推理性能验证报告
 
 > **报告编号**：AAAS-RPT-20260422-001
 > **测试日期**：2026-04-15 ~ 2026-04-21
@@ -34,19 +33,19 @@ tags:
 
 ### 1.1 硬件环境
 
-| 配置项 | NGU800P | 基准：NVIDIA A100 80GB |
-| --- | --- | --- |
-| **芯片型号** | NGU800P-80G Rev.2 | A100-SXM4-80GB |
-| **显存容量** | 80 GB HBM2e | 80 GB HBM2e |
-| **HBM 带宽** | 2.4 TB/s | 2.0 TB/s |
-| **FP16 算力** | 350 TFLOPS | 312 TFLOPS |
-| **互联** | 自研 XLink 600GB/s | NVLink 600GB/s |
-| **卡数/节点** | 8 卡 | 8 卡 |
-| **服务器型号** | `[待填写]` | DGX A100 |
-| **CPU** | `[待填写]` | AMD EPYC 7742 × 2 |
-| **RAM** | `[待填写]` | 1 TB DDR4 |
+| 配置项         | NGU800P           | 基准：NVIDIA A100 80GB |
+| ----------- | ----------------- | ------------------- |
+| **芯片型号**    | NGU800P-80G Rev.2 | A100-SXM4-80GB      |
+| **显存容量**    | 80 GB HBM2e       | 80 GB HBM2e         |
+| **HBM 带宽**  | 2.4 TB/s          | 2.0 TB/s            |
+| **FP16 算力** | 350 TFLOPS        | 312 TFLOPS          |
+| **互联**      | 自研 XLink 600GB/s  | NVLink 600GB/s      |
+| **卡数/节点**   | 8 卡               | 8 卡                 |
+| **服务器型号**   | `[待填写]`           | DGX A100            |
+| **CPU**     | `[待填写]`           | AMD EPYC 7742 × 2   |
+| **RAM**     | `[待填写]`           | 1 TB DDR4           |
 
-### 1.2 软件环境
+### 1.2 模型环境
 
 | 配置项 | NGU800P | 基准 A100 |
 | --- | --- | --- |
@@ -77,44 +76,35 @@ tags:
 
 > **本章列出 AI Coding Agent 场景验证所用的全部评测 Case**，确保测试的可复现性和覆盖度。
 
-### 2.1 评估集概览
-
-| 评估集 | 来源 | Case 数量 | 难度分布 | 覆盖能力 |
-| --- | --- | --- | --- | --- |
-| **SWE-bench Lite** | Princeton / OpenAI | 300 | 简单 30% / 中等 50% / 困难 20% | 真实 GitHub Issue 修复 |
-| **HumanEval** | OpenAI | 164 | 简单 40% / 中等 40% / 困难 20% | 函数级代码生成 |
-| **内部 Coding Benchmark** | 自建 | 50 | 中等 60% / 困难 40% | 企业级多文件代码修改 |
-| **GAIA Level 1-3** | Meta | 165 | L1:40% / L2:40% / L3:20% | 多步推理 + 工具使用 |
-
 ### 2.2 SWE-bench Lite 代表性 Case 列表
 
-| Case ID | 仓库 | 任务描述 | 难度 | 预期轮数 | 涉及工具 |
-| --- | --- | --- | --- | --- | --- |
-| SWE-001 | django/django | 修复 QuerySet.filter() 对空列表的处理 | 中等 | 6-8 | Read, Grep, Write, Test |
-| SWE-015 | scikit-learn/sklearn | 修复 RandomForest n_jobs 参数不一致 | 简单 | 4-6 | Read, Write, Test |
-| SWE-042 | sympy/sympy | 修复矩阵行列式计算的边界条件 | 困难 | 10-15 | Read, Grep, Analyze, Write, Test |
-| SWE-078 | flask/flask | 修复 Blueprint 路由注册顺序问题 | 中等 | 6-8 | Read, Grep, Write, Test |
-| SWE-123 | requests/requests | 修复 Session 对象的 Cookie 持久化 Bug | 简单 | 4-5 | Read, Write, Test |
-| SWE-189 | pandas/pandas | 修复 DataFrame.merge() 的类型推断错误 | 困难 | 8-12 | Read, Grep, Analyze, Write, Test |
-| SWE-201 | pytest/pytest | 修复 fixture 作用域嵌套问题 | 中等 | 6-8 | Read, Grep, Write, Test |
-| SWE-245 | numpy/numpy | 修复 broadcasting 规则在特定 dtype 下的行为 | 困难 | 10-14 | Read, Grep, Analyze, Write, Test |
-| SWE-280 | fastapi/fastapi | 修复 Depends 注入的异步处理顺序 | 中等 | 5-7 | Read, Grep, Write, Test |
-| SWE-300 | django/django | 修复 Migration 循环依赖检测 | 困难 | 12-16 | Read, Grep, Analyze, Write, Test |
+| Case ID | 仓库                   | 任务描述                             | 难度  | 预期轮数  | 涉及工具                             |
+| ------- | -------------------- | -------------------------------- | --- | ----- | -------------------------------- |
+| SWE-001 | django/django        | 修复 QuerySet.filter() 对空列表的处理     | 中等  | 6-8   | Read, Grep, Write, Test          |
+| SWE-015 | scikit-learn/sklearn | 修复 RandomForest n_jobs 参数不一致     | 简单  | 4-6   | Read, Write, Test                |
+| SWE-042 | sympy/sympy          | 修复矩阵行列式计算的边界条件                   | 困难  | 10-15 | Read, Grep, Analyze, Write, Test |
+| SWE-078 | flask/flask          | 修复 Blueprint 路由注册顺序问题            | 中等  | 6-8   | Read, Grep, Write, Test          |
+| SWE-123 | requests/requests    | 修复 Session 对象的 Cookie 持久化 Bug    | 简单  | 4-5   | Read, Write, Test                |
+| SWE-189 | pandas/pandas        | 修复 DataFrame.merge() 的类型推断错误     | 困难  | 8-12  | Read, Grep, Analyze, Write, Test |
+| SWE-201 | pytest/pytest        | 修复 fixture 作用域嵌套问题               | 中等  | 6-8   | Read, Grep, Write, Test          |
+| SWE-245 | numpy/numpy          | 修复 broadcasting 规则在特定 dtype 下的行为 | 困难  | 10-14 | Read, Grep, Analyze, Write, Test |
+| SWE-280 | fastapi/fastapi      | 修复 Depends 注入的异步处理顺序             | 中等  | 5-7   | Read, Grep, Write, Test          |
+| SWE-300 | django/django        | 修复 Migration 循环依赖检测              | 困难  | 12-16 | Read, Grep, Analyze, Write, Test |
 
 ### 2.3 内部 Coding Benchmark Case 列表
 
-| Case ID | 场景分类 | 任务描述 | 难度 | 文件数 | 预期轮数 | 核心验证能力 |
-| --- | --- | --- | --- | --- | --- | --- |
-| ICB-001 | Bug 修复 | 修复支付模块的金额精度丢失 | 中等 | 3 | 6-8 | 多文件定位 + 精确修改 |
-| ICB-005 | 代码重构 | 将同步 API 改造为异步接口 | 困难 | 8 | 12-16 | 跨文件重构 + 接口兼容 |
-| ICB-012 | 功能开发 | 实现基于 RBAC 的权限控制模块 | 困难 | 6 | 10-14 | 架构理解 + 完整实现 |
-| ICB-018 | 代码审查 | 审查 PR 并给出修改建议 | 中等 | 5 | 4-6 | 代码理解 + 问题识别 |
-| ICB-025 | 性能优化 | 优化 N+1 查询问题 | 中等 | 4 | 6-8 | SQL 分析 + ORM 优化 |
-| ICB-030 | 测试编写 | 为核心业务逻辑补充单元测试 | 中等 | 3 | 5-7 | 边界分析 + 覆盖率 |
-| ICB-035 | 文档生成 | 根据代码自动生成 API 文档 | 简单 | 2 | 3-5 | 代码理解 + 文档规范 |
-| ICB-040 | 迁移适配 | 将 Python 2 代码迁移到 Python 3 | 困难 | 10 | 14-18 | 兼容性分析 + 批量修改 |
-| ICB-045 | 安全修复 | 修复 SQL 注入 + XSS 漏洞 | 困难 | 5 | 8-12 | 安全分析 + 防御编码 |
-| ICB-050 | 配置管理 | 实现多环境配置切换方案 | 中等 | 4 | 5-7 | 架构设计 + 配置解耦 |
+| Case ID | 场景分类   | 任务描述                      | 难度  | 文件数 | 预期轮数  | 核心验证能力          |
+| ------- | ------ | ------------------------- | --- | --- | ----- | --------------- |
+| ICB-001 | Bug 修复 | 修复支付模块的金额精度丢失             | 中等  | 3   | 6-8   | 多文件定位 + 精确修改    |
+| ICB-005 | 代码重构   | 将同步 API 改造为异步接口           | 困难  | 8   | 12-16 | 跨文件重构 + 接口兼容    |
+| ICB-012 | 功能开发   | 实现基于 RBAC 的权限控制模块         | 困难  | 6   | 10-14 | 架构理解 + 完整实现     |
+| ICB-018 | 代码审查   | 审查 PR 并给出修改建议             | 中等  | 5   | 4-6   | 代码理解 + 问题识别     |
+| ICB-025 | 性能优化   | 优化 N+1 查询问题               | 中等  | 4   | 6-8   | SQL 分析 + ORM 优化 |
+| ICB-030 | 测试编写   | 为核心业务逻辑补充单元测试             | 中等  | 3   | 5-7   | 边界分析 + 覆盖率      |
+| ICB-035 | 文档生成   | 根据代码自动生成 API 文档           | 简单  | 2   | 3-5   | 代码理解 + 文档规范     |
+| ICB-040 | 迁移适配   | 将 Python 2 代码迁移到 Python 3 | 困难  | 10  | 14-18 | 兼容性分析 + 批量修改    |
+| ICB-045 | 安全修复   | 修复 SQL 注入 + XSS 漏洞        | 困难  | 5   | 8-12  | 安全分析 + 防御编码     |
+| ICB-050 | 配置管理   | 实现多环境配置切换方案               | 中等  | 4   | 5-7   | 架构设计 + 配置解耦     |
 
 ---
 
@@ -206,11 +196,11 @@ flowchart TB
 
 ---
 
-# 第二部分：指标分论
+# 第二部分：指标明细
 
 ---
 
-## 五、体验指标 —— "Agent 在你的芯片上跑得怎么样？"
+## 五、体验指标
 
 > **价值定位**：面向客户决策层的"芯片性能成绩单"，直接回答"够不够快、扛不扛得住并发、SLA 能不能保住"。
 
