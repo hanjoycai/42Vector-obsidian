@@ -190,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 585.5
+    "width": 483.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,11 +208,11 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "33b9a09e24638a9c",
+  "active": "18f6c258fc216523",
   "lastOpenFiles": [
-    "AaaS 验证平台/aaas-charts",
     "AaaS 验证平台/AaaS输出指标汇总方案说明.md",
     "AaaS 验证平台/AaaS指标报告模板.md",
+    "AaaS 验证平台/aaas-charts",
     "AaaS 验证平台/coding_agent_性能评估体系.md",
     "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台",
@@ -251,7 +251,6 @@
     "AI 体系化知识/Agent 工程",
     "AI 体系化知识",
     "fmt_dyp.py",
-    "42向量-知识库/名人堂/全部人物/全部人物.base",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/Vibe Coding.jpeg",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/AI通用助手.jpeg",
     "内容生产系统/03-内容素材库/爆款文稿库/assets/段永平的管理原则｜平庸CEO解决问题，优秀CEO改进系统/AI视频&音乐&播客.jpeg",
