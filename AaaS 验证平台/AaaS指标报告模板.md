@@ -310,6 +310,9 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422201924382.png)
 
+
+
+
 #### 图表 E2：Agent 任务时间瀑布图
 
 > 一个 AI Coding Agent 任务各轮耗时拆解：Prefill + Decode + 工具 + 编排
