@@ -57,7 +57,7 @@ tags:
 |           | 量化模式                   | FP16                            | FP16                            |
 |           | temperature            | 0 (greedy)                      | 0 (greedy)                      |
 |           | top_p                  | 1.0                             | 1.0                             |
-|           | top_k                  | -1（不启用）                        | -1（不启用）                        |
+|           | top_k                  | -1（不启用）                         | -1（不启用）                         |
 |           | n（生成数）                 | 1                               | 1                               |
 |           | max_tokens             | 4096                            | 4096                            |
 |           | frequency_penalty      | 0                               | 0                               |
