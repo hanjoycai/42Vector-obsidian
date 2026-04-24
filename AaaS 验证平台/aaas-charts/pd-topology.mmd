@@ -1,0 +1,41 @@
+flowchart LR
+    subgraph Scheduler["🔀 推理调度层"]
+        SCHED["vLLM PD Scheduler<br/>请求路由 · KV Cache 调度<br/>Prefill ↔ Decode 协调"]
+    end
+
+    subgraph PD["📦 PD 域 · 单推理实例（2 × A800 节点）"]
+        subgraph P["🟦 Prefill 节点 · 计算密集"]
+            P1["<b>Server-1：8 × A800 80GB</b><br/>TP=8 · FP16 312 TFLOPS<br/>━━━━━━━━━━━━━━━━━━<br/>① 输入序列编码<br/>② Attention 计算<br/>③ KV Cache 生成<br/>④ 首 Token 输出"]
+        end
+
+        subgraph D["🟥 Decode 节点 · 带宽密集"]
+            D1["<b>Server-2：8 × A800 80GB</b><br/>TP=8 · HBM 2.0 TB/s<br/>━━━━━━━━━━━━━━━━━━<br/>① 接收 KV Cache<br/>② 自回归逐 Token 生成<br/>③ 流式输出<br/>④ 连续批处理调度"]
+        end
+
+        P1 ==>|"KV Cache 传输<br/>100Gbps RoCEv2 × 2<br/>RDMA 直通"| D1
+    end
+
+    subgraph Infra["⚙️ 基础设施层"]
+        TOR["🌐 ToR 交换机<br/>6.4Tbps · 直连"]
+        SSD["💾 NVMe SSD<br/>模型权重 + Checkpoint<br/>100Gbps RDMA"]
+        MON["📊 Prometheus · DCGM<br/>vLLM Metrics<br/>25Gbps 带外管理"]
+    end
+
+    SCHED -->|"① 请求分发"| P1
+    D1 -->|"② Token 流返回"| SCHED
+    P1 ---|"NVLink<br/>600GB/s"| TOR
+    D1 ---|"NVLink<br/>600GB/s"| TOR
+    TOR ---|"RDMA"| SSD
+    TOR ---|"25Gbps"| MON
+
+    style Scheduler fill:#f3e5f5,stroke:#9C27B0,stroke-width:2px,color:#333
+    style PD fill:#f8f6ff,stroke:#6245f6,stroke-width:2px,color:#333
+    style P fill:#e3f2fd,stroke:#1976D2,stroke-width:2px,color:#333
+    style D fill:#fce4ec,stroke:#c62828,stroke-width:2px,color:#333
+    style Infra fill:#f1f8e9,stroke:#558B2F,stroke-width:1px,color:#333
+    style SCHED fill:#e1bee7,stroke:#7B1FA2,color:#333
+    style P1 fill:#bbdefb,stroke:#1565C0,color:#1a1a1a
+    style D1 fill:#ffcdd2,stroke:#b71c1c,color:#1a1a1a
+    style TOR fill:#c8e6c9,stroke:#2E7D32,color:#333
+    style SSD fill:#c8e6c9,stroke:#2E7D32,color:#333
+    style MON fill:#fff9c4,stroke:#F9A825,color:#333

@@ -203,13 +203,13 @@ flowchart TB
 
 ### 4.2 共有指标口径差异说明
 
-| 指标 | MaaS 输出 | AaaS 输出 | 口径差异 |
-| --- | --- | --- | --- |
-| **TTFT** | 单次请求首 token 时间 | 首轮 TTFT + 末轮 TTFT + 散点图 | AaaS 不取平均，按轮分拆 |
-| **TPOT** | 单次请求每 token 延迟 | 按 output_tokens 加权的任务级 TPOT | AaaS 加权聚合 N 轮 |
-| **ITL** | 单次请求 token 间时延均值 | max(各轮 P99_ITL) | AaaS 出最差 P99 |
-| **E2E Latency** | 单次请求端到端延迟 | 任务级 E2E（含工具+编排）+ 模型推理累计 | AaaS 含全链路 |
-| **Input tokens** | 单次请求输入 token 数 | 累计调用量 + 去重信息量 + 上下文膨胀率 | AaaS 报两个口径 |
+| 指标               | MaaS 输出          | AaaS 输出                     | 口径差异           |
+| ---------------- | ---------------- | --------------------------- | -------------- |
+| **TTFT**         | 单次请求首 token 时间   | 首轮 TTFT + 末轮 TTFT + 散点图     | AaaS 不取平均，按轮分拆 |
+| **TPOT**         | 单次请求每 token 延迟   | 按 output_tokens 加权的任务级 TPOT | AaaS 加权聚合 N 轮  |
+| **ITL**          | 单次请求 token 间时延均值 | max(各轮 P99_ITL)             | AaaS 出最差 P99   |
+| **E2E Latency**  | 单次请求端到端延迟        | 任务级 E2E（含工具+编排）+ 模型推理累计     | AaaS 含全链路      |
+| **Input tokens** | 单次请求输入 token 数   | 累计调用量 + 去重信息量 + 上下文膨胀率      | AaaS 报两个口径     |
 
 
 
