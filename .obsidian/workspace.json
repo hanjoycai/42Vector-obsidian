@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 234.5
   },
   "right": {
     "id": "e99cb2e16806af9b",
@@ -190,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 388.5
+    "width": 605.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,10 +208,11 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "935a80d984f68721",
+  "active": "18f6c258fc216523",
   "lastOpenFiles": [
-    "AaaS 验证平台/AaaS输出指标汇总方案说明.md",
+    "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
     "AaaS 验证平台/AaaS指标报告模板.md",
+    "AaaS 验证平台/输出指标汇总方案说明.md",
     "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台/coding_agent_性能评估体系.md",
     "AaaS 验证平台/aaas-charts",

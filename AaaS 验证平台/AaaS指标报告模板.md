@@ -80,91 +80,79 @@ tags:
 | **工具调用类型** | 文件读写、Grep 搜索、代码执行、测试运行（MCP Server） |
 | **工具调用次数** | 3-5 次 / 任务 |
 
-### 1.3 GPU集群推理验验证环境
+### 1.3 GPU 集群推理验证环境
 
-**A800 × 1000 卡集群**：125 节点 × 8 卡/节点，按机架组织部署。
+**Prefill-Decode 分离（PD 域）单实例组网**：2 台 A800 服务器（16 卡），1 台 Prefill 节点 + 1 台 Decode 节点，共同服务一个推理实例。
 
 | 配置项 | 规格 |
 | --- | --- |
-| **集群规模** | 1000 卡（125 节点 × 8 卡/节点） |
-| **机架布局** | 8 机架，每机架 15-16 节点 |
-| **网络架构** | Spine-Leaf 二层架构 |
-| **节点网络** | 100Gbps RoCEv2 × 2（双上联） |
-| **Spine 交换机** | 4 × 12.8Tbps |
-| **Leaf 交换机** | 8 × 6.4Tbps（每机架 1 台） |
-| **存储** | 共享 NVMe SSD 存储池（全闪） |
-| **存储网络** | 100Gbps RDMA 专用网络 |
-| **管理网络** | 25Gbps 带外管理网络 |
+| **集群规模** | 2 节点 × 8 卡/节点 = 16 卡 |
+| **部署架构** | PD 分离（Prefill-Decode Disaggregated Serving） |
+| **Prefill 节点** | 1 台 A800 服务器（8 × A800 80GB），负责输入序列编码和 KV Cache 生成 |
+| **Decode 节点** | 1 台 A800 服务器（8 × A800 80GB），负责自回归 token 生成 |
+| **节点内互联** | NVLink 600GB/s 全互联（8 卡间，用于 Tensor Parallel） |
+| **节点间互联** | 100Gbps RoCEv2 × 2（双上联），用于 KV Cache 传输 |
+| **KV Cache 传输** | Prefill → Decode 单向传输，走 RDMA 直通 |
+| **网络架构** | ToR 交换机直连（2 节点无需 Spine 层） |
+| **存储** | 共享 NVMe SSD（模型权重 + Checkpoint），100Gbps RDMA |
+| **管理网络** | 25Gbps 带外管理（Prometheus + DCGM 监控） |
 
 ```mermaid
 graph TB
-    subgraph Spine["Spine 交换层"]
-        S1["Spine-1<br/>12.8Tbps"]
-        S2["Spine-2<br/>12.8Tbps"]
-        S3["Spine-3<br/>12.8Tbps"]
-        S4["Spine-4<br/>12.8Tbps"]
+    subgraph PD_Instance["PD 域 · 单推理实例（2 × A800 节点）"]
+
+        subgraph Prefill_Node["Prefill 节点（计算密集 · FLOPs 瓶颈）"]
+            P_GPU["8 × A800 80GB<br/>TP=8 · Prefill 专用<br/>FP16 算力 312 TFLOPS"]
+            P_DESC["职责：<br/>① 输入序列编码<br/>② Attention 计算<br/>③ KV Cache 生成<br/>④ 首 Token 输出"]
+        end
+
+        subgraph Decode_Node["Decode 节点（带宽密集 · HBM 瓶颈）"]
+            D_GPU["8 × A800 80GB<br/>TP=8 · Decode 专用<br/>HBM 带宽 2.0 TB/s"]
+            D_DESC["职责：<br/>① 接收 KV Cache<br/>② 自回归逐 Token 生成<br/>③ 流式输出<br/>④ 连续批处理调度"]
+        end
+
+        P_GPU -->|"KV Cache 传输<br/>100Gbps RoCEv2 × 2<br/>RDMA 直通"| D_GPU
+
     end
 
-    subgraph Rack1["机架 1（16 节点 × 8 卡）"]
-        L1["Leaf-1<br/>6.4Tbps"]
-        N1_1["Node 1-1<br/>8× A800"]
-        N1_2["Node 1-2<br/>8× A800"]
-        N1_n["... Node 1-16<br/>8× A800"]
-        L1 --- N1_1
-        L1 --- N1_2
-        L1 --- N1_n
+    subgraph Network["网络层"]
+        TOR["ToR 交换机<br/>6.4Tbps<br/>直连 2 节点"]
     end
 
-    subgraph Rack2["机架 2（16 节点 × 8 卡）"]
-        L2["Leaf-2<br/>6.4Tbps"]
-        N2_1["Node 2-1<br/>8× A800"]
-        N2_n["... Node 2-16<br/>8× A800"]
-        L2 --- N2_1
-        L2 --- N2_n
+    subgraph Storage["共享存储"]
+        SSD["NVMe SSD 存储池<br/>模型权重 + Checkpoint<br/>100Gbps RDMA"]
     end
 
-    subgraph RackN["机架 3-8（同构）"]
-        L3["Leaf 3-8<br/>6.4Tbps"]
-        Nn["... 93 节点<br/>8× A800/节点"]
-        L3 --- Nn
+    subgraph Mgmt["管理 & 监控"]
+        MON["25Gbps 管理网络<br/>Prometheus · DCGM<br/>vLLM Metrics"]
     end
 
-    subgraph Storage["共享存储层"]
-        ST1["NVMe SSD 存储池<br/>100Gbps RDMA"]
-        ST2["模型仓库 / Checkpoint"]
+    subgraph Scheduler["推理调度层"]
+        SCHED["vLLM PD Scheduler<br/>请求路由 · KV Cache 调度<br/>Prefill ↔ Decode 协调"]
     end
 
-    subgraph Mgmt["管理网络"]
-        MG["25Gbps 带外管理<br/>Prometheus + DCGM"]
-    end
+    SCHED -->|"请求分发"| P_GPU
+    SCHED -->|"Token 流回收"| D_GPU
+    Prefill_Node --- TOR
+    Decode_Node --- TOR
+    TOR -.->|"100Gbps RDMA"| SSD
+    P_GPU -.->|"25Gbps"| MON
+    D_GPU -.->|"25Gbps"| MON
 
-    S1 --- L1
-    S2 --- L1
-    S1 --- L2
-    S3 --- L2
-    S2 --- L3
-    S4 --- L3
-    S3 --- L1
-    S4 --- L2
-
-    L1 -.->|100Gbps RDMA| ST1
-    L2 -.->|100Gbps RDMA| ST1
-    L3 -.->|100Gbps RDMA| ST1
-
-    N1_1 -.->|25Gbps| MG
-    N2_1 -.->|25Gbps| MG
-
-    style Spine fill:#e8f4f8,stroke:#2196F3,stroke-width:2px
-    style Rack1 fill:#f3e5f5,stroke:#9C27B0,stroke-width:1px
-    style Rack2 fill:#f3e5f5,stroke:#9C27B0,stroke-width:1px
-    style RackN fill:#f3e5f5,stroke:#9C27B0,stroke-width:1px
-    style Storage fill:#e8f5e9,stroke:#4CAF50,stroke-width:2px
+    style PD_Instance fill:#f8f6ff,stroke:#6245f6,stroke-width:2px
+    style Prefill_Node fill:#e3f2fd,stroke:#1976D2,stroke-width:2px
+    style Decode_Node fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style Network fill:#e8f5e9,stroke:#4CAF50,stroke-width:1px
+    style Storage fill:#e8f5e9,stroke:#4CAF50,stroke-width:1px
     style Mgmt fill:#fff3e0,stroke:#FF9800,stroke-width:1px
+    style Scheduler fill:#f3e5f5,stroke:#9C27B0,stroke-width:2px
 ```
 
-> **节点内互联**：8 卡通过 NVLink/XLink 全互联（600GB/s），用于 Tensor Parallel。
-> **节点间互联**：每节点 2× 100Gbps RoCEv2 上联至 Leaf 交换机，用于 Pipeline Parallel 和数据传输。
-> **存储访问**：独立 100Gbps RDMA 网络连接共享 NVMe SSD 存储池，模型加载和 Checkpoint 读写不影响计算网络。
+> **PD 分离架构说明**：
+> - **Prefill 节点**（计算密集型）：负责输入序列的 Attention 计算和 KV Cache 生成。Prefill 阶段受 FLOPs 限制，适合部署在高算力卡上。
+> - **Decode 节点**（带宽密集型）：接收 Prefill 生成的 KV Cache，执行自回归逐 token 生成。Decode 阶段受 HBM 带宽限制，适合部署在高带宽卡上。
+> - **KV Cache 传输**：Prefill 完成后通过 RDMA 直通将 KV Cache 推送到 Decode 节点，传输延迟 < 5ms（典型 8K context）。
+> - **调度协调**：vLLM PD Scheduler 统一管理请求生命周期——新请求路由到 Prefill 节点，Prefill 完成后自动迁移到 Decode 节点继续生成。
 
 ---
 
@@ -276,11 +264,49 @@ flowchart TB
 
 # 第二部分：指标明细
 
+> [!info] 本部分所有指标均围绕同一个 Case 展开
+> 第二部分的体验、稳定、诊断、成本四类指标，均基于**同一个标准 Case**（AI Coding Agent 完成一次 Bug 修复任务）进行采集和计算。理解 Case 的定义是读懂所有指标的前提。
+
+## Case 01概述
+
+**Case 样例**（TASK-20260418-042）：
+
+```
+任务描述：修复 django/django QuerySet.filter() 对空列表的处理
+难度等级：中等
+评估来源：SWE-bench Lite (SWE-001)
+
+执行流程：
+  R1  Planning       → Agent 规划修复策略（input: 2K, output: 500）
+  R2  Read files     → 读取相关源文件（input: 4.2K, output: 200）
+  R3  Grep search    → 搜索相关代码引用（input: 5.5K, output: 100）
+  R4  分析代码        → 理解 Bug 根因（input: 8K, output: 1,200）
+  R5  生成修复代码     → 输出修复补丁（input: 12K, output: 2,000）
+  R6  Write file     → 写入修改文件（input: 14.5K, output: 150）
+  R7  运行测试+反思    → 执行测试并分析结果（input: 16.8K, output: 800）
+  R8  输出总结        → 生成修复报告（input: 18.5K, output: 300）
+
+判定标准：测试通过 + 补丁正确 = 任务成功
+```
+
+> 后续所有指标表格中的样例数据，均来自上述 Case（或同等级 Case）的 10 次重复执行中位数。
+
+
+**Case 的执行参数**：
+
+| 参数                | 值                             | 说明                                                                            |
+| ----------------- | ----------------------------- | ----------------------------------------------------------------------------- |
+| **模型调用轮数**        | 预期8 轮 / Case                  | Agent 完成一个任务平均与模型交互 8 轮（Planning → Read → Grep → 分析 → 生成修复 → Write → 测试 → 总结） |
+| **重复执行次数**        | 10 次 / Case                   | 同一个 Case 在同一环境下重复执行 10 次，取中位数消除随机抖动                                           |
+| **单 Case 模型调用总数** | **80 次**                      | 8 轮 × 10 次 = 80 次模型调用，是本报告所有统计的基数单元                                           |
+| **Token 规模**      | Input ~81,500 / Output ~5,250 | 8 轮累计的 API 调用 token 量（含上下文重复），去重信息量约 20,000 token                             |
+| **工具调用**          | 3-5 次 / Case                  | 含 file_read、grep、file_write、test_run 等本地工具                                    |
+
 ---
 
 ## 五、体验指标
 
-> **价值定位**：面向客户决策层的"芯片性能成绩单"。体验指标直接回答三个业务问题——**单任务够不够快**（TTFT/TPOT/E2E 是否满足实时交互体验）、**并发扛不扛得住**（吞吐量和成功率在 10-100 Agent 并发下是否稳定）、**百分位长尾可不可控**（P99 延迟是否在客户 SLO 范围内）。客户的芯片 POC 验收和采购决策主要看这一层，指标不达标则直接否决。
+> **价值定位**：面向客户决策层的"芯片性能成绩单"。体验指标直接回答两个核心业务问题——**单任务够不够快**（TTFT/TPOT/E2E 延迟是否满足实时交互体验）、**并发扛不扛得住**（吞吐量和成功率在 10-100 Agent 并发下能否维持）。客户的芯片 POC 验收和采购决策主要看这一层，指标不达标则直接否决。
 
 > [!note] 测试基数规则
 > 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
@@ -413,14 +439,16 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ---
 
-### 5.3 百分位性能分布
+## 5b、稳定指标
+
+> **价值定位**：稳定指标聚焦推理系统在重复执行下的**性能抖动和分布特征**。体验指标回答"平均快不快"，稳定指标回答"每次都快吗"——一个 P50 很优秀但 P99 爆炸的系统在生产环境不可用。稳定指标直接决定客户能否将 SLO 写入采购合同：P90/P99 不达标意味着每千次请求有 1-100 次体验崩塌，对金融、运营商等 KA 客户不可接受。
 
 > [!note] 测试基数规则
-> 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。
+> 单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。各百分位值基于全部 Case 的 80 次模型调用聚合得出。
+
+### 5b.1 延迟与吞吐百分位分布
 
 **【稳定性分布验证 —— NGU800P vs A800】**
-
-> 计算说明：各百分位值均基于全部 Case 的 80 次模型调用聚合得出，P50/P75/P90/P99/max 分别为对应分位点。
 
 | 指标 | | P50 | P75 | P90 | P99 | max | SLO_P90 | 判定 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -441,7 +469,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **请求推理平均时延 (ms)** | NGU800P | 105 | 182 | 212 | 275 | 345 | ≤250 | 🟢 |
 | | A800 | 98 | 170 | 200 | 255 | 320 | ≤250 | 🟢 |
 
-**输入输出特征分布**：
+### 5b.2 输入输出特征分布
 
 | 指标 | | P50 | P75 | P90 | P99 | max | SLO_P90 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -454,7 +482,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **每 token 平均生成字符数** | NGU800P | 4.8 | 5.0 | 5.2 | 5.5 | 6.2 | — |
 | | A800 | 4.8 | 5.0 | 5.2 | 5.5 | 6.2 | — |
 
-**推理管线分阶段耗时分布**：
+### 5b.3 推理管线分阶段耗时分布
 
 | 指标 | | P50 | P75 | P90 | P99 | max | SLO_P90 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -471,11 +499,11 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **Decode 阶段 batchsize 均值** | NGU800P | 9 | 12 | 14.5 | 18 | 22 | — |
 | | A800 | 10 | 13 | 15 | 19 | 24 | — |
 
-#### 图表 E4：延迟百分位分布对比
+#### 📊 图表 S1：延迟百分位分布对比
 
 > P50 / P75 / P90 / P99 的 TTFT 和 TPOT
 > NGU800P vs A800 并列柱状图
-> **重点看 P99 尾部延迟**
+> **重点看 P99 尾部延迟——P99/P50 比值越大说明性能抖动越严重**
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202447974.png)
 
@@ -784,12 +812,3 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > [!warning] 关键提醒
 > 一个 Agent 任务（如 AI Coding Agent 修复一个 Bug）通常包含 **5-20 轮模型调用**，每轮的输入 token 数因上下文积累而递增（2K→18K）。**简单的算术平均会严重掩盖真实性能分布**。
 
-**核心聚合规则**：
-
-| 指标               | 不应这样做         | 正确做法                                                  |
-| ---------------- | --------------- | ------------------------------------------------------- |
-| **TTFT**         | 跨轮取算术平均         | 按轮分别记录，出**散点图**——TTFT 是 input_tokens 的函数                |
-| **TPOT**         | 简单算术平均          | 按 output_tokens **加权平均** = Σ(TPOT_i × out_i) / Σ(out_i) |
-| **ITL**          | 跨轮所有 token 混合平均 | 按轮分别统计，取 **max(各轮 P99_ITL)**                            |
-| **E2E**          | 各轮求和当任务时长       | 分层报告：**任务 E2E** / **模型累计** / **非推理时间**                  |
-| **Input tokens** | 各轮求和当"信息量"      | 同时报**累计调用量**和**去重信息量**，算出**膨胀率**                        |
