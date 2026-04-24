@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AaaS 指标聚合路径全景图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 40px 30px;
+    min-width: 1200px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 40px;
+  }
+
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== Stage Row ===== */
+  .stage {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  /* Stage label sidebar */
+  .stage-sidebar {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 16px;
+    border-radius: 12px 0 0 12px;
+    position: relative;
+  }
+  .stage-sidebar .stage-step {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    opacity: 0.6;
+  }
+  .stage-sidebar .stage-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .stage-sidebar .stage-desc {
+    font-size: 11px;
+    margin-top: 8px;
+    opacity: 0.55;
+    line-height: 1.5;
+  }
+
+  /* Stage content */
+  .stage-content {
+    flex: 1;
+    padding: 20px 24px;
+    border-radius: 0 12px 12px 0;
+  }
+
+  /* Color themes for stages */
+  .stage-raw .stage-sidebar { background: linear-gradient(135deg, #1e1b4b, #312e81); }
+  .stage-raw .stage-content { background: #1e1b4b; border: 1px solid #312e81; border-left: none; }
+
+  .stage-round .stage-sidebar { background: linear-gradient(135deg, #312e81, #4338ca); }
+  .stage-round .stage-content { background: linear-gradient(135deg, #1e1b4b 0%, #272566 100%); border: 1px solid #4338ca; border-left: none; }
+
+  .stage-run .stage-sidebar { background: linear-gradient(135deg, #4338ca, #6366f1); }
+  .stage-run .stage-content { background: linear-gradient(135deg, #272566 0%, #312e81 100%); border: 1px solid #6366f1; border-left: none; }
+
+  .stage-case .stage-sidebar { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+  .stage-case .stage-content { background: linear-gradient(135deg, #312e81 0%, #3b328a 100%); border: 1px solid #8b5cf6; border-left: none; }
+
+  .stage-report .stage-sidebar { background: linear-gradient(135deg, #047857, #10b981); }
+  .stage-report .stage-content { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border: 1px solid #10b981; border-left: none; }
+
+  /* ===== Metric Cards ===== */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
+  }
+  .metric-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-card:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.15);
+  }
+  .metric-card .mc-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .metric-card .mc-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .metric-card .mc-method {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .metric-card .mc-reason {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.4;
+    font-style: italic;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 6px;
+    margin-top: 2px;
+  }
+  .metric-card .mc-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 0 9px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Category colors */
+  .cat-latency .mc-icon { background: #f59e0b; }
+  .cat-latency .mc-tag { background: rgba(245,158,11,0.25); color: #fbbf24; }
+  .cat-throughput .mc-icon { background: #3b82f6; }
+  .cat-throughput .mc-tag { background: rgba(59,130,246,0.25); color: #60a5fa; }
+  .cat-quality .mc-icon { background: #10b981; }
+  .cat-quality .mc-tag { background: rgba(16,185,129,0.25); color: #34d399; }
+  .cat-resource .mc-icon { background: #8b5cf6; }
+  .cat-resource .mc-tag { background: rgba(139,92,246,0.25); color: #a78bfa; }
+  .cat-stability .mc-icon { background: #ec4899; }
+  .cat-stability .mc-tag { background: rgba(236,72,153,0.25); color: #f472b6; }
+
+  /* ===== Connector between stages ===== */
+  .stage-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    position: relative;
+  }
+  .stage-connector-line {
+    width: 3px;
+    height: 100%;
+    position: relative;
+  }
+  .stage-connector-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--from-color), var(--to-color));
+  }
+  .stage-connector-line::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid var(--to-color);
+  }
+  .stage-connector .sc-label {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+    left: calc(50% + 20px);
+  }
+
+  .sc-1 .stage-connector-line { --from-color: #4338ca; --to-color: #6366f1; }
+  .sc-1 .sc-label { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .sc-2 .stage-connector-line { --from-color: #6366f1; --to-color: #8b5cf6; }
+  .sc-2 .sc-label { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .sc-3 .stage-connector-line { --from-color: #8b5cf6; --to-color: #10b981; }
+  .sc-3 .sc-label { background: rgba(16,185,129,0.15); color: #34d399; }
+
+  /* ===== Special: Wrong way callout ===== */
+  .wrong-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #ef4444;
+    background: rgba(239,68,68,0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+  }
+
+  /* ===== Legend ===== */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* ===== Summary table at bottom ===== */
+  .summary-section {
+    margin-top: 36px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .summary-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #f1f5f9;
+  }
+  .summary-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+  }
+  .summary-table th {
+    background: rgba(255,255,255,0.06);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: #94a3b8;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .summary-table th:first-child { border-radius: 8px 0 0 0; }
+  .summary-table th:last-child { border-radius: 0 8px 0 0; }
+  .summary-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #cbd5e1;
+    font-size: 12px;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table .metric-name-cell {
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .method-pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .method-pill.weighted { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .method-pill.median { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .method-pill.max { background: rgba(239,68,68,0.15); color: #f87171; }
+  .method-pill.split { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .method-pill.binary { background: rgba(16,185,129,0.15); color: #34d399; }
+  .method-pill.sum { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .method-pill.count { background: rgba(107,114,128,0.15); color: #9ca3af; }
+  .method-pill.flat { background: rgba(236,72,153,0.15); color: #f472b6; }
+  .method-pill.cv { background: rgba(244,114,182,0.15); color: #f472b6; }
+</style>
+</head>
+<body>
+
+<h1>AaaS 指标聚合路径全景图</h1>
+<p class="subtitle">每类指标从原始采集到报告输出的完整聚合路径 &mdash; 不同指标采用完全不同的聚合策略</p>
+
+<div class="main-container">
+
+  <!-- ===== Stage 0: Raw Data ===== -->
+  <div class="stage stage-raw">
+    <div class="stage-sidebar">
+      <div class="stage-step">Origin</div>
+      <div class="stage-name">原始数据采集</div>
+      <div class="stage-desc">每一轮模型交互的直接测量值，不需要聚合的原子数据</div>
+    </div>
+    <div class="stage-content">
+      <div class="metric-grid">
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>TTFT</div>
+          <div class="mc-method">T(first_token) - T(request_sent)</div>
+          <div class="mc-reason">首 token 延迟，用户首次感知响应的时刻</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>TPOT</div>
+          <div class="mc-method">(T_last - T_first) / (out_tokens - 1)</div>
+          <div class="mc-reason">每个输出 token 的平均生成间隔</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>ITL 序列</div>
+          <div class="mc-method">{t2-t1, t3-t2, ..., tn-tn-1}</div>
+          <div class="mc-reason">逐 token 间隔序列，捕捉卡顿毛刺</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>E2E 延迟</div>
+          <div class="mc-method">T(last_token) - T(request_sent)</div>
+          <div class="mc-reason">单轮端到端总延迟</div>
+        </div>
+        <div class="metric-card cat-throughput">
+          <div class="mc-tag">吞吐</div>
+          <div class="mc-name"><span class="mc-icon"></span>Input tokens</div>
+          <div class="mc-method">引擎日志直接读取</div>
+          <div class="mc-reason">含历史上下文的累计输入</div>
+        </div>
+        <div class="metric-card cat-throughput">
+          <div class="mc-tag">吞吐</div>
+          <div class="mc-name"><span class="mc-icon"></span>Output tokens</div>
+          <div class="mc-method">引擎日志直接读取</div>
+          <div class="mc-reason">本轮模型实际生成量</div>
+        </div>
+        <div class="metric-card cat-quality">
+          <div class="mc-tag">质量</div>
+          <div class="mc-name"><span class="mc-icon"></span>工具调用</div>
+          <div class="mc-method">耗时 + pass/fail</div>
+          <div class="mc-reason">Agent 调用外部工具的结果</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector 1 -->
+  <div class="stage-connector sc-1">
+    <div class="stage-connector-line"></div>
+    <div class="sc-label">8 Rounds &rarr; 1 Run</div>
+  </div>
+
+  <!-- ===== Stage 1: Cross-Round Aggregation ===== -->
+  <div class="stage stage-round">
+    <div class="stage-sidebar">
+      <div class="stage-step">Step 1</div>
+      <div class="stage-name">跨轮聚合</div>
+      <div class="stage-desc">8 轮 &rarr; 1 次 Run<br>最关键、最容易犯错的一步</div>
+    </div>
+    <div class="stage-content">
+      <div class="metric-grid">
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>TTFT</div>
+          <div class="mc-method"><b>不聚合，分拆报告</b><br>&bull; 首轮 TTFT (R1)<br>&bull; 末轮 TTFT (Rn)<br>&bull; 各轮散点数据</div>
+          <div class="wrong-box">&#10007; 跨轮取算术平均</div>
+          <div class="mc-reason">TTFT 与 input_tokens 近似线性，各轮 input 差 9x，平均无意义</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>TPOT</div>
+          <div class="mc-method"><b>按 output_tokens 加权平均</b><br>&Sigma;(TPOT_r &times; out_r) / &Sigma;(out_r)</div>
+          <div class="wrong-box">&#10007; 等权算术平均</div>
+          <div class="mc-reason">R5 输出 2000 tok 用户等 30s，R3 输出 100 tok 仅等 1s，权重应差 20x</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>P99 ITL</div>
+          <div class="mc-method"><b>各轮单独算 P99，取 max</b><br>max(P99_R1, ..., P99_R8)</div>
+          <div class="wrong-box">&#10007; 混合所有轮 ITL 算 P99</div>
+          <div class="mc-reason">大量低 ITL token 会稀释少数高 ITL 毛刺，掩盖用户感知的卡顿</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>E2E 延迟</div>
+          <div class="mc-method"><b>分层报告</b><br>&bull; AaaS-Latency (墙钟)<br>&bull; MaaS-Latency (&Sigma;各轮)<br>&bull; 非推理开销 (差值)<br>&bull; 推理占比 (%)</div>
+          <div class="wrong-box">&#10007; 各轮 E2E 简单求和</div>
+          <div class="mc-reason">轮间有编排间隙 + 工具等待，求和不等于任务时长</div>
+        </div>
+        <div class="metric-card cat-throughput">
+          <div class="mc-tag">吞吐</div>
+          <div class="mc-name"><span class="mc-icon"></span>Input tokens</div>
+          <div class="mc-method"><b>双口径统计</b><br>&bull; 累计调用量 (&Sigma;各轮)<br>&bull; 去重信息量<br>&bull; 膨胀率 (累计/去重)</div>
+          <div class="mc-reason">多轮对话 input 含重复历史上下文，需区分"调用量"与"信息量"</div>
+        </div>
+        <div class="metric-card cat-throughput">
+          <div class="mc-tag">吞吐</div>
+          <div class="mc-name"><span class="mc-icon"></span>Output tokens</div>
+          <div class="mc-method"><b>各轮求和</b><br>&Sigma;(out_R1 ... out_R8)</div>
+          <div class="mc-reason">不含重复，直接累加即为真实输出总量</div>
+        </div>
+        <div class="metric-card cat-quality">
+          <div class="mc-tag">质量</div>
+          <div class="mc-name"><span class="mc-icon"></span>功能正确性</div>
+          <div class="mc-method"><b>二元判定</b><br>patch apply + 目标测试 pass + 回归测试 pass<br>四项全满足 = PASS</div>
+          <div class="mc-reason">Agent 任务结果只有"完成"或"未完成"，无灰度</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector 2 -->
+  <div class="stage-connector sc-2">
+    <div class="stage-connector-line"></div>
+    <div class="sc-label">10 Runs &rarr; 1 Case</div>
+  </div>
+
+  <!-- ===== Stage 2: Cross-Run Aggregation ===== -->
+  <div class="stage stage-case">
+    <div class="stage-sidebar">
+      <div class="stage-step">Step 2</div>
+      <div class="stage-name">跨 Run 聚合</div>
+      <div class="stage-desc">10 次 &rarr; 1 个 Case<br>消除偶发抖动，取稳定代表值</div>
+    </div>
+    <div class="stage-content">
+      <div class="metric-grid">
+        <div class="metric-card cat-quality">
+          <div class="mc-tag">质量</div>
+          <div class="mc-name"><span class="mc-icon"></span>功能正确性</div>
+          <div class="mc-method"><b>8/10 多数通过判定</b><br>&ge; 8 次 PASS &rarr; Case 通过<br>同时记录 pass@1 比例</div>
+          <div class="mc-reason">Agent 有随机性，8/10 = 高置信度通过<br>5/10 = 生产不可接受，10/10 = 过于严苛</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>所有性能指标</div>
+          <div class="mc-method"><b>10 次取中位数</b><br>TTFT / TPOT / ITL / AaaS / MaaS<br>全部取 median</div>
+          <div class="wrong-box">&#10007; 取算术平均</div>
+          <div class="mc-reason">中位数对 GC/冷启动/网络波动等偶发异常具有鲁棒性</div>
+        </div>
+        <div class="metric-card cat-stability">
+          <div class="mc-tag">稳定性</div>
+          <div class="mc-name"><span class="mc-icon"></span>变异系数 CV</div>
+          <div class="mc-method"><b>std / mean &times; 100%</b><br>&lt;5% 绿灯 | 5-15% 黄灯 | &gt;15% 红灯</div>
+          <div class="mc-reason">衡量 10 次执行的一致性，是诊断引擎稳定性的关键信号</div>
+        </div>
+        <div class="metric-card cat-resource">
+          <div class="mc-tag">资源</div>
+          <div class="mc-name"><span class="mc-icon"></span>资源消耗</div>
+          <div class="mc-method"><b>10 次取中位数</b><br>轮数 / tokens / 膨胀率</div>
+          <div class="mc-reason">轮数异常高 = Agent 走了弯路，本身是诊断信号</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector 3 -->
+  <div class="stage-connector sc-3">
+    <div class="stage-connector-line"></div>
+    <div class="sc-label">20 Cases &rarr; Report</div>
+  </div>
+
+  <!-- ===== Stage 3: Cross-Case to Report ===== -->
+  <div class="stage stage-report">
+    <div class="stage-sidebar">
+      <div class="stage-step">Step 3</div>
+      <div class="stage-name">跨 Case 聚合</div>
+      <div class="stage-desc">20 Cases &rarr; 报告<br>最终交付物的指标汇总</div>
+    </div>
+    <div class="stage-content">
+      <div class="metric-grid">
+        <div class="metric-card cat-quality">
+          <div class="mc-tag">质量</div>
+          <div class="mc-name"><span class="mc-icon"></span>任务完成率</div>
+          <div class="mc-method"><b>简单计数</b><br>通过 Case / 总 Case = 19/20<br>精细: mean(各 Case pass@1)</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>性能指标 (推荐)</div>
+          <div class="mc-method"><b>分层报告</b><br>&bull; 按难度分组各报<br>&bull; 简单 / 中等 / 困难<br>&bull; 暴露结构性短板</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>性能指标 (备选 A)</div>
+          <div class="mc-method"><b>简单中位数</b><br>20 个 Case 中位值排序取中间</div>
+        </div>
+        <div class="metric-card cat-latency">
+          <div class="mc-tag">延迟</div>
+          <div class="mc-name"><span class="mc-icon"></span>性能指标 (备选 B)</div>
+          <div class="mc-method"><b>output_tokens 再次加权</b><br>困难 Case output 多 &rarr; 权重大</div>
+        </div>
+        <div class="metric-card cat-stability">
+          <div class="mc-tag">百分位</div>
+          <div class="mc-name"><span class="mc-icon"></span>百分位分布</div>
+          <div class="mc-method"><b>拉平全部数据</b><br>20&times;10&times;8 = 1600 数据点<br>取 P50/P75/P90/P99/max</div>
+          <div class="mc-reason">关心"所有请求中最差 1%"，不区分 Case</div>
+        </div>
+        <div class="metric-card cat-resource">
+          <div class="mc-tag">成本</div>
+          <div class="mc-name"><span class="mc-icon"></span>成本估算</div>
+          <div class="mc-method"><b>单任务成本中位数</b><br>&times; 规模化估算</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- main-container -->
+
+<!-- ===== Summary Cross-reference Table ===== -->
+<div class="main-container">
+  <div class="summary-section">
+    <div class="summary-title">聚合方法速查矩阵 &mdash; 每个指标在每一步的聚合方式</div>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width:140px">指标</th>
+          <th style="width:200px">Step 1: 跨轮 (8R &rarr; 1Run)</th>
+          <th style="width:200px">Step 2: 跨Run (10Run &rarr; 1Case)</th>
+          <th style="width:200px">Step 3: 跨Case (20Case &rarr; Report)</th>
+          <th>常见错误</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="metric-name-cell">TTFT</td>
+          <td><span class="method-pill split">分拆报</span> 首轮 / 末轮 / 散点</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill flat">拉平</span> P50/P90/P99</td>
+          <td style="color:#f87171;">跨轮算术平均</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">TPOT</td>
+          <td><span class="method-pill weighted">加权</span> 按 output_tokens</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill split">分层报</span> 按难度 + 全局中位</td>
+          <td style="color:#f87171;">等权算术平均</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">P99 ITL</td>
+          <td><span class="method-pill max">取 max</span> 各轮 P99 最大值</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill split">分层报</span> 按难度 + 全局中位</td>
+          <td style="color:#f87171;">混合所有轮 ITL</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">E2E 延迟</td>
+          <td><span class="method-pill split">分层报</span> AaaS / MaaS / 占比</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill split">分层报</span> 按难度 + 全局中位</td>
+          <td style="color:#f87171;">各轮 E2E 简单求和</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">Input tokens</td>
+          <td><span class="method-pill sum">求和</span> + 去重 + 膨胀率</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill median">中位数</span> 全局中位数</td>
+          <td style="color:#f87171;">累计当信息量</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">Output tokens</td>
+          <td><span class="method-pill sum">求和</span> 各轮累加</td>
+          <td><span class="method-pill median">中位数</span> 10 次取 median</td>
+          <td><span class="method-pill median">中位数</span> 全局中位数</td>
+          <td style="color:#94a3b8;">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">功能正确性</td>
+          <td><span class="method-pill binary">二元</span> 四项全满足 = PASS</td>
+          <td><span class="method-pill binary">8/10</span> 多数通过 + pass@1</td>
+          <td><span class="method-pill count">计数</span> 通过率 + mean(pass@1)</td>
+          <td style="color:#f87171;">用 5/10 或 10/10</td>
+        </tr>
+        <tr>
+          <td class="metric-name-cell">稳定性 CV</td>
+          <td style="color:#64748b;">&mdash; (无需)</td>
+          <td><span class="method-pill cv">CV</span> std/mean &times; 100%</td>
+          <td><span class="method-pill median">中位数</span> 各 Case CV 汇总</td>
+          <td style="color:#94a3b8;">&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div> 延迟指标</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> 吞吐指标</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981;"></div> 质量指标</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div> 资源指标</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ec4899;"></div> 稳定性指标</div>
+  <div class="legend-item"><span style="display:inline-block;padding:2px 6px;font-size:10px;color:#ef4444;background:rgba(239,68,68,0.15);border-radius:4px;">&#10007;</span> 常见错误做法</div>
+</div>
+
+</body>
+</html>

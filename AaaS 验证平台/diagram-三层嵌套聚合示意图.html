@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AaaS 评测数据三层嵌套与聚合过程示意图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f8f9fb;
+    color: #1a1a2e;
+    padding: 40px 30px;
+    min-width: 1100px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1a1a2e;
+    letter-spacing: 1px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 36px;
+  }
+
+  /* ===== Layout ===== */
+  .main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ===== Level 0: Dataset ===== */
+  .level-dataset {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 16px;
+    padding: 24px 28px 28px;
+    color: #fff;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .level-dataset .level-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .level-dataset .level-title .badge {
+    background: rgba(255,255,255,0.15);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .case-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.2s;
+  }
+  .case-box.active {
+    background: rgba(99, 102, 241, 0.35);
+    border-color: rgba(99, 102, 241, 0.7);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+  }
+  .case-box .case-id { font-weight: 600; font-size: 12px; }
+  .case-box .case-label { font-size: 9px; margin-top: 2px; opacity: 0.7; }
+
+  /* ===== Connector ===== */
+  .connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    position: relative;
+  }
+  .connector-line {
+    width: 3px;
+    height: 36px;
+    background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+    border-radius: 2px;
+    position: relative;
+  }
+  .connector-line::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid #8b5cf6;
+  }
+  .connector-label {
+    position: absolute;
+    right: calc(50% + 24px);
+    background: #f0f0ff;
+    color: #6366f1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+    border: 1px solid #e0e0ff;
+  }
+
+  /* ===== Level 1: Case ===== */
+  .level-case {
+    background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+    border-radius: 14px;
+    padding: 22px 24px 24px;
+    color: #fff;
+    position: relative;
+  }
+  .level-case .level-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .level-case .level-title .badge {
+    background: rgba(255,255,255,0.15);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .run-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .run-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+  }
+  .run-box.active {
+    background: rgba(139, 92, 246, 0.4);
+    border-color: rgba(139, 92, 246, 0.7);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+  }
+  .run-box .run-tpot { font-size: 10px; margin-top: 3px; opacity: 0.8; }
+
+  /* ===== Level 2: Run ===== */
+  .level-run {
+    background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
+    border-radius: 12px;
+    padding: 20px 22px;
+    color: #fff;
+  }
+  .level-run .level-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .level-run .level-title .badge {
+    background: rgba(255,255,255,0.15);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* ===== Round Table ===== */
+  .round-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .round-table th {
+    background: rgba(255,255,255,0.1);
+    padding: 8px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .round-table td {
+    padding: 6px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .round-table tr:last-child td { border-bottom: none; }
+  .round-table .round-label {
+    text-align: left;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+  }
+  .round-table .round-desc {
+    text-align: left;
+    color: rgba(255,255,255,0.55);
+    font-size: 10px;
+  }
+  .highlight-val { color: #fbbf24 !important; font-weight: 600; }
+
+  /* ===== Aggregation Box ===== */
+  .agg-box {
+    margin-top: 14px;
+    background: rgba(0,0,0,0.2);
+    border: 1px dashed rgba(255,255,255,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .agg-box .agg-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fbbf24;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .agg-box .agg-title::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: #fbbf24;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center/contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+  .agg-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+  }
+  .agg-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 11px;
+    padding: 3px 0;
+    border-bottom: 1px dotted rgba(255,255,255,0.1);
+  }
+  .agg-item .agg-label { color: rgba(255,255,255,0.6); }
+  .agg-item .agg-value { color: #a5f3fc; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .agg-item .agg-method {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    margin-left: 4px;
+  }
+
+  /* ===== Calculation Detail ===== */
+  .calc-detail {
+    margin-top: 14px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    border-left: 3px solid #fbbf24;
+  }
+  .calc-detail .calc-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fbbf24;
+    margin-bottom: 8px;
+  }
+  .calc-formula {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+  .calc-formula .op { color: #fbbf24; }
+  .calc-formula .result { color: #34d399; font-weight: 700; }
+  .calc-formula .note { color: rgba(255,255,255,0.4); font-style: italic; }
+
+  /* ===== Case Aggregation ===== */
+  .case-agg-box {
+    margin-top: 14px;
+    background: rgba(0,0,0,0.18);
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .case-agg-box .agg-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #34d399;
+    margin-bottom: 8px;
+  }
+  .run-values {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .run-val {
+    background: rgba(255,255,255,0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255,255,255,0.65);
+  }
+  .run-val.current {
+    background: rgba(139, 92, 246, 0.35);
+    color: #fff;
+    font-weight: 600;
+  }
+  .run-val.outlier {
+    background: rgba(239, 68, 68, 0.25);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  .run-val-arrow {
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+  }
+  .median-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+  }
+  .median-result {
+    color: #34d399;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* ===== Report Aggregation ===== */
+  .level-report {
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    border-radius: 14px;
+    padding: 22px 24px;
+    color: #fff;
+  }
+  .level-report .level-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .level-report .level-title .badge {
+    background: rgba(255,255,255,0.15);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .report-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .report-card .rc-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+  .report-card .rc-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #6ee7b7;
+    font-variant-numeric: tabular-nums;
+  }
+  .report-card .rc-method {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 4px;
+  }
+
+  /* ===== Legend ===== */
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+  }
+  .legend-dot.l0 { background: #334155; }
+  .legend-dot.l1 { background: #4338ca; }
+  .legend-dot.l2 { background: #7c3aed; }
+  .legend-dot.l3 { background: #047857; }
+
+  /* ===== Zoom indicator ===== */
+  .zoom-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 10px;
+  }
+  .zoom-indicator .zoom-icon {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    position: relative;
+  }
+  .zoom-indicator .zoom-icon::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 6px;
+    height: 2px;
+    background: rgba(255,255,255,0.3);
+    transform: rotate(45deg);
+  }
+
+  .connector-green .connector-line {
+    background: linear-gradient(to bottom, #10b981, #047857);
+  }
+  .connector-green .connector-line::after {
+    border-top-color: #047857;
+  }
+  .connector-green .connector-label {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #d1fae5;
+  }
+</style>
+</head>
+<body>
+
+<h1>AaaS 评测数据三层嵌套结构与聚合过程</h1>
+<p class="subtitle">展示从原始轮次数据到最终报告的完整聚合链路，以 TPOT 指标为主线示例</p>
+
+<div class="main-container">
+
+  <!-- ===== Level 0: Dataset (20 Cases) ===== -->
+  <div class="level-dataset">
+    <div class="level-title">
+      Layer 0 &mdash; 评测数据集
+      <span class="badge">20 Cases &times; 10 Runs/Case &times; ~8 Rounds/Run</span>
+    </div>
+    <div class="case-grid">
+      <div class="case-box active"><div class="case-id">Case-1</div><div class="case-label">SWE-001</div></div>
+      <div class="case-box"><div class="case-id">Case-2</div><div class="case-label">SWE-015</div></div>
+      <div class="case-box"><div class="case-id">Case-3</div><div class="case-label">SWE-023</div></div>
+      <div class="case-box"><div class="case-id">Case-4</div><div class="case-label">SWE-041</div></div>
+      <div class="case-box"><div class="case-id">Case-5</div><div class="case-label">ICB-003</div></div>
+      <div class="case-box"><div class="case-id">Case-6</div><div class="case-label">ICB-012</div></div>
+      <div class="case-box"><div class="case-id">Case-7</div><div class="case-label">ICB-025</div></div>
+      <div class="case-box"><div class="case-id">Case-8</div><div class="case-label">ICB-034</div></div>
+      <div class="case-box"><div class="case-id">Case-9</div><div class="case-label">ICB-041</div></div>
+      <div class="case-box"><div class="case-id">Case-10</div><div class="case-label">ICB-050</div></div>
+      <div class="case-box"><div class="case-id">Case-11</div><div class="case-label">RAG-002</div></div>
+      <div class="case-box"><div class="case-id">Case-12</div><div class="case-label">RAG-008</div></div>
+      <div class="case-box"><div class="case-id">Case-13</div><div class="case-label">RAG-019</div></div>
+      <div class="case-box"><div class="case-id">Case-14</div><div class="case-label">RAG-027</div></div>
+      <div class="case-box"><div class="case-id">Case-15</div><div class="case-label">RAG-035</div></div>
+      <div class="case-box"><div class="case-id">Case-16</div><div class="case-label">MIX-004</div></div>
+      <div class="case-box"><div class="case-id">Case-17</div><div class="case-label">MIX-011</div></div>
+      <div class="case-box"><div class="case-id">Case-18</div><div class="case-label">MIX-022</div></div>
+      <div class="case-box"><div class="case-id">Case-19</div><div class="case-label">MIX-038</div></div>
+      <div class="case-box"><div class="case-id">Case-20</div><div class="case-label">MIX-045</div></div>
+    </div>
+  </div>
+
+  <!-- Connector: Dataset -> Case -->
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-label">展开 Case-1 (SWE-001)</div>
+  </div>
+
+  <!-- ===== Level 1: Case (10 Runs) ===== -->
+  <div class="level-case">
+    <div class="zoom-indicator"><div class="zoom-icon"></div> 展开 Case-1 &mdash; SWE-001</div>
+    <div class="level-title">
+      Layer 1 &mdash; 单个 Case 的 10 次重复执行
+      <span class="badge">Case-1 (SWE-001) &middot; 10 Runs</span>
+    </div>
+    <div class="run-grid">
+      <div class="run-box active">Run-1<div class="run-tpot">TPOT: 14.02</div></div>
+      <div class="run-box">Run-2<div class="run-tpot">TPOT: 13.80</div></div>
+      <div class="run-box">Run-3<div class="run-tpot">TPOT: 13.50</div></div>
+      <div class="run-box">Run-4<div class="run-tpot">TPOT: 14.80</div></div>
+      <div class="run-box">Run-5<div class="run-tpot">TPOT: 13.90</div></div>
+      <div class="run-box">Run-6<div class="run-tpot">TPOT: 14.10</div></div>
+      <div class="run-box">Run-7<div class="run-tpot">TPOT: 13.70</div></div>
+      <div class="run-box run-box outlier" style="background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.4);">Run-8<div class="run-tpot" style="color:#fca5a5;">TPOT: 22.50</div></div>
+      <div class="run-box">Run-9<div class="run-tpot">TPOT: 14.00</div></div>
+      <div class="run-box">Run-10<div class="run-tpot">TPOT: 13.60</div></div>
+    </div>
+
+    <!-- Case Aggregation: 10 Runs -> 1 Case -->
+    <div class="case-agg-box">
+      <div class="agg-title">Step 2 &mdash; 跨 Run 聚合: 10 次 Run &rarr; 1 个 Case 结论 (取中位数)</div>
+      <div class="run-values">
+        <span class="run-val">13.50</span>
+        <span class="run-val">13.60</span>
+        <span class="run-val">13.70</span>
+        <span class="run-val">13.80</span>
+        <span class="run-val current" style="border: 2px solid #34d399;">13.90</span>
+        <span class="run-val-arrow">&larr;</span>
+        <span style="font-size:11px;color:rgba(255,255,255,0.5);">排序后</span>
+        <span class="run-val-arrow">&rarr;</span>
+        <span class="run-val current" style="border: 2px solid #34d399;">14.00</span>
+        <span class="run-val">14.02</span>
+        <span class="run-val">14.10</span>
+        <span class="run-val">14.80</span>
+        <span class="run-val outlier">22.50</span>
+      </div>
+      <div class="median-line">
+        中位数 = (13.90 + 14.00) / 2 = <span class="median-result">13.95 ms/tok</span>
+        <span style="color:rgba(255,255,255,0.35);font-size:10px;">&nbsp;&nbsp;|&nbsp;&nbsp;Run-8 的异常值 22.50 不影响结果 (中位数的鲁棒性)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector: Case -> Run -->
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-label">展开 Run-1 详情</div>
+  </div>
+
+  <!-- ===== Level 2: Run (8 Rounds) ===== -->
+  <div class="level-run">
+    <div class="zoom-indicator"><div class="zoom-icon"></div> 展开 Run-1 &mdash; 8 轮模型交互</div>
+    <div class="level-title">
+      Layer 2 &mdash; 单次 Run 的全部交互轮次
+      <span class="badge">Run-1 &middot; 8 Rounds</span>
+    </div>
+
+    <!-- Rounds Table -->
+    <table class="round-table">
+      <thead>
+        <tr>
+          <th style="width:60px">轮次</th>
+          <th style="width:100px">Agent 动作</th>
+          <th>Input Tokens</th>
+          <th>Output Tokens</th>
+          <th>TTFT</th>
+          <th>TPOT</th>
+          <th>P99 ITL</th>
+          <th>E2E 延迟</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="round-label">R1</td>
+          <td class="round-desc">Planning</td>
+          <td>2,000</td>
+          <td>500</td>
+          <td>135ms</td>
+          <td>12.1</td>
+          <td>15.2ms</td>
+          <td>6.2s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R2</td>
+          <td class="round-desc">Read files</td>
+          <td>4,200</td>
+          <td>200</td>
+          <td>215ms</td>
+          <td>11.5</td>
+          <td>13.8ms</td>
+          <td>2.5s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R3</td>
+          <td class="round-desc">Grep</td>
+          <td>5,500</td>
+          <td>100</td>
+          <td>285ms</td>
+          <td>10.8</td>
+          <td>12.5ms</td>
+          <td>1.3s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R4</td>
+          <td class="round-desc">分析代码</td>
+          <td>8,000</td>
+          <td>1,200</td>
+          <td>420ms</td>
+          <td>13.6</td>
+          <td>16.8ms</td>
+          <td>16.8s</td>
+        </tr>
+        <tr style="background:rgba(251,191,36,0.08);">
+          <td class="round-label highlight-val">R5</td>
+          <td class="round-desc">生成修复</td>
+          <td>12,000</td>
+          <td class="highlight-val">2,000</td>
+          <td>650ms</td>
+          <td class="highlight-val">15.2</td>
+          <td class="highlight-val">18.5ms</td>
+          <td>31.0s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R6</td>
+          <td class="round-desc">Write file</td>
+          <td>14,500</td>
+          <td>150</td>
+          <td>740ms</td>
+          <td>12.8</td>
+          <td>14.2ms</td>
+          <td>2.6s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R7</td>
+          <td class="round-desc">运行测试</td>
+          <td>16,800</td>
+          <td>800</td>
+          <td>870ms</td>
+          <td>14.5</td>
+          <td>17.5ms</td>
+          <td>12.5s</td>
+        </tr>
+        <tr>
+          <td class="round-label">R8</td>
+          <td class="round-desc">输出总结</td>
+          <td>18,500</td>
+          <td>300</td>
+          <td>980ms</td>
+          <td>13.2</td>
+          <td>15.8ms</td>
+          <td>5.1s</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Calculation Detail: TPOT weighted average -->
+    <div class="calc-detail">
+      <div class="calc-title">Step 1 &mdash; 跨轮聚合示例: 加权 TPOT 计算 (按 output_tokens 加权)</div>
+      <div class="calc-formula">
+<span class="note">// 每轮: TPOT x output_tokens</span>
+R1: 12.1 <span class="op">&times;</span>  500 =  6,050     <span class="note">权重  8.2%</span>
+R2: 11.5 <span class="op">&times;</span>  200 =  2,300     <span class="note">权重  3.1%</span>
+R3: 10.8 <span class="op">&times;</span>  100 =  1,080     <span class="note">权重  1.5%</span>
+R4: 13.6 <span class="op">&times;</span> 1200 = 16,320     <span class="note">权重 22.2%</span>
+R5: 15.2 <span class="op">&times;</span> 2000 = <span class="highlight-val">30,400</span>     <span class="note">权重 <span class="highlight-val">41.3%</span> &larr; 最重!</span>
+R6: 12.8 <span class="op">&times;</span>  150 =  1,920     <span class="note">权重  2.6%</span>
+R7: 14.5 <span class="op">&times;</span>  800 = 11,600     <span class="note">权重 15.8%</span>
+R8: 13.2 <span class="op">&times;</span>  300 =  3,960     <span class="note">权重  5.4%</span>
+<span class="op">────────────────────────────────────</span>
+分子 = 73,630    分母 = 5,250
+加权 TPOT = 73,630 / 5,250 = <span class="result">14.02 ms/tok</span>
+
+<span class="note">// 对比: 算术平均 = (12.1+11.5+10.8+13.6+15.2+12.8+14.5+13.2)/8 = 12.96</span>
+<span class="note">//        加权平均 14.02 > 算术平均 12.96 (重轮拉高了权重, 更真实)</span>
+      </div>
+    </div>
+
+    <!-- Run aggregation summary -->
+    <div class="agg-box">
+      <div class="agg-title">Step 1 聚合结果 &mdash; Run-1 汇总 (8 轮 &rarr; 1 条记录)</div>
+      <div class="agg-items">
+        <div class="agg-item"><span class="agg-label">功能正确性</span><span class="agg-value">PASS<span class="agg-method">二元判定</span></span></div>
+        <div class="agg-item"><span class="agg-label">首轮 TTFT</span><span class="agg-value">135ms<span class="agg-method">取 R1</span></span></div>
+        <div class="agg-item"><span class="agg-label">末轮 TTFT</span><span class="agg-value">980ms<span class="agg-method">取末轮</span></span></div>
+        <div class="agg-item"><span class="agg-label">加权 TPOT</span><span class="agg-value">14.02 ms/tok<span class="agg-method">加权均值</span></span></div>
+        <div class="agg-item"><span class="agg-label">max P99 ITL</span><span class="agg-value">18.5 ms/tok<span class="agg-method">各轮P99取max</span></span></div>
+        <div class="agg-item"><span class="agg-label">AaaS-Latency</span><span class="agg-value">132s<span class="agg-method">墙钟</span></span></div>
+        <div class="agg-item"><span class="agg-label">MaaS-Latency</span><span class="agg-value">78s<span class="agg-method">各轮E2E求和</span></span></div>
+        <div class="agg-item"><span class="agg-label">推理时间占比</span><span class="agg-value">59.1%<span class="agg-method">MaaS/AaaS</span></span></div>
+        <div class="agg-item"><span class="agg-label">累计 Input</span><span class="agg-value">81,500<span class="agg-method">各轮求和</span></span></div>
+        <div class="agg-item"><span class="agg-label">Output tokens</span><span class="agg-value">5,250<span class="agg-method">各轮求和</span></span></div>
+        <div class="agg-item"><span class="agg-label">膨胀率</span><span class="agg-value">4.1x<span class="agg-method">累计/去重</span></span></div>
+        <div class="agg-item"><span class="agg-label">总轮数</span><span class="agg-value">8<span class="agg-method">计数</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector: Run agg -> Report -->
+  <div class="connector connector-green">
+    <div class="connector-line"></div>
+    <div class="connector-label" style="background:#ecfdf5;color:#047857;border-color:#d1fae5;">Step 3: 跨 Case 聚合 &rarr; 报告级汇总</div>
+  </div>
+
+  <!-- ===== Level 3: Report ===== -->
+  <div class="level-report">
+    <div class="level-title">
+      Layer 3 &mdash; 报告级汇总
+      <span class="badge">20 Cases &times; 10 Runs = 200 次执行汇总</span>
+    </div>
+    <div class="report-grid">
+      <div class="report-card">
+        <div class="rc-label">任务完成率</div>
+        <div class="rc-value">95%</div>
+        <div class="rc-method">19/20 Cases 通过</div>
+      </div>
+      <div class="report-card">
+        <div class="rc-label">加权 TPOT (全局中位)</div>
+        <div class="rc-value">15.1 <span style="font-size:13px;">ms/tok</span></div>
+        <div class="rc-method">20 个 Case 中位数取中位数</div>
+      </div>
+      <div class="report-card">
+        <div class="rc-label">AaaS-Latency (全局中位)</div>
+        <div class="rc-value">132 <span style="font-size:13px;">s</span></div>
+        <div class="rc-method">20 个 Case 中位数取中位数</div>
+      </div>
+      <div class="report-card">
+        <div class="rc-label">TTFT P99</div>
+        <div class="rc-value">380 <span style="font-size:13px;">ms</span></div>
+        <div class="rc-method">拉平 1600 数据点取百分位</div>
+      </div>
+      <div class="report-card">
+        <div class="rc-label">pass@1 均值</div>
+        <div class="rc-value">92.5%</div>
+        <div class="rc-method">各 Case pass@1 均值</div>
+      </div>
+      <div class="report-card">
+        <div class="rc-label">推理时间占比</div>
+        <div class="rc-value">59.1%</div>
+        <div class="rc-method">全局中位数</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot l0"></div> Layer 0: 评测集 (20 Cases)</div>
+  <div class="legend-item"><div class="legend-dot l1"></div> Layer 1: Case (10 Runs / Case)</div>
+  <div class="legend-item"><div class="legend-dot l2"></div> Layer 2: Run (~8 Rounds / Run)</div>
+  <div class="legend-item"><div class="legend-dot l3"></div> Layer 3: 报告级汇总</div>
+  <div class="legend-item"><span style="display:inline-block;width:12px;height:12px;border-radius:4px;background:#fbbf24;"></span> 关键计算标注</div>
+  <div class="legend-item"><span style="display:inline-block;width:12px;height:12px;border-radius:4px;background:rgba(239,68,68,0.5);"></span> 异常值标注</div>
+</div>
+
+</body>
+</html>
