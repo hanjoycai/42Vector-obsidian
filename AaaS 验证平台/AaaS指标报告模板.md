@@ -97,56 +97,7 @@ tags:
 | **存储** | 共享 NVMe SSD（模型权重 + Checkpoint），100Gbps RDMA |
 | **管理网络** | 25Gbps 带外管理（Prometheus + DCGM 监控） |
 
-```mermaid
-graph TB
-    subgraph PD_Instance["PD 域 · 单推理实例（2 × A800 节点）"]
-
-        subgraph Prefill_Node["Prefill 节点（计算密集 · FLOPs 瓶颈）"]
-            P_GPU["8 × A800 80GB<br/>TP=8 · Prefill 专用<br/>FP16 算力 312 TFLOPS"]
-            P_DESC["职责：<br/>① 输入序列编码<br/>② Attention 计算<br/>③ KV Cache 生成<br/>④ 首 Token 输出"]
-        end
-
-        subgraph Decode_Node["Decode 节点（带宽密集 · HBM 瓶颈）"]
-            D_GPU["8 × A800 80GB<br/>TP=8 · Decode 专用<br/>HBM 带宽 2.0 TB/s"]
-            D_DESC["职责：<br/>① 接收 KV Cache<br/>② 自回归逐 Token 生成<br/>③ 流式输出<br/>④ 连续批处理调度"]
-        end
-
-        P_GPU -->|"KV Cache 传输<br/>100Gbps RoCEv2 × 2<br/>RDMA 直通"| D_GPU
-
-    end
-
-    subgraph Network["网络层"]
-        TOR["ToR 交换机<br/>6.4Tbps<br/>直连 2 节点"]
-    end
-
-    subgraph Storage["共享存储"]
-        SSD["NVMe SSD 存储池<br/>模型权重 + Checkpoint<br/>100Gbps RDMA"]
-    end
-
-    subgraph Mgmt["管理 & 监控"]
-        MON["25Gbps 管理网络<br/>Prometheus · DCGM<br/>vLLM Metrics"]
-    end
-
-    subgraph Scheduler["推理调度层"]
-        SCHED["vLLM PD Scheduler<br/>请求路由 · KV Cache 调度<br/>Prefill ↔ Decode 协调"]
-    end
-
-    SCHED -->|"请求分发"| P_GPU
-    SCHED -->|"Token 流回收"| D_GPU
-    Prefill_Node --- TOR
-    Decode_Node --- TOR
-    TOR -.->|"100Gbps RDMA"| SSD
-    P_GPU -.->|"25Gbps"| MON
-    D_GPU -.->|"25Gbps"| MON
-
-    style PD_Instance fill:#f8f6ff,stroke:#6245f6,stroke-width:2px
-    style Prefill_Node fill:#e3f2fd,stroke:#1976D2,stroke-width:2px
-    style Decode_Node fill:#fce4ec,stroke:#c62828,stroke-width:2px
-    style Network fill:#e8f5e9,stroke:#4CAF50,stroke-width:1px
-    style Storage fill:#e8f5e9,stroke:#4CAF50,stroke-width:1px
-    style Mgmt fill:#fff3e0,stroke:#FF9800,stroke-width:1px
-    style Scheduler fill:#f3e5f5,stroke:#9C27B0,stroke-width:2px
-```
+![[aaas-charts/pd-topology.png]]
 
 > **PD 分离架构说明**：
 > - **Prefill 节点**（计算密集型）：负责输入序列的 Attention 计算和 KV Cache 生成。Prefill 阶段受 FLOPs 限制，适合部署在高算力卡上。
