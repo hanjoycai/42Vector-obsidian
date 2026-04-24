@@ -653,15 +653,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > NGU800P / A800 / H100 / 昇腾 的 token/s/W 对比
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042236413.png)
 
-#### 图表 C3：节点 ROI 随并发变化曲线
 
-> X = 并发数，Y = 节点 ROI，标注 ROI=1.0 盈亏线
-> **多大并发量开始赚钱**
-
-![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042308708.png)
-
-
----
 
 # 第三部分：测试总论
 
@@ -756,13 +748,3 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > NGU800P（蓝色）vs A800（灰色）叠加
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042514498.png)
-
----
-
-
-
-### 附录 D：Agent 多轮数据聚合计算方法的说明
-
-> [!warning] 关键提醒
-> 一个 Agent 任务（如 AI Coding Agent 修复一个 Bug）通常包含 **5-20 轮模型调用**，每轮的输入 token 数因上下文积累而递增（2K→18K）。**简单的算术平均会严重掩盖真实性能分布**。
-

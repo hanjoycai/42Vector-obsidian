@@ -3,18 +3,18 @@
   "title": "Generate Nested Data Aggregation Diagrams",
   "titleGenerationStatus": "success",
   "createdAt": 1777000203327,
-  "updatedAt": 1777000817705,
-  "lastResponseAt": 1777000817705,
+  "updatedAt": 1777017192749,
+  "lastResponseAt": 1777017192749,
   "sessionId": "b743457a-b7e6-4c37-9814-449cae519911",
   "sdkSessionId": "b743457a-b7e6-4c37-9814-449cae519911",
   "currentNote": "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
   "usage": {
     "model": "opus[1m]",
     "inputTokens": 1,
-    "cacheCreationInputTokens": 10017,
-    "cacheReadInputTokens": 48068,
+    "cacheCreationInputTokens": 205,
+    "cacheReadInputTokens": 69544,
     "contextWindow": 1000000,
-    "contextTokens": 58086,
-    "percentage": 6
+    "contextTokens": 69750,
+    "percentage": 7
   }
 }
