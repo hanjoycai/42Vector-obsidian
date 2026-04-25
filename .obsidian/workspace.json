@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS 验证平台/AaaS指标报告模板.md",
+                "file": "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AaaS指标报告模板"
+              "title": "还在写PRD？AI时代的产品经理，核心交付物变了"
             }
           }
         ],
@@ -225,8 +225,9 @@
   },
   "active": "3b4cbd16bffd07cd",
   "lastOpenFiles": [
-    "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台/AaaS指标报告模板.md",
+    "node_modules/@babel/code-frame/README.md",
+    "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
     "AaaS 验证平台/输出指标汇总方案说明.md",
     "AaaS 验证平台/diagram-聚合路径全景图.png",
@@ -262,7 +263,6 @@
     "node_modules/ast-types/README.md",
     "node_modules/get-uri/README.md",
     "node_modules/socks/docs/examples/javascript/bindExample.md",
-    "node_modules/socks/docs/examples/javascript/connectExample.md",
     "AaaS 验证平台/aaas-charts/pd-topology.png",
     "AaaS 验证平台/aaas-charts/AaaS 验证平台/aaas-charts/pd-topology.png",
     "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 5.webp",
