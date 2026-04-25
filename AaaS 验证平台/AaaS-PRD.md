@@ -932,11 +932,12 @@ class LoopState:
 
 ### 4.0 指标体系架构
 
-#### 4.0.1 AaaS 三层指标架构
+#### 4.0.1 AaaS 四层指标架构
 
-本指标体系为 AaaS（Agent as a Service）验证平台的核心输出物，目标是用**一套统一、可量化、可比较的数据**回答三个关键问题：
+本指标体系为 AaaS（Agent as a Service）验证平台的核心输出物，目标是用**一套统一、可量化、可比较的数据**回答四个关键问题：
 
 > **体验**：Agent 在自研芯片上跑得够快吗？用户体验怎么样？
+> **稳定**：集群规模下，连续运行的稳定性如何？性能百分位分布是否收敛？
 > **诊断**：如果不够快，瓶颈在哪？是芯片、引擎、模型还是工具层的问题？
 > **成本**：跑同样的业务，自研芯片成本多少？对比 A800/H100 省多少？
 
@@ -951,25 +952,30 @@ class LoopState:
 
 ```mermaid
 flowchart TB
-    title["<b>AaaS 指标体系架构</b>"]
+    title["<b>AaaS 四层指标体系架构</b>"]
     style title fill:#f0edff,stroke:#6245f6,stroke-width:2px,color:#1a1a1a
 
-    L1["<b>第一层：体验指标</b><br/>&quot;面向客户决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>端到端延迟 · 吞吐量 · 首 token 响应<br/>单任务 / 并发 / 百分位分布"]
+    L1["<b>第一层：体验指标</b><br/>&quot;面向客户决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>端到端延迟 · 吞吐量 · 首 token 响应<br/>单任务基线 / 并发压力（10·50·100 Agent）"]
     style L1 fill:#6245f6,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L2["<b>第二层：诊断指标</b><br/>&quot;面向工程定位&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎调度状态（KV Cache / 抢占 / 批处理）<br/>工具调用影响 · 基础设施诊断"]
+    L1b["<b>第二层：稳定指标</b><br/>&quot;面向 SLO 签约&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>P50 / P75 / P90 / P99 / max 百分位分布<br/>ITL Jitter · 推理管线分阶段耗时 · 输入输出特征"]
+    style L1b fill:#5a4de8,stroke:#4a32c9,stroke-width:2px,color:#ffffff
+
+    L2["<b>第三层：诊断指标</b><br/>&quot;面向工程定位&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎调度状态（KV Cache / 抢占 / 批处理）<br/>Agent 任务质量 · 基础设施与集群诊断"]
     style L2 fill:#7c5ff7,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L3["<b>第三层：成本指标</b><br/>&quot;市场的成本竞争力&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率 · 功耗能效 · ¥/M-token<br/>每瓦吞吐量"]
+    L3["<b>第四层：成本指标</b><br/>&quot;面向商业决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率（MFU/MBU） · 功耗能效（tok/s/W）<br/>¥/M-token · 节点 ROI · 单任务成本拆解"]
     style L3 fill:#9b80f9,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
     title -.-> L1
-    L1 -->|"体验不达标？向下诊断"| L2
-    L2 -->|"定位问题优化成本"| L3
+    L1 -->|"平均够快？看分布是否稳定"| L1b
+    L1b -->|"P99 不达标？向下定位瓶颈"| L2
+    L2 -->|"定位问题后量化成本"| L3
 
     linkStyle 0 stroke:#cccccc,stroke-width:1px
     linkStyle 1 stroke:#6245f6,stroke-width:2px,color:#6245f6
     linkStyle 2 stroke:#6245f6,stroke-width:2px,color:#6245f6
+    linkStyle 3 stroke:#6245f6,stroke-width:2px,color:#6245f6
 ```
 
 #### 4.0.2 测试基数与聚合规则

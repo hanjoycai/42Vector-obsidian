@@ -3,19 +3,19 @@
   "title": "Refactor AaaS-PRD with Figma designs and metrics",
   "titleGenerationStatus": "success",
   "createdAt": 1776411469291,
-  "updatedAt": 1777046735647,
-  "lastResponseAt": 1777046735647,
+  "updatedAt": 1777085574564,
+  "lastResponseAt": 1777085574564,
   "sessionId": "2bd6c11c-57f8-494d-9ebd-d4b27f95b981",
   "sdkSessionId": "2bd6c11c-57f8-494d-9ebd-d4b27f95b981",
   "currentNote": "AaaS 验证平台/AaaS-PRD.md",
   "usage": {
     "model": "opus[1m]",
     "inputTokens": 1,
-    "cacheCreationInputTokens": 12517,
-    "cacheReadInputTokens": 151461,
+    "cacheCreationInputTokens": 1930,
+    "cacheReadInputTokens": 229727,
     "contextWindow": 1000000,
-    "contextTokens": 163979,
-    "percentage": 16
+    "contextTokens": 231658,
+    "percentage": 23
   },
   "subagentData": {
     "toolu_018iD24SmtP1KgkcFFTvZ1Uo": {

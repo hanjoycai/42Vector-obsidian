@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS 验证平台/AaaS-PRD.md",
+                "file": "AaaS 验证平台/AaaS指标报告模板.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AaaS-PRD"
+              "title": "AaaS指标报告模板"
             }
           }
         ],
@@ -225,8 +225,8 @@
   },
   "active": "3b4cbd16bffd07cd",
   "lastOpenFiles": [
-    "AaaS 验证平台/AaaS指标报告模板.md",
     "AaaS 验证平台/AaaS-PRD.md",
+    "AaaS 验证平台/AaaS指标报告模板.md",
     "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
     "AaaS 验证平台/输出指标汇总方案说明.md",
     "AaaS 验证平台/diagram-聚合路径全景图.png",
