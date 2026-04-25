@@ -418,7 +418,8 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > 两条线：NGU800P（蓝）vs A800（灰）
 > **曲线越平 = 扩展越好**
 
-![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202125245.png)
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260425003834776.png)
+
 
 ---
 
