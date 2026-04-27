@@ -629,6 +629,20 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **PCIe 带宽** | 24 GB/s | 26 GB/s | 64 GB/s | 37.5% | **PCIe 带宽利用率 = 实际 PCIe 传输量 / 理论峰值 × 100%**<br><br>即：$U_{PCIe} = \frac{BW_{actual}}{BW_{peak}} \times 100\%$<br><br>其中：<br>- **BW_actual**：PCIe 链路实际传输速率<br>- **BW_peak**：PCIe Gen4 x16 理论峰值带宽（64 GB/s）<br>- 单位：**%**<br><br>**1. PCIe 用于 CPU ↔ GPU 数据传输**——包括输入 token 传输、输出结果回传等。<br><br>**2. 37.5% 利用率说明 PCIe 非瓶颈**——推理场景的 CPU-GPU 数据交换量远小于训练场景。 |
 | **有效吞吐量 Goodput** | 1,550 tok/s | 1,520 tok/s | — | — | **Goodput = 仅成功请求的 output_tokens / 测试总时长**<br><br>即：$Goodput = \frac{\sum_{i=1}^{N_{success}} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **N_success**：成功完成的请求数<br>- **output_tokens_i**：第 i 个成功请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. Goodput 是效率章节最重要的综合指标**——将硬件利用率最终转化为有效产出。<br><br>**2. Goodput / 理论吞吐 = 整体系统效率**——包含了硬件利用率、成功率、调度效率等全部因素。 |
 
+### 7.1b 吞吐率
+
+> 吞吐率将硬件利用率转化为实际 token 产出能力，是成本核算（¥/M-token）的直接分子。
+
+| 指标 | NGU800P | A800 | 对比 | 计算说明 |
+| --- | --- | --- | --- | --- |
+| **输出吞吐量** | 1,600 tok/s | 1,520 tok/s | +5.3% | **输出吞吐量 = Σ(成功请求的 output_tokens) / 测试总时长**<br><br>即：$Throughput_{output} = \frac{\sum_{i=1}^{N_{success}} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- **output_tokens_i**：第 i 个成功请求的输出 token 数<br>- **T_total**：测试的端到端总时长（秒）<br>- 单位：**tokens/s**<br><br>**1. 输出吞吐量是成本核算的核心分母**——¥/M-token = 每小时成本 / (输出吞吐量 × 3600) × 10⁶。<br><br>**2. 只计 output token**——input token 由 Prefill 阶段处理，不计入输出产出。 |
+| **总吞吐量（输入+输出）** | 3,850 tok/s | 3,720 tok/s | +3.5% | **总吞吐量 = Σ(input_tokens + output_tokens) / 测试总时长**<br><br>即：$Throughput_{total} = \frac{\sum_{i=1}^{N} (input\_tokens_i + output\_tokens_i)}{T_{total}}$<br><br>其中：<br>- **input_tokens_i**：第 i 个请求的输入 token 数<br>- **output_tokens_i**：第 i 个请求的输出 token 数<br>- 单位：**tokens/s**<br><br>**1. 总吞吐量反映系统处理的全部 token 工作量**——包括 Prefill（input）和 Decode（output）两阶段。<br><br>**2. Agent 场景 input 占比极高**——input:output ≈ 15:1，总吞吐量主要由 Prefill 驱动。 |
+| **有效吞吐量 Goodput** | 1,550 tok/s | 1,520 tok/s | +2.0% | **Goodput = 仅成功请求的 output_tokens / 测试总时长**<br><br>即：$Goodput = \frac{\sum_{i=1}^{N_{success}} output\_tokens_i}{T_{total}}$<br><br>其中：<br>- 仅统计成功完成的请求（HTTP 2xx 且输出有效）<br>- 超时、报错、被抢占的请求产出的 token 不计入<br>- 单位：**tokens/s**<br><br>**1. Goodput = 输出吞吐量 × 成功率**——Goodput 与输出吞吐量的差值 = 被浪费的算力。<br><br>**2. 是经济意义上唯一有价值的吞吐量**——失败请求消耗了电力和算力但不产生收益。 |
+| **请求吞吐量 QPS** | 42.5 req/s | 40.8 req/s | +4.2% | **QPS = 成功完成的请求数 / 测试总时长**<br><br>即：$QPS = \frac{N_{success}}{T_{total}}$<br><br>其中：<br>- **N_success**：测试期间成功完成的请求数<br>- **T_total**：测试端到端总时长（秒）<br>- 单位：**req/s**<br><br>**1. QPS 决定峰值流量下所需推理实例数**——客户按 QPS 规划容量和采购量。<br><br>**2. Agent 场景 QPS 与 token 吞吐量的关系**——QPS × 平均 output_tokens ≈ 输出吞吐量，可交叉验证。 |
+| **请求吞吐量 QPM** | 2,550 req/min | 2,448 req/min | +4.2% | **QPM = QPS × 60**<br><br>即：$QPM = QPS \times 60$<br><br>其中：<br>- **QPS**：每秒请求吞吐量<br>- 单位：**req/min**<br><br>**1. 客户 RFP 通常以 req/min 表述容量需求**——QPM 可直接映射到采购规格和 SLA 合同条款。<br><br>**2. QPM 2,550 表示单节点每分钟可处理 2,550 次推理请求**——8 卡 TP=4 配置下的稳态吞吐能力。 |
+| **单任务有效吞吐量** | 39.8 tok/s | 37.5 tok/s | +6.1% | **单任务有效吞吐量 = 任务总 output_tokens / 任务端到端耗时（含工具等待）**<br><br>即：$Throughput_{task} = \frac{Tokens_{output}}{T_{AaaS}}$<br><br>其中：<br>- **Tokens_output**：Agent 任务 8 轮累计的输出 token 总数（5,250）<br>- **T_AaaS**：AaaS-Latency，任务端到端耗时（含模型推理 + 工具调用 + 编排等待）<br>- 单位：**tokens/s**<br><br>**1. 任务有效吞吐量远低于模型纯推理吞吐量**——因为含工具等待和编排开销，5,250/132s = 39.8 tok/s。<br><br>**2. 是用户感知的"Agent 工作速度"**——直接影响用户对 Agent 效率的主观评价。 |
+| **模型纯推理吞吐量** | 69.1 tok/s | 64.8 tok/s | +6.6% | **模型纯推理吞吐量 = 任务总 output_tokens / 模型推理累计耗时**<br><br>即：$Throughput_{model} = \frac{Tokens_{output}}{T_{MaaS}}$<br><br>其中：<br>- **Tokens_output**：Agent 任务 8 轮累计的输出 token 总数（5,250）<br>- **T_MaaS**：MaaS-Latency，8 轮模型推理的累计耗时（不含工具和编排）<br>- 单位：**tokens/s**<br><br>**1. 纯推理吞吐量 = 芯片真实 Decode 产出能力**——排除工具和编排开销，直接衡量芯片 token 生产效率。<br><br>**2. 纯推理 / 任务有效 = 69.1 / 39.8 = 1.74×**——说明 43% 的时间花在非推理环节，芯片提速的收益被稀释。 |
+
 ### 7.2 功耗能效
 
 | 指标 | NGU800P | A800 | 对比 | 计算说明 |
