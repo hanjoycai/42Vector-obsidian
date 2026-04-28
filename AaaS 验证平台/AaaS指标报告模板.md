@@ -169,13 +169,13 @@ flowchart TB
     L1["<b>第一层：体验指标</b><br/>&quot;面向客户决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>端到端延迟 · 吞吐量 · 首 token 响应<br/>单任务基线 / 并发压力（10·50·100 Agent）"]
     style L1 fill:#6245f6,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L1b["<b>第二层：稳定指标</b><br/>&quot;面向 SLO 签约&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>P50 / P75 / P90 / P99 / max 百分位分布<br/>ITL Jitter · 推理管线分阶段耗时 · 输入输出特征"]
+    L1b["<b>第二层：稳定指标</b><br/>&quot;面向 SLO 签约&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>P50 / P75 / P90 / P99 / max 百分位分布<br/>ITL Jitter · 推理阶段耗时 · 输入输出特征"]
     style L1b fill:#5a4de8,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L2["<b>第三层：诊断指标</b><br/>&quot;面向工程定位&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎调度状态（KV Cache / 抢占 / 批处理）<br/>Agent 任务质量 · 基础设施与集群诊断"]
+    L2["<b>第三层：诊断指标</b><br/>&quot;面向工程定位&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>Prefill / Decode / 排队 时间拆解<br/>推理引擎状态（KV Cache / 抢占 / 批处理）<br/>Agent 任务质量 · 基础设施与集群诊断"]
     style L2 fill:#7c5ff7,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
-    L3["<b>第四层：成本指标</b><br/>&quot;面向商业决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率（MFU/MBU） · 功耗能效（tok/s/W）<br/>¥/M-token · 节点 ROI · 单任务成本拆解"]
+    L3["<b>第四层：成本指标</b><br/>&quot;落地决策&quot;<br/>━━━━━━━━━━━━━━━━━━━━<br/>硬件利用率（MFU/MBU） · 功耗能效（tok/s/W）<br/>¥/M-token · 节点 ROI · 单任务成本拆解"]
     style L3 fill:#9b80f9,stroke:#4a32c9,stroke-width:2px,color:#ffffff
 
     title -.-> L1
