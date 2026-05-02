@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "42向量-知识库/名人堂/全部人物/查理芒格.md",
+                "file": "42向量-知识库/名人堂/全部人物/黄仁勋.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "查理芒格"
+              "title": "黄仁勋"
             }
           }
         ],
@@ -205,7 +205,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 605.5
+    "width": 492.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -225,7 +225,12 @@
   },
   "active": "3b4cbd16bffd07cd",
   "lastOpenFiles": [
+    "内容生产系统/03-内容素材库/案例库/黄仁勋-Jensen-Huang-深度素材库.md",
+    "内容生产系统/03-内容素材库/案例库/黄仁勋-延伸素材采集.md",
+    "Research/黄仁勋-思想哲学方法论素材库.md",
+    "Research",
     "42向量-知识库/名人堂/全部人物/巴菲特.md",
+    "42向量-知识库/名人堂/全部人物/查理芒格.md",
     "AaaS 验证平台/AaaS指标报告模板.md",
     "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
     "node_modules/@babel/code-frame/README.md",
@@ -246,7 +251,6 @@
     "node_modules/puppeteer-core/src/bidi/core/README.md",
     "node_modules/puppeteer-core/src/bidi/core/Realm.ts",
     "node_modules/puppeteer-core/src/bidi/core/Navigation.ts",
-    "node_modules/puppeteer-core/src/bidi/core/Browser.ts",
     "node_modules/puppeteer-core/src/templates/README.md",
     "node_modules/puppeteer-core/src/injected/README.md",
     "node_modules/zod/README.md",
@@ -259,10 +263,6 @@
     "node_modules/pac-resolver/README.md",
     "node_modules/js-yaml/README.md",
     "node_modules/bare-os/README.md",
-    "node_modules/socks/README.md",
-    "node_modules/ip-address/README.md",
-    "node_modules/devtools-protocol/README.md",
-    "node_modules/ast-types/README.md",
     "AaaS 验证平台/aaas-charts/pd-topology.png",
     "AaaS 验证平台/aaas-charts/AaaS 验证平台/aaas-charts/pd-topology.png",
     "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 5.webp",
