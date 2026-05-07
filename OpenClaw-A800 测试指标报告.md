@@ -1,5 +1,24 @@
 # 第二部分：指标明细
 
+> [!danger] 数据审查标注（2026-05-06）
+> 本文档经过数据一致性审查，发现以下异常已在正文中用 ==%% 高亮 %%== 和 `⚠️` 标记：
+>
+> **🔴 一级：逻辑不可能（6 个场景）**
+> - §5.1：会议纪要 / 文档读取 / 学术论文 / 内容创作 / 整理发票 / 小红书 的 **MaaS-Latency > AaaS-Latency**（模型推理耗时超过任务总耗时，物理上不可能）
+> - §5.1：同上 6 个场景的 **任务有效吞吐量 > 模型纯推理吞吐量**（违反定义：含等待时间的吞吐量不可能高于纯推理吞吐量）
+> - §5.1：同上 6 个场景的 **总吞吐量** 因上游数据错误连锁失真
+>
+> **🔴 二级：跨章节量级矛盾**
+> - §5b.1 百分位数据（TTFT P50=88ms）与 §5.1 主表（TTFT 12,000-20,000ms）差 **100 倍**
+> - §5b.1 内部矛盾：Decode延迟 P50=72ms vs TPOT×输出长度推算=3,988ms，差 **55 倍**
+>
+> **🔴 三级：数据复制/未填**
+> - §5.2「高并发 Agent 指标」表与「并发 Agent 指标」表 **数据完全一致**，疑似复制占位
+> - §5.2 并发表中大部分 P/D/PD 三列值相同，缺乏真实分节点数据
+>
+> **🟡 四级：需确认**
+> - §6.4 存储指标提到「350B 模型 FP8 ≈ 175GB」，但 350B × 1byte(FP8) = 350GB ≠ 175GB
+
 本部分所有指标均围绕同一个 Case 展开
 
 第二部分的体验、稳定、诊断、成本四类指标，均基于**同一个标准 Case**（AI Coding Agent 完成一次 Bug 修复任务）进行采集和计算。理解 Case 的定义是读懂所有指标的前提。
@@ -70,15 +89,47 @@
 | **加权 平均TPOT**              | 79.50 ms/tok | 44.78 ms/tok | 70.35 ms/tok  | 69.99 ms/tok | 35.11 ms/tok | 57.55 ms/tok | 70.89 ms/tok | 61.45 ms/tok | 39.75 ms/tok | 42.69 ms/tok | 加权 TPOT = Σ(TPOT_i × output_tokens_i) / Σ(output_tokens_i)<br><br>$$TPOT_{weighted} = \frac{\sum_{r=1}^{8} TPOT_r \times out_r}{\sum_{r=1}^{8} out_r}$$ 其中： - r：轮次编号（1-8） - TPOT_r：第 r 轮的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1) - out_r：第 r 轮的 output_tokens 数 - 单位：ms/token 1. 按 output_tokens 加权而非算术平均——生成 2000 token 的重轮次对用户体验影响远大于生成 100 token 的轻轮次。 2. 跨 8 轮聚合后取 10 次重复的中位数——先轮内计算 TPOT，再跨轮加权，最后跨重复取中位数。 |                                        |     |
 | **max P99_ITL**            |              |              |               |              |              |              |              |              |              |              | max P99_ITL = max(各轮的 P99 ITL) $$ITL_{max\_P99} = \max_{r=1}^{8} P99(ITL_r)$$ 其中： - ITL_r：第 r 轮所有相邻 token 间隔时间的集合 \{t_{k+1} - t_k\} - P99(ITL_r)：第 r 轮 ITL 分布的第 99 百分位值 - 单位：ms/token 1. 取各轮 P99 的最大值而非平均——用户感知的"卡顿"由最差轮次决定，均值会掩盖尾部抖动。 2. 取 10 次重复的中位数——确保最差轮次的 P99 ITL 是稳定可复现的，而非偶发抖动。                                                                                                                                                   |                                        |     |
 | **AaaS-时延（任务 E2E）**        | 60.59 s      | 128.83 s     | 46.18 s       | 134.58 s     | 85.04 s      | 155.29 s     | 28.25 s      | 210.63 s     | 104.70 s     | 85.94 s      | AaaS-Latency = T(task_end) − T(task_start) $$Latency_{AaaS} = t_{task\_end} - t_{task\_start}$$ 其中： - t_task_start：Agent 接收到任务的时间戳 - t_task_end：Agent 输出最终结果的时间戳 - 包含：全部模型推理 + 工具调用 + Agent 编排调度耗时 - 单位：s 1. 这是用户感知的完整任务时长——从发出"修复这个 Bug"到收到最终答案的墙钟时间。 2. 与 MaaS-Latency 配对观察——两者差值 = 非推理开销（工具调用 + 编排 + 网络），用于定位瓶颈。                                                                                                                       |                                        |     |
-| **MaaS-Latency（模型推理时长累计）** | 60.48 s      | 265.52 s     | 290.63 s      | 132.98 s     | 166.07 s     | 204.49 s     | 433.22 s     | 539.38 s     | 103.51 s     | 79.64 s      | MaaS-Latency = Σ(各轮模型推理耗时) $$Latency_{MaaS} = \sum_{r=1}^{8} (t_{last\_token}^{(r)} - t_{request}^{(r)})$$ 其中： - r：轮次编号（1-8） - t_last_token：第 r 轮最后一个 token 返回的时间戳 - t_request：第 r 轮请求发送的时间戳 - 单位：s 1. 仅累加模型推理部分——不含工具调用、编排调度等非推理开销，纯粹衡量芯片推理能力。 2. 模型推理占比 = MaaS-Latency / AaaS-Latency——本例中 76/132 = 59.1%，说明约 40% 时间花在非推理环节。                                                                                                            |                                        |     |
+| **MaaS-Latency（模型推理时长累计）** | 60.48 s      | ==265.52 s ⚠️== | ==290.63 s ⚠️== | 132.98 s     | ==166.07 s ⚠️== | ==204.49 s ⚠️== | ==433.22 s ⚠️== | ==539.38 s ⚠️== | 103.51 s     | 79.64 s      | MaaS-Latency = Σ(各轮模型推理耗时) $$Latency_{MaaS} = \sum_{r=1}^{8} (t_{last\_token}^{(r)} - t_{request}^{(r)})$$ 其中： - r：轮次编号（1-8） - t_last_token：第 r 轮最后一个 token 返回的时间戳 - t_request：第 r 轮请求发送的时间戳 - 单位：s 1. 仅累加模型推理部分——不含工具调用、编排调度等非推理开销，纯粹衡量芯片推理能力。 2. 模型推理占比 = MaaS-Latency / AaaS-Latency——本例中 76/132 = 59.1%，说明约 40% 时间花在非推理环节。                                                                                                            |                                        |     |
 | **Input tokens（累计调用量）**    | 17,135       | 61,792       | 222,674       | 33,720       | 52,672       | 44,044       | 90,945       | 115,661      | 25,935       | 23,656       | 累计 Input tokens = Σ(各轮 input_tokens)<br><br>$$Tokens_{input\_cum} = \sum_{r=1}^{8} input\_tokens_r$$ 其中： - input_tokens_r：第 r 轮发送给模型的完整 input token 数（含历史上下文） - 单位：tokens 1. 包含跨轮重复上下文——Agent 每轮会把前几轮对话历史拼入 input，导致累计调用量远大于净信息量。 2. 与去重信息量配对使用——膨胀率 = 累计 / 去重 = 81500 / 20000 = 4.1×，膨胀率越高说明上下文管理越低效。                                                                                                                                    |                                        |     |
 | **Input tokens（去重信息量）**    |              |              |               |              |              |              |              |              |              |              | 去重 Input tokens = 去除跨轮重复后的净信息量<br><br>$$Tokens_{input\_dedup} = \\                                                                                                                                                                                                                                                                                                                                                                        | Union(\text{各轮 input 中的唯一 token 序列})\\ |     |
 |**Output tokens（总量）**|424|4,051|2,152|1,686|3,622|2,736|4,373|3,611|1,474|830|Output tokens = Σ(各轮 output_tokens)<br><br>$$Tokens_{output} = \sum_{r=1}^{8} output\_tokens_r$$ 其中： - output_tokens_r：第 r 轮模型生成的 output token 数 - 单位：tokens 1. 输出量决定 Decode 阶段耗时——Decode 是逐 token 自回归生成，output_tokens 直接决定推理时长。 2. 两张芯片的 output 数一致——使用 temperature=0 greedy decoding，确保输出长度可比。|
-|**输出****吞吐量****（任务有效）**|6.49 tokens/s|135.88 tokens/s|88.69 tokens/s|10.94 tokens/s|133.34 tokens/s|48.47 tokens/s|209.33 tokens/s|94.37 tokens/s|14.09 tokens/s|9.72 tokens/s|任务有效输出吞吐量 = Σ(output_tokens) / task_duration<br><br>$$Throughput_{task} = \frac{\sum_{r=1}^{8} output\_tokens_r}{T_{task\_end} - T_{task\_start}}$$ 其中： - output_tokens_r：第 r 轮生成的 output token 数 - T_task_end − T_task_start：任务端到端墙钟时间（含工具调用等待） - 单位：tokens/s 1. 分母是任务全程时间——包含工具调用、编排等非推理等待，反映用户实际感受到的生成速度。 2. 低于模型纯推理吞吐量是正常的——任务有效吞吐 39.8 vs 纯推理 69.1，差距来自 40% 的非推理时间。|
+|**输出****吞吐量****（任务有效）**|6.49 tokens/s|==135.88 tokens/s ⚠️==|==88.69 tokens/s ⚠️==|10.94 tokens/s|==133.34 tokens/s ⚠️==|==48.47 tokens/s ⚠️==|==209.33 tokens/s ⚠️==|==94.37 tokens/s ⚠️==|14.09 tokens/s|9.72 tokens/s|任务有效输出吞吐量 = Σ(output_tokens) / task_duration<br><br>$$Throughput_{task} = \frac{\sum_{r=1}^{8} output\_tokens_r}{T_{task\_end} - T_{task\_start}}$$ 其中： - output_tokens_r：第 r 轮生成的 output token 数 - T_task_end − T_task_start：任务端到端墙钟时间（含工具调用等待） - 单位：tokens/s 1. 分母是任务全程时间——包含工具调用、编排等非推理等待，反映用户实际感受到的生成速度。 2. 低于模型纯推理吞吐量是正常的——任务有效吞吐 39.8 vs 纯推理 69.1，差距来自 40% 的非推理时间。|
 |**输出****吞吐量****（模型纯推理）**|6.50 tokens/s|15.26 tokens/s|6.46 tokens/s|11.06 tokens/s|19.75 tokens/s|13.25 tokens/s|11.14 tokens/s|8.19 tokens/s|14.25 tokens/s|10.48 tokens/s|模型纯推理输出吞吐量 = Σ(output_tokens) / Σ(各轮推理耗时)<br><br>$$Throughput_{model} = \frac{\sum_{r=1}^{8} output\_tokens_r}{\sum_{r=1}^{8} latency_r^{(inference)}}$$ 其中： - output_tokens_r：第 r 轮生成的 output token 数 - latency_r^(inference)：第 r 轮的纯模型推理耗时（Prefill + Decode） - 单位：tokens/s 1. 分母仅含推理时间——剔除工具调用、编排等非推理开销，纯粹衡量芯片的 Decode 生成能力。 2. 与任务有效吞吐量配对观察——两者比值反映推理时间占比，本例 39.8/69.1 ≈ 57.6%。|
-|**总****吞吐量****（输入+输出）**|300.27 tokens/s|2,478.95 tokens/s|8,726.73 tokens/s|291.80 tokens/s|1,928.68 tokens/s|851.15 tokens/s|4,551.26 tokens/s|4,665.12 tokens/s|262.83 tokens/s|287.24 tokens/s|总吞吐量 = Σ(input_tokens + output_tokens) / task_duration<br><br>$$Throughput_{total} = \frac{\sum_{r=1}^{8}(in_r + out_r)}{T_{task}}$$ 其中： - in_r / out_r：第 r 轮的 input / output token 数 - T_task：任务端到端时长（秒） - 单位：tokens/s 1. 包含 input+output——区别于"输出吞吐量"仅统计 output，总吞吐量反映系统处理的完整 token 工作量。 2. 对 input/output 比例差异大的 Agent 场景——提供跨场景的公平比较基础。|
+|**总****吞吐量****（输入+输出）**|300.27 tokens/s|==2,478.95 tokens/s ⚠️==|==8,726.73 tokens/s ⚠️==|291.80 tokens/s|==1,928.68 tokens/s ⚠️==|==851.15 tokens/s ⚠️==|==4,551.26 tokens/s ⚠️==|==4,665.12 tokens/s ⚠️==|262.83 tokens/s|287.24 tokens/s|总吞吐量 = Σ(input_tokens + output_tokens) / task_duration<br><br>$$Throughput_{total} = \frac{\sum_{r=1}^{8}(in_r + out_r)}{T_{task}}$$ 其中： - in_r / out_r：第 r 轮的 input / output token 数 - T_task：任务端到端时长（秒） - 单位：tokens/s 1. 包含 input+output——区别于"输出吞吐量"仅统计 output，总吞吐量反映系统处理的完整 token 工作量。 2. 对 input/output 比例差异大的 Agent 场景——提供跨场景的公平比较基础。|
 |**QPS****（系统请求吞吐）**|0.04 req/s|0.18 req/s|0.24 req/s|0.02 req/s|0.16 req/s|0.07 req/s|0.33 req/s|0.35 req/s|0.03 req/s|0.03 req/s|QPS = 成功完成的请求数 / 测试总时长<br><br>$$QPS = \frac{N_{success}}{T_{total}}$$ 其中： - N_success：测试期间成功完成（HTTP 2xx 且结果有效）的请求数 - T_total：测试的端到端总时长（秒） - 单位：req/s 1. 只计"成功请求"——超时、报错的请求不纳入，避免虚高。 2. 反映系统在单任务基线下的请求处理能力——并发场景下 QPS 会随并发数线性增长（理想情况）。|
 |**QPM（分钟级吞吐）**|2.29 req/min|10.87 req/min|14.29 req/min|1.36 req/min|9.43 req/min|4.34 req/min|20.03 req/min|20.75 req/min|1.79 req/min|2.04 req/min|QPM = QPS × 60<br><br>$$QPM = QPS \times 60$$ 其中： - QPS：每秒请求吞吐量 - 单位：req/min 1. QPM 是 QPS 的分钟级换算——便于与业务侧按分钟计费的 SLA 对齐。 2. 适用于容量规划——"1000 卡集群每分钟能处理多少请求"直接用 QPM × 节点数估算。|
+
+> [!danger] §5.1 数据异常标注
+>
+> **🔴 MaaS-Latency > AaaS-Latency（逻辑不可能：模型推理时间不可能超过任务总时间）：**
+> | 场景 | AaaS-Latency | MaaS-Latency ⚠️ | 倍率 |
+> |------|-------------|----------------|------|
+> | 会议纪要 | 128.83 s | ==265.52 s== | 2.06× |
+> | 文档读取与批量处理 | 46.18 s | ==290.63 s== | 6.29× |
+> | 学术论文阅读与写作 | 85.04 s | ==166.07 s== | 1.95× |
+> | 内容创作流水线 | 155.29 s | ==204.49 s== | 1.32× |
+> | 整理发票 | 28.25 s | ==433.22 s== | 15.3× |
+> | 小红书内容自动化 | 210.63 s | ==539.38 s== | 2.56× |
+>
+> **🔴 任务有效输出吞吐量 > 模型纯推理吞吐量（违反定义：含等待的吞吐不可能高于纯推理吞吐）：**
+> | 场景 | 报告值(任务有效) ⚠️ | 正确计算值 | 报告值(纯推理) |
+> |------|-------------------|-----------|--------------|
+> | 会议纪要 | ==135.88 tokens/s== | 31.4 tokens/s | 15.26 tokens/s |
+> | 文档读取与批量处理 | ==88.69 tokens/s== | 46.6 tokens/s | 6.46 tokens/s |
+> | 学术论文阅读与写作 | ==133.34 tokens/s== | 42.6 tokens/s | 19.75 tokens/s |
+> | 内容创作流水线 | ==48.47 tokens/s== | 17.6 tokens/s | 13.25 tokens/s |
+> | 整理发票 | ==209.33 tokens/s== | 154.8 tokens/s | 11.14 tokens/s |
+> | 小红书内容自动化 | ==94.37 tokens/s== | 17.1 tokens/s | 8.19 tokens/s |
+>
+> **🔴 总吞吐量（输入+输出）连锁失真（因 AaaS 分母错误导致）：**
+> | 场景 | 报告值 ⚠️ | 正确计算值 |
+> |------|----------|-----------|
+> | 会议纪要 | ==2,478.95 tokens/s== | ~511 tokens/s |
+> | 文档读取与批量处理 | ==8,726.73 tokens/s== | ~4,868 tokens/s |
+> | 学术论文阅读与写作 | ==1,928.68 tokens/s== | ~661 tokens/s |
+> | 内容创作流水线 | ==851.15 tokens/s== | ~301 tokens/s |
+> | 整理发票 | ==4,551.26 tokens/s== | ~3,371 tokens/s |
+> | 小红书内容自动化 | ==4,665.12 tokens/s== | ~566 tokens/s |
 
 ### 5.2 并发压力测试
 
@@ -101,6 +152,10 @@
 |**限流/拒绝请求数**|33|||||||||20|限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数 $$N_{throttled} = \\|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\\|$$<br><br>其中： - status_i = 429：服务端返回 Too Many Requests - queue_overflow_i：请求因调度队列已满被直接拒绝 - 单位：次 1. 限流反映系统容量上限——高并发下出现限流说明已接近系统最大承载能力。 2. 限流策略应与 OOM 防护联动——宁可限流也不让 OOM 导致全局服务中断。|
 |**错误类型分布**|超时 72% / OOM 18% / 限流 10%|||||||||超时 68% / OOM 8% / 限流 24%|错误类型分布 = 各类错误数 / 总失败数 × 100% $$Ratio_{type} = \frac{N_{type}}{N_{fail}} \times 100\%$$<br><br>其中： - type：错误类型（超时 / OOM / 限流 / 其他） - N_type：该类型的错误数量 - N_fail：总失败请求数 - 单位：% 1. 错误类型决定优化方向——超时多→优化 Decode 速度；OOM 多→优化显存管理；限流多→扩容或调优调度。 2. NGU800P 的 OOM 占比（18%）高于 A800（8%）——提示 KV Cache 内存管理需优化。|
 
+> [!warning] 以下并发表 P/D/PD 三列大部分指标数值完全相同 ⚠️
+> 请求吞吐量、总吞吐量、Goodput、端到端延迟、TPOT、Decode延迟、模型推理累计耗时等字段的 P节点/D节点/PD 三列为相同值。
+> 在 PD 分离架构下，P 和 D 节点的负载特征应有明显差异。仅排队等待时间和 KV Cache 使用率有区分。
+
 **并发****Agent指标**（并发 10 Agent 场景）：
 
 |                           |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                   |                 |                 |                 |                 |                 |                 |                   |                   |                   |                   |                   |                   |                                                                                                                                                                                                                                                                                                                                                                                        |                                     |     |
@@ -120,6 +175,11 @@
 | **被抢占请求数**                | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 0               | 0               | 0               | 0               | 0               | 0               | 0                 | 0                 | 0                 | 0                 | 0                 | 0                 | 被抢占请求数 = continuous batching 中被抢占的请求数 $$N_{preempt} = \\                                                                                                                                                                                                                                                                                                                               | \{req_i \mid preempted_i = true\}\\ |     |
 |**超时请求数**|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|超时请求数 = 响应时间超过 SLO 阈值的请求数 $$N_{timeout} = \\|\{req_i \mid latency_i > SLO_{threshold}\}\\|$$<br><br>其中： - latency_i：第 i 个请求的端到端响应时间 - SLO_threshold：SLO 约定的最大响应时间阈值 - 单位：次 1. 并发 16 场景下的超时——与测试元数据中的总超时数（85）区分，此处仅为并发 16 梯度的超时数。 2. 超时原因需结合排队时间和 KV Cache 使用率联合诊断——排队久 or Decode 慢都可能导致超时。|
 |**限流/拒绝请求数**|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|限流/拒绝请求数 = HTTP 429 或队列溢出被拒绝的请求数 $$N_{throttled} = \\|\{req_i \mid status_i = 429 \lor queue\_overflow_i\}\\|$$<br><br>其中： - status_i = 429：服务端返回 Too Many Requests - queue_overflow_i：请求因调度队列已满被直接拒绝 - 单位：次 1. 并发 16 下限流量少——说明系统容量尚未到极限，32 并发时限流会显著增加。 2. 限流是系统的自我保护机制——优于让请求全部涌入导致 OOM。|
+
+> [!danger] 以下「高并发」表数据与上方「并发 10」表完全一致 ⚠️
+> 对比发现输出吞吐量、TPOT、Goodput、端到端延迟、排队时间、KV Cache 使用率等所有字段均为相同数值。
+> 但计算说明文字描述的是「100 Agent 并发」场景（如"NGU800P 在 100 并发下吞吐落后 A800 6.6%"）。
+> **疑似复制占位，尚未填入真实的高并发测试数据。标题也写的「10 Agent」而非「100 Agent」。**
 
 **高****并发** **Agent 指标**（并发 10 Agent 场景）：
 
@@ -159,19 +219,26 @@
 
 ### 5b.1 延迟与吞吐百分位分布
 
+> [!danger] §5b.1 与 §5.1 数据量级矛盾 ⚠️
+> 本节百分位数据与 §5.1 主表存在约 **100 倍**量级差异，疑似来自不同测试环境或不同模型：
+> - 本节 TTFT P50=88ms ↔ §5.1 首轮 TTFT = 12,000~20,000ms（差 **~150×**）
+> - 本节 TPOT P50=12ms/tok ↔ §5.1 加权 TPOT = 35~80ms/tok（差 **~3-7×**）
+> - 本节 Decode延迟 P50=68ms，但 TPOT(12.5ms)×输出长度(320tok)=3,988ms（内部差 **55×**）
+> - 本节 E2E推理延迟 P50=155ms ↔ §5.1 单任务 AaaS = 28~211s（差 **~180-1360×**）
+
 **【稳定性分布验证 —— NGU800P vs A800】**
 
 |   |   |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|---|---|
 |**指标**||**P50**|**P75**|**P90**|**P99**|**max**|**SLO_P90**|**计算说明**|
-|**TTFT (ms)**|**NGU800P**|**95**|**120**|**142**|**380**|**520**|**≤200**|**TTFT 百分位 = 所有请求 TTFT 升序排列后取对应分位点**<br><br>$$P_N = sorted(TTFT)[⌊N\% \times count⌋]$$ **其中：** **- TTFT：单次请求从发送到首 token 返回的时间 = T(first_token) − T(request_sent)** **- count：80 次调用/Case × Case 总数** **- 单位：ms** **1. P90=142ms 表示 90% 请求首 token 在 142ms 内返回——直接对标客户 SLO 阈值。** **2. P99/P50 = 380/95 = 4.0×——比值越大说明尾部抖动越严重，>5× 需告警。**|
-||A800|88|110|135|340|480|≤200||
-|**TPOT (ms/tok)**|NGU800P|12.5|13.8|15.2|18.5|22.1|≤20|TPOT 百分位 = 所有请求 TPOT 升序排列后取对应分位点<br><br>$$$$ 即：P_N = sorted(TPOT)[⌊N\% \times count⌋] 其中： - TPOT：每 token 生成延迟 = (T(last_token) − T(first_token)) / (output_tokens − 1) - 单位：ms/token 1. P99=18.5ms/tok → 最差速度 ≈ 54 tokens/s——接近用户感知"慢速打字"阈值 50 tokens/s。 2. P99/P50 = 1.48×——Decode 阶段稳定性较好，抖动可控。|
-||A800|12|13.2|14.6|17.2|20.8|≤20||
-|**Decode 延迟 (ms)**|NGU800P|72|85|96|125|168|≤120|Decode 延迟百分位 = 所有请求 Decode 阶段耗时升序排列后取对应分位点 $$$$<br><br>即：P_N = sorted(T_{decode})[⌊N\% \times count⌋] 其中： - T_decode = T(last_token) − T(first_token) - 单位：ms 1. Decode 延迟与 output_tokens 正相关——P99/P50 = 1.74× 受不同 Case 输出长度差异影响。 2. P99=125ms 达标但接近 SLO=120ms——高并发下可能超标。|
-||A800|68|80|92|118|155|≤120||
-|**E2E 推理延迟 (ms)**|NGU800P|165|185|210|280|350|≤250|E2E 推理延迟百分位 = 所有请求完整推理耗时升序排列后取对应分位点 $$$$<br><br>即：P_N = sorted(T_{e2e})[⌊N\% \times count⌋] 其中： - T_e2e = 排队 + Prefill + Decode + 后处理 - 单位：ms 1. P90=210ms 达标（SLO=250ms）——有 40ms 余量，可作为生产 SLA 配置参考值。 2. P99=280ms 超 SLO——极端情况存在长尾，需关注排队和 KV Cache 争用。|
-||A800|155|175|198|260|330|≤250||
+|**TTFT (ms)**|**NGU800P**|**==95 ⚠️==**|**==120 ⚠️==**|**==142 ⚠️==**|**==380 ⚠️==**|**==520 ⚠️==**|**≤200**|**TTFT 百分位 = 所有请求 TTFT 升序排列后取对应分位点**<br><br>$$P_N = sorted(TTFT)[⌊N\% \times count⌋]$$ **其中：** **- TTFT：单次请求从发送到首 token 返回的时间 = T(first_token) − T(request_sent)** **- count：80 次调用/Case × Case 总数** **- 单位：ms** **1. P90=142ms 表示 90% 请求首 token 在 142ms 内返回——直接对标客户 SLO 阈值。** **2. P99/P50 = 380/95 = 4.0×——比值越大说明尾部抖动越严重，>5× 需告警。**|
+||A800|==88 ⚠️==|==110 ⚠️==|==135 ⚠️==|==340 ⚠️==|==480 ⚠️==|≤200||
+|**TPOT (ms/tok)**|NGU800P|==12.5 ⚠️==|==13.8 ⚠️==|==15.2 ⚠️==|==18.5 ⚠️==|==22.1 ⚠️==|≤20|TPOT 百分位 = 所有请求 TPOT 升序排列后取对应分位点<br><br>$$$$ 即：P_N = sorted(TPOT)[⌊N\% \times count⌋] 其中： - TPOT：每 token 生成延迟 = (T(last_token) − T(first_token)) / (output_tokens − 1) - 单位：ms/token 1. P99=18.5ms/tok → 最差速度 ≈ 54 tokens/s——接近用户感知"慢速打字"阈值 50 tokens/s。 2. P99/P50 = 1.48×——Decode 阶段稳定性较好，抖动可控。|
+||A800|==12 ⚠️==|==13.2 ⚠️==|==14.6 ⚠️==|==17.2 ⚠️==|==20.8 ⚠️==|≤20||
+|**Decode 延迟 (ms)**|NGU800P|==72 ⚠️==|==85 ⚠️==|==96 ⚠️==|==125 ⚠️==|==168 ⚠️==|≤120|Decode 延迟百分位 = 所有请求 Decode 阶段耗时升序排列后取对应分位点 $$$$<br><br>即：P_N = sorted(T_{decode})[⌊N\% \times count⌋] 其中： - T_decode = T(last_token) − T(first_token) - 单位：ms 1. Decode 延迟与 output_tokens 正相关——P99/P50 = 1.74× 受不同 Case 输出长度差异影响。 2. P99=125ms 达标但接近 SLO=120ms——高并发下可能超标。|
+||A800|==68 ⚠️==|==80 ⚠️==|==92 ⚠️==|==118 ⚠️==|==155 ⚠️==|≤120||
+|**E2E 推理延迟 (ms)**|NGU800P|==165 ⚠️==|==185 ⚠️==|==210 ⚠️==|==280 ⚠️==|==350 ⚠️==|≤250|E2E 推理延迟百分位 = 所有请求完整推理耗时升序排列后取对应分位点 $$$$<br><br>即：P_N = sorted(T_{e2e})[⌊N\% \times count⌋] 其中： - T_e2e = 排队 + Prefill + Decode + 后处理 - 单位：ms 1. P90=210ms 达标（SLO=250ms）——有 40ms 余量，可作为生产 SLA 配置参考值。 2. P99=280ms 超 SLO——极端情况存在长尾，需关注排队和 KV Cache 争用。|
+||A800|==155 ⚠️==|==175 ⚠️==|==198 ⚠️==|==260 ⚠️==|==330 ⚠️==|≤250||
 |**请求推理平均时延 (ms)**|NGU800P|105|182|212|275|345|≤250|请求推理时延百分位 = 所有请求完整推理耗时（排队+Prefill+Decode+后处理）的分布<br><br>$$$$ 即：P_N = sorted(T_{inference})[⌊N\% \times count⌋] 其中： - T_inference：单次请求从进入推理引擎到结果返回的总耗时 - 单位：ms 1. SLO_P90=250ms 可直接作为生产 SLA 配置参考值——P90=212ms 达标。 2. P99=275ms 超 SLO——最差 1% 请求超标，需关注长上下文 Prefill 与排队叠加。|
 ||A800|98|170|200|255|320|≤250||
 
@@ -276,6 +343,12 @@
 ### 6.4 基础设施与集群诊断
 
   
+
+> [!warning] §6.4 模型参数描述矛盾 ⚠️
+> 下方存储指标计算说明中提到「350B 模型权重约 175 GB（FP8）」，但：
+> - FP8 = 1 byte/param → 350B × 1 byte = **350 GB**，不是 175 GB
+> - 175 GB 对应 **175B 参数**的 FP8，或 350B 的 **INT4/FP4**
+> - 三个数字（350B、FP8、175GB）只能取其二，需确认实际模型规格
 
 #### **存储指标**
 

@@ -3,18 +3,120 @@
   "title": "Analyze OpenClaw-A800 test metrics for outliers",
   "titleGenerationStatus": "success",
   "createdAt": 1778122891235,
-  "updatedAt": 1778123231401,
-  "lastResponseAt": 1778123231401,
+  "updatedAt": 1778123803933,
+  "lastResponseAt": 1778123803933,
   "sessionId": "52be4fb8-a42d-40a5-ab1f-d8813e4dcafe",
   "sdkSessionId": "52be4fb8-a42d-40a5-ab1f-d8813e4dcafe",
   "currentNote": "OpenClaw-A800 测试指标报告.md",
   "usage": {
     "model": "opus[1m]",
-    "inputTokens": 3,
-    "cacheCreationInputTokens": 11572,
-    "cacheReadInputTokens": 67989,
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 2674,
+    "cacheReadInputTokens": 138882,
     "contextWindow": 1000000,
-    "contextTokens": 79564,
-    "percentage": 8
+    "contextTokens": 141557,
+    "percentage": 14
+  },
+  "subagentData": {
+    "toolu_0183YteR2D5hdxG95HQp4EwN": {
+      "id": "toolu_0183YteR2D5hdxG95HQp4EwN",
+      "description": "标注§5.1 MaaS和AaaS异常",
+      "prompt": "你需要编辑文件 \"OpenClaw-A800 测试指标报告.md\"（绝对路径：/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md）。\n\n任务：在 §5.1 单任务基线测试表中标注 MaaS-Latency > AaaS-Latency 的异常值，以及任务有效输出吞吐量 > 模型纯推理吞吐量的异常值。\n\n**具体操作步骤：**\n\n1. 先 Read 文件 offset=80 limit=20 找到 AaaS 和 MaaS 所在的行\n\n2. 在 AaaS-时延 行（约 line 84）之前，添加一个 callout 说明：\n   - 不要修改表格行本身（太长太容易出错）\n   - 在表格末尾（最后一个 | 后面）添加注释行\n\n3. **核心操作**：在 §5.1 表格结束后（在 `### 5.2 并发压力测试` 之前），插入一个 danger callout，内容如下：\n\n```\n> [!danger] §5.1 数据异常标注\n> \n> **🔴 MaaS-Latency > AaaS-Latency（逻辑不可能：模型推理时间不可能超过任务总时间）：**\n> | 场景 | AaaS-Latency | MaaS-Latency ⚠️ | 倍率 |\n> |------|-------------|----------------|------|\n> | 会议纪要 | 128.83 s | ==265.52 s== | 2.06× |\n> | 文档读取与批量处理 | 46.18 s | ==290.63 s== | 6.29× |\n> | 学术论文阅读与写作 | 85.04 s | ==166.07 s== | 1.95× |\n> | 内容创作流水线 | 155.29 s | ==204.49 s== | 1.32× |\n> | 整理发票 | 28.25 s | ==433.22 s== | 15.3× |\n> | 小红书内容自动化 | 210.63 s | ==539.38 s== | 2.56× |\n> \n> **🔴 任务有效输出吞吐量 > 模型纯推理吞吐量（违反定义：含等待的吞吐不可能高于纯推理吞吐）：**\n> | 场景 | 报告值(任务有效) ⚠️ | 正确计算值 | 报告值(纯推理) |\n> |------|-------------------|-----------|--------------|\n> | 会议纪要 | ==135.88 tokens/s== | 31.4 tokens/s | 15.26 tokens/s |\n> | 文档读取与批量处理 | ==88.69 tokens/s== | 46.6 tokens/s | 6.46 tokens/s |\n> | 学术论文阅读与写作 | ==133.34 tokens/s== | 42.6 tokens/s | 19.75 tokens/s |\n> | 内容创作流水线 | ==48.47 tokens/s== | 17.6 tokens/s | 13.25 tokens/s |\n> | 整理发票 | ==209.33 tokens/s== | 154.8 tokens/s | 11.14 tokens/s |\n> | 小红书内容自动化 | ==94.37 tokens/s== | 17.1 tokens/s | 8.19 tokens/s |\n>\n> **🔴 总吞吐量（输入+输出）连锁失真（因 AaaS 分母错误导致）：**\n> | 场景 | 报告值 ⚠️ | 正确计算值 |\n> |------|----------|-----------|\n> | 会议纪要 | ==2,478.95 tokens/s== | ~511 tokens/s |\n> | 文档读取与批量处理 | ==8,726.73 tokens/s== | ~4,868 tokens/s |\n> | 学术论文阅读与写作 | ==1,928.68 tokens/s== | ~661 tokens/s |\n> | 内容创作流水线 | ==851.15 tokens/s== | ~301 tokens/s |\n> | 整理发票 | ==4,551.26 tokens/s== | ~3,371 tokens/s |\n> | 小红书内容自动化 | ==4,665.12 tokens/s== | ~566 tokens/s |\n```\n\n**操作方法**：找到 `### 5.2 并发压力测试` 这行，在它前面插入上面的 callout。用 Edit 工具将 `### 5.2 并发压力测试` 替换为 callout + 原文。\n\n请先 Read 确认精确文本再操作。",
+      "mode": "async",
+      "isExpanded": false,
+      "status": "error",
+      "toolCalls": [
+        {
+          "id": "toolu_01J9hHf5hZw93Dvqp1uYafhm",
+          "name": "ToolSearch",
+          "input": {
+            "query": "select:Read,Edit",
+            "max_results": 2
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "[{\"type\":\"tool_reference\",\"tool_name\":\"Read\"},{\"type\":\"tool_reference\",\"tool_name\":\"Edit\"}]"
+        },
+        {
+          "id": "toolu_01XfmkkhgJdyDhMpZwmtxJHw",
+          "name": "Read",
+          "input": {
+            "file_path": "/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md",
+            "offset": 80,
+            "limit": 20
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "    80→\n    81→**【****AI** **Coding 场景样例：Claude Code 修复 Bug，8 轮调用，10 次重复取中位数】**\n    82→\n    83→  \n    84→\n    85→| **指标**                     | **电商客服**     | **会议纪要**     | **文档读取与批量处理** | 品牌内容生成       | 学术论文阅读与写作    | 内容创作流水线      | 整理发票         | 小红书内容自动化     | 收件箱整理与自动化回复  | 早晨简报自动化      | **计算说明**                                                                                                                                                                                                                                                                                                                                                                                                                                  |                                        |     |\n    86→| -------------------------- | ------------ | ------------ | ------------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | --- |\n    87→| **首轮 TTFT**                | 13,678.90 ms | 11,986.30 ms | 18,321.70 ms  | 12,636.30 ms | 13,243.00 ms | 12,875.00 ms | 16,253.44 ms | 20,586.10 ms | 14,725.70 ms | 14,125.50 ms | 首轮 TTFT = T(first_token_received) − T(request_sent) $$TTFT_1 = t_{first\\_token}^{(R1)} - t_{request}^{(R1)}$$ 其中： - R1：Agent 任务第 1 轮模型调用 - t_first_token：模型返回第一个 token 的时间戳 - t_request：客户端发送请求的时间戳 - 单位：ms 1. 取首轮而非跨轮平均——首轮 input_tokens 最少（~2K），TTFT 最小，代表用户首次感知的响应速度。 2. 取 10 次重复的中位数——排除偶发冷启动或 GC 抖动对结果的污染。                                                                                                                           |                                        |     |\n    88→| **末轮 TTFT**                | 12,862.50 ms | 8,145.10 ms  | 25,081.30 ms  | 15,861.90 ms | 8,156.80 ms  | 7,770.90 ms  | 23,877.11 ms | 14,765.90 ms | 7,125.60 ms  | 10,144.90 ms | 末轮 TTFT = T(first_token_received) − T(request_sent)，取第 8 轮 $$TTFT_8 = t_{first\\_token}^{(R8)} - t_{request}^{(R8)}$$ 其中： - R8：Agent 任务第 8 轮（末轮）模型调用 - t_first_token：模型返回第一个 token 的时间戳 - t_request：客户端发送请求的时间戳 - 单位：ms 1. 末轮 input_tokens 最多（~18.5K）——代表最长上下文下的 Prefill 性能，是 TTFT 的最坏情况。 2. 首轮与末轮配对观察——两者差距反映 Prefill 随上下文长度增长的劣化程度。                                                                                                      |                                        |     |\n    89→| **加权 平均TPOT**              | 79.50 ms/tok | 44.78 ms/tok | 70.35 ms/tok  | 69.99 ms/tok | 35.11 ms/tok | 57.55 ms/tok | 70.89 ms/tok | 61.45 ms/tok | 39.75 ms/tok | 42.69 ms/tok | 加权 TPOT = Σ(TPOT_i × output_tokens_i) / Σ(output_tokens_i)<br><br>$$TPOT_{weighted} = \\frac{\\sum_{r=1}^{8} TPOT_r \\times out_r}{\\sum_{r=1}^{8} out_r}$$ 其中： - r：轮次编号（1-8） - TPOT_r：第 r 轮的 TPOT = (last_token_time − first_token_time) / (output_tokens − 1) - out_r：第 r 轮的 output_tokens 数 - 单位：ms/token 1. 按 output_tokens 加权而非算术平均——生成 2000 token 的重轮次对用户体验影响远大于生成 100 token 的轻轮次。 2. 跨 8 轮聚合后取 10 次重复的中位数——先轮内计算 TPOT，再跨轮加权，最后跨重复取中位数。 |                                        |     |\n    90→| **max P99_ITL**            |              |              |               |              |              |              |              |              |              |              | max P99_ITL = max(各轮的 P99 ITL) $$ITL_{max\\_P99} = \\max_{r=1}^{8} P99(ITL_r)$$ 其中： - ITL_r：第 r 轮所有相邻 token 间隔时间的集合 \\{t_{k+1} - t_k\\} - P99(ITL_r)：第 r 轮 ITL 分布的第 99 百分位值 - 单位：ms/token 1. 取各轮 P99 的最大值而非平均——用户感知的\"卡顿\"由最差轮次决定，均值会掩盖尾部抖动。 2. 取 10 次重复的中位数——确保最差轮次的 P99 ITL 是稳定可复现的，而非偶发抖动。                                                                                                                                                   |                                        |     |\n    91→| **AaaS-时延（任务 E2E）**        | 60.59 s      | 128.83 s     | 46.18 s       | 134.58 s     | 85.04 s      | 155.29 s     | 28.25 s      | 210.63 s     | 104.70 s     | 85.94 s      | AaaS-Latency = T(task_end) − T(task_start) $$Latency_{AaaS} = t_{task\\_end} - t_{task\\_start}$$ 其中： - t_task_start：Agent 接收到任务的时间戳 - t_task_end：Agent 输出最终结果的时间戳 - 包含：全部模型推理 + 工具调用 + Agent 编排调度耗时 - 单位：s 1. 这是用户感知的完整任务时长——从发出\"修复这个 Bug\"到收到最终答案的墙钟时间。 2. 与 MaaS-Latency 配对观察——两者差值 = 非推理开销（工具调用 + 编排 + 网络），用于定位瓶颈。                                                                                                                       |                                        |     |\n    92→| **MaaS-Latency（模型推理时长累计）** | 60.48 s      | 265.52 s     | 290.63 s      | 132.98 s     | 166.07 s     | 204.49 s     | 433.22 s     | 539.38 s     | 103.51 s     | 79.64 s      | MaaS-Latency = Σ(各轮模型推理耗时) $$Latency_{MaaS} = \\sum_{r=1}^{8} (t_{last\\_token}^{(r)} - t_{request}^{(r)})$$ 其中： - r：轮次编号（1-8） - t_last_token：第 r 轮最后一个 token 返回的时间戳 - t_request：第 r 轮请求发送的时间戳 - 单位：s 1. 仅累加模型推理部分——不含工具调用、编排调度等非推理开销，纯粹衡量芯片推理能力。 2. 模型推理占比 = MaaS-Latency / AaaS-Latency——本例中 76/132 = 59.1%，说明约 40% 时间花在非推理环节。                                                                                                            |                                        |     |\n    93→| **Input tokens（累计调用量）**    | 17,135       | 61,792       | 222,674       | 33,720       | 52,672       | 44,044       | 90,945       | 115,661      | 25,935       | 23,656       | 累计 Input tokens = Σ(各轮 input_tokens)<br><br>$$Tokens_{input\\_cum} = \\sum_{r=1}^{8} input\\_tokens_r$$ 其中： - input_tokens_r：第 r 轮发送给模型的完整 input token 数（含历史上下文） - 单位：tokens 1. 包含跨轮重复上下文——Agent 每轮会把前几轮对话历史拼入 input，导致累计调用量远大于净信息量。 2. 与去重信息量配对使用——膨胀率 = 累计 / 去重 = 81500 / 20000 = 4.1×，膨胀率越高说明上下文管理越低效。                                                                                                                                    |                                        |     |\n    94→| **Input tokens（去重信息量）**    |              |              |               |              |              |              |              |              |              |              | 去重 Input tokens = 去除跨轮重复后的净信息量<br><br>$$Tokens_{input\\_dedup} = \\\\                                                                                                                                                                                                                                                                                                                                                                        | Union(\\text{各轮 input 中的唯一 token 序列})\\\\ |     |\n    95→|**Output tokens（总量）**|424|4,051|2,152|1,686|3,622|2,736|4,373|3,611|1,474|830|Output tokens = Σ(各轮 output_tokens)<br><br>$$Tokens_{output} = \\sum_{r=1}^{8} output\\_tokens_r$$ 其中： - output_tokens_r：第 r 轮模型生成的 output token 数 - 单位：tokens 1. 输出量决定 Decode 阶段耗时——Decode 是逐 token 自回归生成，output_tokens 直接决定推理时长。 2. 两张芯片的 output 数一致——使用 temperature=0 greedy decoding，确保输出长度可比。|\n    96→|**输出****吞吐量****（任务有效）**|6.49 tokens/s|135.88 tokens/s|88.69 tokens/s|10.94 tokens/s|133.34 tokens/s|48.47 tokens/s|209.33 tokens/s|94.37 tokens/s|14.09 tokens/s|9.72 tokens/s|任务有效输出吞吐量 = Σ(output_tokens) / task_duration<br><br>$$Throughput_{task} = \\frac{\\sum_{r=1}^{8} output\\_tokens_r}{T_{task\\_end} - T_{task\\_start}}$$ 其中： - output_tokens_r：第 r 轮生成的 output token 数 - T_task_end − T_task_start：任务端到端墙钟时间（含工具调用等待） - 单位：tokens/s 1. 分母是任务全程时间——包含工具调用、编排等非推理等待，反映用户实际感受到的生成速度。 2. 低于模型纯推理吞吐量是正常的——任务有效吞吐 39.8 vs 纯推理 69.1，差距来自 40% 的非推理时间。|\n    97→|**输出****吞吐量****（模型纯推理）**|6.50 tokens/s|15.26 tokens/s|6.46 tokens/s|11.06 tokens/s|19.75 tokens/s|13.25 tokens/s|11.14 tokens/s|8.19 tokens/s|14.25 tokens/s|10.48 tokens/s|模型纯推理输出吞吐量 = Σ(output_tokens) / Σ(各轮推理耗时)<br><br>$$Throughput_{model} = \\frac{\\sum_{r=1}^{8} output\\_tokens_r}{\\sum_{r=1}^{8} latency_r^{(inference)}}$$ 其中： - output_tokens_r：第 r 轮生成的 output token 数 - latency_r^(inference)：第 r 轮的纯模型推理耗时（Prefill + Decode） - 单位：tokens/s 1. 分母仅含推理时间——剔除工具调用、编排等非推理开销，纯粹衡量芯片的 Decode 生成能力。 2. 与任务有效吞吐量配对观察——两者比值反映推理时间占比，本例 39.8/69.1 ≈ 57.6%。|\n    98→|**总****吞吐量****（输入+输出）**|300.27 tokens/s|2,478.95 tokens/s|8,726.73 tokens/s|291.80 tokens/s|1,928.68 tokens/s|851.15 tokens/s|4,551.26 tokens/s|4,665.12 tokens/s|262.83 tokens/s|287.24 tokens/s|总吞吐量 = Σ(input_tokens + output_tokens) / task_duration<br><br>$$Throughput_{total} = \\frac{\\sum_{r=1}^{8}(in_r + out_r)}{T_{task}}$$ 其中： - in_r / out_r：第 r 轮的 input / output token 数 - T_task：任务端到端时长（秒） - 单位：tokens/s 1. 包含 input+output——区别于\"输出吞吐量\"仅统计 output，总吞吐量反映系统处理的完整 token 工作量。 2. 对 input/output 比例差异大的 Agent 场景——提供跨场景的公平比较基础。|\n    99→|**QPS****（系统请求吞吐）**|0.04 req/s|0.18 req/s|0.24 req/s|0.02 req/s|0.16 req/s|0.07 req/s|0.33 req/s|0.35 req/s|0.03 req/s|0.03 req/s|QPS = 成功完成的请求数 / 测试总时长<br><br>$$QPS = \\frac{N_{success}}{T_{total}}$$ 其中： - N_success：测试期间成功完成（HTTP 2xx 且结果有效）的请求数 - T_total：测试的端到端总时长（秒） - 单位：req/s 1. 只计\"成功请求\"——超时、报错的请求不纳入，避免虚高。 2. 反映系统在单任务基线下的请求处理能力——并发场景下 QPS 会随并发数线性增长（理想情况）。|"
+        },
+        {
+          "id": "toolu_01EbbsESVzzXAhTpZVayGRLU",
+          "name": "Read",
+          "input": {
+            "file_path": "/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md",
+            "offset": 99,
+            "limit": 15
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "    99→|**QPS****（系统请求吞吐）**|0.04 req/s|0.18 req/s|0.24 req/s|0.02 req/s|0.16 req/s|0.07 req/s|0.33 req/s|0.35 req/s|0.03 req/s|0.03 req/s|QPS = 成功完成的请求数 / 测试总时长<br><br>$$QPS = \\frac{N_{success}}{T_{total}}$$ 其中： - N_success：测试期间成功完成（HTTP 2xx 且结果有效）的请求数 - T_total：测试的端到端总时长（秒） - 单位：req/s 1. 只计\"成功请求\"——超时、报错的请求不纳入，避免虚高。 2. 反映系统在单任务基线下的请求处理能力——并发场景下 QPS 会随并发数线性增长（理想情况）。|\n   100→|**QPM（分钟级吞吐）**|2.29 req/min|10.87 req/min|14.29 req/min|1.36 req/min|9.43 req/min|4.34 req/min|20.03 req/min|20.75 req/min|1.79 req/min|2.04 req/min|QPM = QPS × 60<br><br>$$QPM = QPS \\times 60$$ 其中： - QPS：每秒请求吞吐量 - 单位：req/min 1. QPM 是 QPS 的分钟级换算——便于与业务侧按分钟计费的 SLA 对齐。 2. 适用于容量规划——\"1000 卡集群每分钟能处理多少请求\"直接用 QPM × 节点数估算。|\n   101→\n   102→### 5.2 并发压力测试\n   103→\n   104→测试基数规则\n   105→\n   106→单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。\n   107→\n   108→**【****并发****说明：10 Agent 开启 10 个会话，10 个会话互相隔离同时运行】**\n   109→\n   110→**测试元数据**：\n   111→\n   112→|   |   |   |   |   |   |   |   |   |   |   |   |\n   113→|---|---|---|---|---|---|---|---|---|---|---|---|"
+        },
+        {
+          "id": "toolu_01LNy2U8FQzbVX25jnFgsrEd",
+          "name": "Edit",
+          "input": {
+            "replace_all": false,
+            "file_path": "/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md",
+            "old_string": "### 5.2 并发压力测试",
+            "new_string": "> [!danger] §5.1 数据异常标注\n>\n> **🔴 MaaS-Latency > AaaS-Latency（逻辑不可能：模型推理时间不可能超过任务总时间）：**\n> | 场景 | AaaS-Latency | MaaS-Latency ⚠️ | 倍率 |\n> |------|-------------|----------------|------|\n> | 会议纪要 | 128.83 s | ==265.52 s== | 2.06× |\n> | 文档读取与批量处理 | 46.18 s | ==290.63 s== | 6.29× |\n> | 学术论文阅读与写作 | 85.04 s | ==166.07 s== | 1.95× |\n> | 内容创作流水线 | 155.29 s | ==204.49 s== | 1.32× |\n> | 整理发票 | 28.25 s | ==433.22 s== | 15.3× |\n> | 小红书内容自动化 | 210.63 s | ==539.38 s== | 2.56× |\n>\n> **🔴 任务有效输出吞吐量 > 模型纯推理吞吐量（违反定义：含等待的吞吐不可能高于纯推理吞吐）：**\n> | 场景 | 报告值(任务有效) ⚠️ | 正确计算值 | 报告值(纯推理) |\n> |------|-------------------|-----------|--------------|\n> | 会议纪要 | ==135.88 tokens/s== | 31.4 tokens/s | 15.26 tokens/s |\n> | 文档读取与批量处理 | ==88.69 tokens/s== | 46.6 tokens/s | 6.46 tokens/s |\n> | 学术论文阅读与写作 | ==133.34 tokens/s== | 42.6 tokens/s | 19.75 tokens/s |\n> | 内容创作流水线 | ==48.47 tokens/s== | 17.6 tokens/s | 13.25 tokens/s |\n> | 整理发票 | ==209.33 tokens/s== | 154.8 tokens/s | 11.14 tokens/s |\n> | 小红书内容自动化 | ==94.37 tokens/s== | 17.1 tokens/s | 8.19 tokens/s |\n>\n> **🔴 总吞吐量（输入+输出）连锁失真（因 AaaS 分母错误导致）：**\n> | 场景 | 报告值 ⚠️ | 正确计算值 |\n> |------|----------|-----------|\n> | 会议纪要 | ==2,478.95 tokens/s== | ~511 tokens/s |\n> | 文档读取与批量处理 | ==8,726.73 tokens/s== | ~4,868 tokens/s |\n> | 学术论文阅读与写作 | ==1,928.68 tokens/s== | ~661 tokens/s |\n> | 内容创作流水线 | ==851.15 tokens/s== | ~301 tokens/s |\n> | 整理发票 | ==4,551.26 tokens/s== | ~3,371 tokens/s |\n> | 小红书内容自动化 | ==4,665.12 tokens/s== | ~566 tokens/s |\n\n### 5.2 并发压力测试"
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "The file /Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md has been updated successfully."
+        },
+        {
+          "id": "toolu_012ZUDYDAEDXtpSEVuCYSWL6",
+          "name": "Read",
+          "input": {
+            "file_path": "/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md",
+            "offset": 100,
+            "limit": 45
+          },
+          "status": "completed",
+          "isExpanded": false,
+          "result": "   100→|**QPM（分钟级吞吐）**|2.29 req/min|10.87 req/min|14.29 req/min|1.36 req/min|9.43 req/min|4.34 req/min|20.03 req/min|20.75 req/min|1.79 req/min|2.04 req/min|QPM = QPS × 60<br><br>$$QPM = QPS \\times 60$$ 其中： - QPS：每秒请求吞吐量 - 单位：req/min 1. QPM 是 QPS 的分钟级换算——便于与业务侧按分钟计费的 SLA 对齐。 2. 适用于容量规划——\"1000 卡集群每分钟能处理多少请求\"直接用 QPM × 节点数估算。|\n   101→\n   102→> [!danger] §5.1 数据异常标注\n   103→>\n   104→> **🔴 MaaS-Latency > AaaS-Latency（逻辑不可能：模型推理时间不可能超过任务总时间）：**\n   105→> | 场景 | AaaS-Latency | MaaS-Latency ⚠️ | 倍率 |\n   106→> |------|-------------|----------------|------|\n   107→> | 会议纪要 | 128.83 s | ==265.52 s== | 2.06× |\n   108→> | 文档读取与批量处理 | 46.18 s | ==290.63 s== | 6.29× |\n   109→> | 学术论文阅读与写作 | 85.04 s | ==166.07 s== | 1.95× |\n   110→> | 内容创作流水线 | 155.29 s | ==204.49 s== | 1.32× |\n   111→> | 整理发票 | 28.25 s | ==433.22 s== | 15.3× |\n   112→> | 小红书内容自动化 | 210.63 s | ==539.38 s== | 2.56× |\n   113→>\n   114→> **🔴 任务有效输出吞吐量 > 模型纯推理吞吐量（违反定义：含等待的吞吐不可能高于纯推理吞吐）：**\n   115→> | 场景 | 报告值(任务有效) ⚠️ | 正确计算值 | 报告值(纯推理) |\n   116→> |------|-------------------|-----------|--------------|\n   117→> | 会议纪要 | ==135.88 tokens/s== | 31.4 tokens/s | 15.26 tokens/s |\n   118→> | 文档读取与批量处理 | ==88.69 tokens/s== | 46.6 tokens/s | 6.46 tokens/s |\n   119→> | 学术论文阅读与写作 | ==133.34 tokens/s== | 42.6 tokens/s | 19.75 tokens/s |\n   120→> | 内容创作流水线 | ==48.47 tokens/s== | 17.6 tokens/s | 13.25 tokens/s |\n   121→> | 整理发票 | ==209.33 tokens/s== | 154.8 tokens/s | 11.14 tokens/s |\n   122→> | 小红书内容自动化 | ==94.37 tokens/s== | 17.1 tokens/s | 8.19 tokens/s |\n   123→>\n   124→> **🔴 总吞吐量（输入+输出）连锁失真（因 AaaS 分母错误导致）：**\n   125→> | 场景 | 报告值 ⚠️ | 正确计算值 |\n   126→> |------|----------|-----------|\n   127→> | 会议纪要 | ==2,478.95 tokens/s== | ~511 tokens/s |\n   128→> | 文档读取与批量处理 | ==8,726.73 tokens/s== | ~4,868 tokens/s |\n   129→> | 学术论文阅读与写作 | ==1,928.68 tokens/s== | ~661 tokens/s |\n   130→> | 内容创作流水线 | ==851.15 tokens/s== | ~301 tokens/s |\n   131→> | 整理发票 | ==4,551.26 tokens/s== | ~3,371 tokens/s |\n   132→> | 小红书内容自动化 | ==4,665.12 tokens/s== | ~566 tokens/s |\n   133→\n   134→### 5.2 并发压力测试\n   135→\n   136→测试基数规则\n   137→\n   138→单个 Case × 8 轮模型调用 × 10 次重复执行 = **80 次模型调用/Case**。本节所有指标均基于此基数进行聚合统计。单次值 = 10 次重复的中位数；汇总值 = 全部 Case 的聚合。\n   139→\n   140→**【****并发****说明：10 Agent 开启 10 个会话，10 个会话互相隔离同时运行】**\n   141→\n   142→**测试元数据**：\n   143→\n   144→|   |   |   |   |   |   |   |   |   |   |   |   |"
+        }
+      ],
+      "asyncStatus": "error",
+      "agentId": "a77b7aec43ede4865",
+      "startedAt": 1778123431219,
+      "outputToolId": "toolu_015nW1WgWNNH1Yh6zddNtdwM",
+      "result": "Edit applied correctly. The danger callout has been inserted at lines 102-132, right after the table ends (line 100) and before `### 5.2 并发压力测试` (now at line 134). The structure is:\n\n- Line 100: last row of the 5.1 table (QPM)\n- Line 101: blank line\n- Lines 102-132: the `[!danger]` callout with all three anomaly tables\n- Line 133: blank line\n- Line 134: `### 5.2 并发压力测试` (preserved as-is)\n\n**Summary of what was done:**\n\nIn `/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md`, a `> [!danger] §5.1 数据异常标注` callout block was inserted between the end of the section 5.1 table and the `### 5.2 并发压力测试` heading. The callout contains three anomaly tables:\n\n1. **MaaS-Latency > AaaS-Latency** -- 6 scenarios where cumulative model inference time exceeds total task time (logically impossible), with ratios ranging from 1.32x to 15.3x.\n2. **Task effective output throughput > Model pure inference throughput** -- 6 scenarios where the throughput including wait time exceeds the pure inference throughput (violates definition), with corrected values provided.\n3. **Total throughput cascading distortion** -- 6 scenarios with inflated total throughput values due to the AaaS denominator error, with corrected values provided.\n\nNo existing table rows were modified.",
+      "completedAt": 1778123480581
+    },
+    "toolu_01JkXC4koGzTUF4CtGu7oFkm": {
+      "id": "toolu_01JkXC4koGzTUF4CtGu7oFkm",
+      "description": "标注§5b.1和§5.2异常",
+      "prompt": "你需要编辑文件 \"OpenClaw-A800 测试指标报告.md\"（绝对路径：/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md）。\n\n请完成以下 3 个标注任务：\n\n---\n\n**任务 A：在 §5b.1 表格前添加量级矛盾警告**\n\n找到 `### 5b.1 延迟与吞吐百分位分布` 这行（大约 line 172），在它下面、表格开始之前，插入一个 danger callout：\n\n```\n> [!danger] §5b.1 与 §5.1 数据量级矛盾 ⚠️\n> 本节百分位数据与 §5.1 主表存在约 **100 倍**量级差异，疑似来自不同测试环境或不同模型：\n> - 本节 TTFT P50=88ms ↔ §5.1 首轮 TTFT = 12,000~20,000ms（差 **~150×**）\n> - 本节 TPOT P50=12ms/tok ↔ §5.1 加权 TPOT = 35~80ms/tok（差 **~3-7×**）\n> - 本节 Decode延迟 P50=68ms，但 TPOT(12.5ms)×输出长度(320tok)=3,988ms（内部差 **55×**）\n> - 本节 E2E推理延迟 P50=155ms ↔ §5.1 单任务 AaaS = 28~211s（差 **~180-1360×**）\n```\n\n---\n\n**任务 B：在 §5.2 的\"高并发\"表前添加数据复制警告**\n\n找到 `**高****并发** **Agent 指标**（并发 10 Agent 场景）：` 这个文本（大约 line 136），在它前面插入一个 danger callout：\n\n```\n> [!danger] 以下「高并发」表数据与上方「并发 10」表完全一致 ⚠️\n> 对比发现输出吞吐量、TPOT、Goodput、端到端延迟、排队时间、KV Cache 使用率等所有字段均为相同数值。\n> 但计算说明文字描述的是「100 Agent 并发」场景（如\"NGU800P 在 100 并发下吞吐落后 A800 6.6%\"）。\n> **疑似复制占位，尚未填入真实的高并发测试数据。标题也写的「10 Agent」而非「100 Agent」。**\n```\n\n---\n\n**任务 C：在并发 Agent 指标表前添加 P/D/PD 三列相同的警告**\n\n找到 `**并发****Agent指标**（并发 10 Agent 场景）：` 这个文本（大约 line 116），在它前面插入：\n\n```\n> [!warning] 以下并发表 P/D/PD 三列大部分指标数值完全相同 ⚠️\n> 请求吞吐量、总吞吐量、Goodput、端到端延迟、TPOT、Decode延迟、模型推理累计耗时等字段的 P节点/D节点/PD 三列为相同值。\n> 在 PD 分离架构下，P 和 D 节点的负载特征应有明显差异。仅排队等待时间和 KV Cache 使用率有区分。\n```\n\n---\n\n**操作要求**：\n- 每次 Edit 前先 Read 确认精确文本\n- 使用 Edit 工具，找到目标文本，在其前方插入 callout\n- 注意不要破坏表格结构",
+      "mode": "async",
+      "isExpanded": false,
+      "status": "running",
+      "toolCalls": [],
+      "asyncStatus": "running",
+      "agentId": "ac9436debf071fb0f",
+      "startedAt": 1778123456782
+    },
+    "toolu_01D9CPw2Y4jAtjTAwibk4wTC": {
+      "id": "toolu_01D9CPw2Y4jAtjTAwibk4wTC",
+      "description": "标注§6.4模型参数矛盾",
+      "prompt": "你需要编辑文件 \"OpenClaw-A800 测试指标报告.md\"（绝对路径：/Users/jacobcai/Documents/42Vector-obsidian/OpenClaw-A800 测试指标报告.md）。\n\n**任务：在 §6.4 存储指标中标注模型参数矛盾**\n\n找到存储指标中「模型加载时间」的那一行（大约 line 303 附近），它的计算说明中提到了「350B 模型权重约 175 GB（FP8）」。\n\n在 `#### **存储指标**` 这一行的前面，插入一个 warning callout：\n\n```\n> [!warning] §6.4 模型参数描述矛盾 ⚠️\n> 下方存储指标计算说明中提到「350B 模型权重约 175 GB（FP8）」，但：\n> - FP8 = 1 byte/param → 350B × 1 byte = **350 GB**，不是 175 GB\n> - 175 GB 对应 **175B 参数**的 FP8，或 350B 的 **INT4/FP4**\n> - 三个数字（350B、FP8、175GB）只能取其二，需确认实际模型规格\n```\n\n操作要求：\n- 先 Read 确认 `#### **存储指标**` 的精确文本和位置\n- 用 Edit 工具在该行前面插入 callout\n- 注意不要破坏原有内容",
+      "mode": "async",
+      "isExpanded": false,
+      "status": "running",
+      "toolCalls": [],
+      "asyncStatus": "running",
+      "agentId": "a683ecdc0ab864659",
+      "startedAt": 1778123468819
+    }
   }
 }
