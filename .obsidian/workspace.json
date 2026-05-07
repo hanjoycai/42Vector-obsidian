@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "42向量-知识库/名人堂/全部人物/黄仁勋.md",
+                "file": "AaaS 验证平台/AaaS-PRD.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "黄仁勋"
+              "title": "AaaS-PRD"
             }
           }
         ],
@@ -225,6 +225,9 @@
   },
   "active": "3b4cbd16bffd07cd",
   "lastOpenFiles": [
+    "AaaS 验证平台/输出指标汇总方案说明.md",
+    "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
+    "42向量-知识库/名人堂/全部人物/黄仁勋.md",
     "内容生产系统/03-内容素材库/案例库/黄仁勋-Jensen-Huang-深度素材库.md",
     "内容生产系统/03-内容素材库/案例库/黄仁勋-延伸素材采集.md",
     "Research/黄仁勋-思想哲学方法论素材库.md",
@@ -235,8 +238,6 @@
     "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
     "node_modules/@babel/code-frame/README.md",
     "AaaS 验证平台/AaaS-PRD.md",
-    "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
-    "AaaS 验证平台/输出指标汇总方案说明.md",
     "AaaS 验证平台/diagram-聚合路径全景图.png",
     "AaaS 验证平台/diagram-三层嵌套聚合示意图.png",
     "node_modules/puppeteer-core/README.md",
@@ -262,7 +263,6 @@
     "node_modules/semver/README.md",
     "node_modules/pac-resolver/README.md",
     "node_modules/js-yaml/README.md",
-    "node_modules/bare-os/README.md",
     "AaaS 验证平台/aaas-charts/pd-topology.png",
     "AaaS 验证平台/aaas-charts/AaaS 验证平台/aaas-charts/pd-topology.png",
     "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 5.webp",
