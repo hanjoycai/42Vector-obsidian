@@ -1,0 +1,20 @@
+{
+  "id": "conv-1778122891233-c7oo3uu8f",
+  "title": "Analyze OpenClaw-A800 test metrics for outliers",
+  "titleGenerationStatus": "success",
+  "createdAt": 1778122891235,
+  "updatedAt": 1778123231401,
+  "lastResponseAt": 1778123231401,
+  "sessionId": "52be4fb8-a42d-40a5-ab1f-d8813e4dcafe",
+  "sdkSessionId": "52be4fb8-a42d-40a5-ab1f-d8813e4dcafe",
+  "currentNote": "OpenClaw-A800 测试指标报告.md",
+  "usage": {
+    "model": "opus[1m]",
+    "inputTokens": 3,
+    "cacheCreationInputTokens": 11572,
+    "cacheReadInputTokens": 67989,
+    "contextWindow": 1000000,
+    "contextTokens": 79564,
+    "percentage": 8
+  }
+}
