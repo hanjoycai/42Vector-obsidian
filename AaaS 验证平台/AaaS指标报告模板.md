@@ -420,9 +420,31 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260425003834776.png)
 
+|                          |                                                                      |
+| ------------------------ | -------------------------------------------------------------------- |
+| **决策问题**                 | **从图中怎么读**                                                           |
+| **推荐最佳****并发****数是多少？**  | C=8 ~ C=16，扩展效率 77-87%，性价比最优                                         |
+| **最大可支撑****并发****数是多少？** | 结合 SLO 达标率，如果 TTFT P90 ≤ 500ms 的要求，大约在 C=16 附近                       |
+| **优化 KV Cache 后能到多少？**   | 如果 NGU 的扩展效率从 64.2% 提升到 A100 的 71.3%，C=32 吞吐量可达 ~1,576 tokens/s（+11% |
+
 
 #### 图表 E4：并发压力百分位比对
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200254184.png)
+```Plain
+左下角是"快但少"（低并发），右上角是"多但慢"（高并发），曲线弯折处（C=32, TTFT 420ms, RPS 28.5）是性价比最优的运营点。
+500ms SLO 垂直线一刀切下去，左侧是"能用的区间"，右侧是"体验崩塌的区间"。NGU800P 低并发领先 A800，但高并发因 KV Cache 瓶颈被反超——这张图同时暴露了优势和短板
+```
 
+|                               |                                  |
+| ----------------------------- | -------------------------------- |
+| **NGU800P 的最优运营****并发****数？** | 性价比拐点 C=32，TTFT 420ms / RPS 28.5 |
+| **满足 SLO 的最大吞吐？**             | SLO 线左侧最高点 ≈ 30 RPS              |
+| **NGU800P vs A800 怎么选？**      | 低并发选 NGU（更快），高并发选 A800（更稳）       |
+
+
+
+#### 图表 E5：不同并发下：聚合 vS PD 分离吞吐对比
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200431931.png)
 
 ---
 
@@ -486,6 +508,13 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202447974.png)
 
+#### 图表 S2：ITL(Token 间延迟)百分位分布对比
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200538183.png)
+
+
+#### 图表 S3：集群吞吐-稳定性
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200622740.png)
+
 
 ---
 
@@ -509,11 +538,12 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **总计时延**             | **650 ms** | **685 ms** | 100%        | **总计 = 排队等待 + Prefill + Decode + 后处理**<br><br>即：$T_{total} = T_{queue} + T_{prefill} + T_{decode} + T_{post}$<br><br>其中：<br>- 各阶段耗时为单次请求的端到端拆解<br>- 单位：**ms**<br><br>**1. 各阶段之和应等于 E2E 延迟**——可用于交叉验证数据一致性。<br><br>**2. 占比分析指导优化方向**——Decode 占 64.6% 说明优化 HBM 带宽利用率收益最大。                                                                                                                                                    |
 | **ITL Jitter（字间抖动）** | σ=3.2 ms   | σ=2.8 ms   | —           | **ITL Jitter = std(各 token 间隔时间)**<br><br>即：$\sigma_{ITL} = \sqrt{\frac{1}{n-1} \sum_{k=1}^{n-1} (ITL_k - \overline{ITL})^2}$<br><br>其中：<br>- **ITL_k**：第 k 个与第 k+1 个 token 之间的间隔时间 = t_{k+1} − t_k<br>- **$\overline{ITL}$**：所有 ITL 的均值<br>- **n**：生成的 token 总数<br>- 单位：**ms**<br><br>**1. Jitter 反映用户感知的"流畅度"**——σ 越小，打字效果越平滑，用户体验越好。<br><br>**2. Jitter 大通常源于 continuous batching 干扰**——新请求加入 batch 时会导致当前请求的 ITL 出现毛刺。 |
 
-#### 图表 D1：推理延迟时间分布图
+#### 图表 D1：推理延迟-TTFT/TPOT 劣化曲线
 
 > 单次请求：排队等待 / Prefill / Decode / 后处理各占比
-![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041646239.png)
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200813473.png)
 
+双轴图揭示了一个关键不对称——TTFT 随并发指数级劣化（C=100 时 9.26×），而 TPOT 仅线性缓增（1.63×），劣化速度差 5.7 倍。根因是 TTFT 包含排队延迟（随并发指数膨胀），而 TPOT 不含排队。TTFT 在 C≈35 率先突破 500ms SLO，成为系统容量的"第一根保险丝"。NGU800P 在高并发下 TTFT 劣化比 A800 更严重（9.26× vs 7.71×），因为 KV Cache 紧张导致抢占重排的"队列二次膨胀"——优化 KV Cache 管理是 NGU 扩大系统容量的第一优先级。
 
 #### 图表 D2：各轮 TPOT 趋势折线
 
@@ -521,6 +551,32 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > **TPOT 应各轮持平——逐轮上升说明 KV Cache 或热节流问题**
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260422202551087.png)
+**灰色水平虚线**：**加权恒定线 13.8 ms/tok**——这是 8 轮按 output_tokens 加权后的 TPOT 均值。如果所有点都贴着这条线，说明 TPOT 完全稳定。
+
+如果TPOT 逐轮单调上升
+
+```Plain
+假设: 12 → 13 → 14 → 15 → 16 → 17 → 18 → 19
+诊断: KV Cache 压力逐轮增大，每轮 Decode 的 Attention 计算量线性增长
+      且 KV Cache 可能没有被有效管理（比如 Prefix Cache 未开启）
+优化: 检查 enable_prefix_caching 配置；优化 KV Cache 内存管理
+```
+
+  
+
+如果某一轮突然跳到 2× 以上
+
+```Plain
+假设: 12 → 12 → 12 → 12 → 28 → 12 → 12 → 12
+诊断: 该轮可能遭遇了 KV Cache 抢占 → 被中断 → 重新 Prefill → 延迟翻倍
+优化: 增加 KV Cache 预算或降低 gpu_memory_utilization
+```
+
+#### 图表 D3：跨并行策略吞吐对比
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507200911691.png)
+
+
+
 
 
 ### 6.2 Agent 任务质量
@@ -557,6 +613,25 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > **并发测试期间显存压力是否接近极限**
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041746261.png)
+
+"并发压力测试过程中，GPU 显存里的 KV Cache 有没有接近极限？什么时候最危险？离'爆显存'还有多少余量？"
+
+重点说明：传统 MaaS 场景（独立请求流）的 KV Cache 时序图通常是平稳的——请求来了分配，走了释放，整体稳定。
+
+但Agent 场景中，同一个 Agent 的 8 轮调用是**串行依赖**的——R1 完了才能 R2，R2 完了才能 R3。工具调用期间模型不工作但 KV Cache 可能被保留（等待下一轮复用）。16 个 Agent 的工作节奏交错，形成曲线波浪形态。
+
+
+#### 图表 D4：Prefix Cache 命中率时序
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201035540.png)
+
+
+#### 图表 D5： Goodput - KV Cache 使用率
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201126751.png)
+
+
+#### 图表 D6：KV Cache 与调度状态
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201308760.png)
 
 
 
@@ -596,7 +671,7 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 | **调度队列深度 (max)**        | 24      | 18    | 关注  | **调度队列深度 = 调度器等待队列最大深度**<br><br>即：$Q_{max} = \max_{t} queue\_depth(t)$<br><br>其中：<br>- **queue_depth(t)**：时刻 t 调度器等待队列中的请求数<br>- 数据来源：Prometheus 采集的 vLLM 调度器指标<br>- 单位：**次**<br><br>**1. 队列深度反映系统负载饱和度**——深度持续 > 20 说明系统接近超载。<br><br>**2. NGU800P 峰值 24 > A800 的 18**——与 KV Cache 使用率偏高一致，需优化显存管理。                                                                                           |
 | **集群吞吐效率 (vs 理论线性值 %)** | 82%     | 86%   | 达标  | **集群吞吐效率 = 实际集群吞吐 / (单节点吞吐 × 节点数) × 100%**<br><br>即：$\eta_{cluster} = \frac{Throughput_{cluster}}{Throughput_{node} \times N_{nodes}} \times 100\%$<br><br>其中：<br>- **Throughput_cluster**：整个集群的实际吞吐量<br>- **Throughput_node**：单节点的基线吞吐量<br>- **N_nodes**：参与计算的节点数<br>- 单位：**%**<br><br>**1. 效率 < 100% 是正常的**——通信开销、调度损耗、负载不均都会导致效率损失。<br><br>**2. 82% 意味着 18% 的扩展损耗**——主要来自跨节点通信和调度器的全局协调开销。 |
 
-#### 图表 D4：MFU/MBU 硬件效率跨芯片对比
+#### 图表 F1：MFU/MBU 硬件效率跨芯片对比
 
 > **关注方：推理芯片部门领导 + 超节点工程部门**
 > 双 Y 轴柱状图：MFU / MBU / GPU 利用率 / 显存占用率 / 互联带宽利用率
@@ -604,7 +679,25 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > **一眼看清芯片在各硬件维度的利用效率差距和优化空间**
 
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423041840996.png)
+"两款芯片的硬件能力到底被利用了多少？35% 的算力浪费花在了哪里？哪个维度是短板、哪个维度有优势？"
 
+MFU 主要反映 Prefill 阶段的效率
+
+MBU 是 Decode 阶段的核心瓶颈指标
+
+
+#### 图表 F2：网络带宽跨芯片对比
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201521028.png)
+
+
+
+#### 图表 F3：推理性能-芯片综合对比
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201558354.png)
+
+"在不同交互性需求下，每块 GPU 能产出多少推理吞吐量？
+
+一张图同时展示吞吐能力（Y 轴）和交互性能力（X 轴）的全区间权衡，是推理芯片性能评测的"终极一张图"。
 
 ---
 
@@ -695,7 +788,37 @@ R8    输出总结            18,500    300      980ms     13.2ms     5.1s
 > NGU800P / A800 / H100 / 昇腾 的 token/s/W 对比
 ![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260423042236413.png)
 
+#### 图表 C3： KV Cache 命中率成本比对分析
 
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201815718.png)
+
+
+
+"Prefix Cache 命中率越高成本就越低吗？在不同并发压力下，最优命中率到底是多少？什么时候'继续提升命中率反而更贵了'？"
+
+95% 命中率的成本反而比 65% 贵 19%。根因是高命中率需要更多显存存 Cache，挤占了 Decode 并发空间，在高并发下得不偿失。当前 72% 运营点对 C=8~16 几乎最优，但如果并发经常跑到 C=32，应该动态降低到 65%。
+
+
+
+#### 图表 C4： 不同并发下KV Cache 命中成本比对分析
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201847485.png)
+
+
+"每百万 token 的成本如何随并发变化？在什么并发数下成本最低？为什么低并发和高并发都比中间贵？两款芯片的最优运营点分别在哪？"最低点就是"成本最优并发数"。
+
+
+#### 图表 C5： 能效帕累托曲线
+
+![image.png](https://42notion.oss-cn-shenzhen.aliyuncs.com/book/20260507201910952.png)
+
+
+在固定电力预算（比如 1MW）下，这张图直接回答"这些电最多能跑多少推理"。
+
+**X 轴：****TPS****/User（tokens/s/user，对数刻度）：**每个用户每秒感知到的 token 生成速度——越大 = 交互越"实时"。
+
+**Y 轴：****TPS****/MW（tokens/s/MW，每兆瓦****吞吐量****）：**系统每消耗 1 兆瓦电力能产出的 token 吞吐量。
+
+这张能效帕累托图展示了"每兆瓦电力能买多少推理"——NGU800P 在批量区（TPS/User ≤ 10）凭低功耗反超 H100，在 Agent 黄金区（TPS/User=25-50）与 H100 几乎持平，在实时区（TPS/User > 100）因带宽瓶颈落后
 
 # 第三部分：测试总论
 
