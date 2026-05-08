@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS 验证平台/AaaS指标报告模板.md",
+                "file": "AaaS 验证平台/AaaS-PRD.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AaaS指标报告模板"
+              "title": "AaaS-PRD"
             }
           }
         ],
@@ -239,6 +239,7 @@
   },
   "active": "0f3fbbd9eb420c57",
   "lastOpenFiles": [
+    "AaaS 验证平台/AaaS指标报告模板.md",
     "AaaS 验证平台/AaaS-PRD.md",
     "AaaS 验证平台/assets/figma-103-workload-pack-delivery.png",
     "AaaS 验证平台/assets/figma-102-workload-pack-import.png",
@@ -257,7 +258,6 @@
     "Research",
     "42向量-知识库/名人堂/全部人物/巴菲特.md",
     "42向量-知识库/名人堂/全部人物/查理芒格.md",
-    "AaaS 验证平台/AaaS指标报告模板.md",
     "AI 体系化知识/Agent 工程/还在写PRD？AI时代的产品经理，核心交付物变了.md",
     "node_modules/@babel/code-frame/README.md",
     "AaaS 验证平台/diagram-聚合路径全景图.png",
