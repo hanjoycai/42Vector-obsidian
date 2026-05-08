@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AaaS 验证平台/AaaS-PRD.md",
+                "file": "AaaS 验证平台/AaaS指标报告模板.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AaaS-PRD"
+              "title": "AaaS指标报告模板"
             }
           }
         ],
@@ -239,8 +239,15 @@
   },
   "active": "0f3fbbd9eb420c57",
   "lastOpenFiles": [
-    "OpenClaw-A800 测试指标报告.md",
     "AaaS 验证平台/AaaS-PRD.md",
+    "AaaS 验证平台/assets/figma-103-workload-pack-delivery.png",
+    "AaaS 验证平台/assets/figma-102-workload-pack-import.png",
+    "AaaS 验证平台/assets/figma-101-workload-pack-create.png",
+    "AaaS 验证平台/assets/figma-100-workload-pack-list.png",
+    "AaaS 验证平台/assets/figma-67-multimodal-assets.png",
+    "AaaS 验证平台/assets/figma-66-agent-knowledge.png",
+    "AaaS 验证平台/assets",
+    "OpenClaw-A800 测试指标报告.md",
     "AaaS 验证平台/输出指标汇总方案说明.md",
     "AaaS 验证平台/多 Case 多轮交互指标聚合计算方法.md",
     "42向量-知识库/名人堂/全部人物/黄仁勋.md",
@@ -266,7 +273,6 @@
     "node_modules/puppeteer-core/src/bidi/core/Request.ts",
     "node_modules/puppeteer-core/src/bidi/core/README.md",
     "node_modules/puppeteer-core/src/bidi/core/Realm.ts",
-    "node_modules/puppeteer-core/src/bidi/core/Navigation.ts",
     "node_modules/puppeteer-core/src/templates/README.md",
     "node_modules/puppeteer-core/src/injected/README.md",
     "node_modules/zod/README.md",
@@ -276,14 +282,7 @@
     "node_modules/puppeteer/README.md",
     "node_modules/bare-url/README.md",
     "node_modules/semver/README.md",
-    "node_modules/pac-resolver/README.md",
     "AaaS 验证平台/aaas-charts/pd-topology.png",
-    "AaaS 验证平台/aaas-charts/AaaS 验证平台/aaas-charts/pd-topology.png",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 5.webp",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 4.webp",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 3.webp",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 2.webp",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image 1.webp",
-    "AI 体系化知识/Agent 工程/assets/还在写PRD？AI时代的产品经理，核心交付物变了/Image.webp"
+    "AaaS 验证平台/aaas-charts/AaaS 验证平台/aaas-charts/pd-topology.png"
   ]
 }
