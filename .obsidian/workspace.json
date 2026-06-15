@@ -224,6 +224,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -232,7 +233,6 @@
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
       "obsidian-git:Open Git source control": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
       "note-to-mp:复制到公众号": false,
       "claudian:Open Claudian": false,
       "obsidian-importer:Open Importer": false
